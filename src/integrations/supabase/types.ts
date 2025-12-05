@@ -170,6 +170,96 @@ export type Database = {
         }
         Relationships: []
       }
+      analytics_visits: {
+        Row: {
+          id: string
+          page_path: string
+          visitor_id: string | null
+          user_agent: string | null
+          ip_address: string | null
+          referrer: string | null
+          session_id: string | null
+          visited_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          page_path: string
+          visitor_id?: string | null
+          user_agent?: string | null
+          ip_address?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          visited_at?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          page_path?: string
+          visitor_id?: string | null
+          user_agent?: string | null
+          ip_address?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          visited_at?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      analytics_daily_stats: {
+        Row: {
+          id: string
+          date: string
+          page_path: string
+          total_visits: number
+          unique_visitors: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          date: string
+          page_path: string
+          total_visits?: number
+          unique_visitors?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          date?: string
+          page_path?: string
+          total_visits?: number
+          unique_visitors?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      analytics_overall_stats: {
+        Row: {
+          id: string
+          total_visits: number
+          unique_visitors: number
+          total_pages_tracked: number
+          last_updated: string
+        }
+        Insert: {
+          id?: string
+          total_visits?: number
+          unique_visitors?: number
+          total_pages_tracked?: number
+          last_updated?: string
+        }
+        Update: {
+          id?: string
+          total_visits?: number
+          unique_visitors?: number
+          total_pages_tracked?: number
+          last_updated?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -196,6 +286,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_analytics_summary: {
+        Args: {
+          days_back?: number
+        }
+        Returns: {
+          total_visits: number
+          unique_visitors: number
+          total_pages: number
+          avg_daily_visits: number
+          top_pages: Json
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

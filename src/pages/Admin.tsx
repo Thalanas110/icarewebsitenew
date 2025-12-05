@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
+import { AdminAnalytics } from '@/components/admin/AdminAnalytics';
 import { AdminMinistries } from '@/components/admin/AdminMinistries';
 import { AdminEvents } from '@/components/admin/AdminEvents';
 import { AdminServiceTimes } from '@/components/admin/AdminServiceTimes';
@@ -10,7 +11,7 @@ import { useState } from 'react';
 
 export default function Admin() {
   const { isAdmin, loading } = useAuth();
-  const [activeTab, setActiveTab] = useState('ministries');
+  const [activeTab, setActiveTab] = useState('analytics');
 
   if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   if (!isAdmin) return <Navigate to="/auth" replace />;
@@ -26,6 +27,7 @@ export default function Admin() {
           </div>
           <div className="flex-1 p-4 md:p-8">
             <h1 className="hidden md:block text-3xl font-display font-bold mb-8">Admin Dashboard</h1>
+            {activeTab === 'analytics' && <AdminAnalytics />}
             {activeTab === 'ministries' && <AdminMinistries />}
             {activeTab === 'events' && <AdminEvents />}
             {activeTab === 'services' && <AdminServiceTimes />}
