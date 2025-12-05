@@ -28,7 +28,7 @@ const Index = () => {
             Miracles happen when someone cares
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-church-gold hover:bg-church-gold/90 text-church-navy font-semibold">
+            <Button asChild size="lg" className="bg-church-orange hover:bg-church-orange/90 text-church-navy font-semibold">
               <Link to="/services">Join Us This Sunday</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="border-white text-black hover:bg-white/10 hover:text-white">
