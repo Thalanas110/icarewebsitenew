@@ -1,0 +1,95 @@
+import { useState } from 'react';
+import { useEvents, useEventMutations, Event, EventInsert } from '@/hooks/useChurchData';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { toast } from 'sonner';
+import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { format } from 'date-fns';
+import { ImageUpload } from './ImageUpload';
+export function AdminEvents() {
+  const { data: events, isLoading } = useEvents();
+  const { createEvent, updateEvent, deleteEvent } = useEventMutations();
+  const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<Event | null>(null);
+  const [form, setForm] = useState({ title: '', description: '', event_date: '', event_time: '', location: '', image_url: '' });
+
+  const resetForm = () => { setForm({ title: '', description: '', event_date: '', event_time: '', location: '', image_url: '' }); setEditing(null); };
+
+  const handleSave = async () => {
+    if (!form.title || !form.event_date) { toast.error('Title and date are required'); return; }
+    try {
+      if (editing) {
+        await updateEvent.mutateAsync({ id: editing.id, ...form });
+        toast.success('Event updated');
+      } else {
+        await createEvent.mutateAsync(form as EventInsert);
+        toast.success('Event created');
+      }
+      setOpen(false); resetForm();
+    } catch (e: any) { toast.error(e.message); }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Delete this event?')) return;
+    try { await deleteEvent.mutateAsync(id); toast.success('Deleted'); } catch (e: any) { toast.error(e.message); }
+  };
+
+  const openEdit = (e: Event) => { setEditing(e); setForm({ title: e.title, description: e.description || '', event_date: e.event_date, event_time: e.event_time || '', location: e.location || '', image_url: e.image_url || '' }); setOpen(true); };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold">Events</h2>
+        <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) resetForm(); }}>
+          <DialogTrigger asChild><Button><Plus className="h-4 w-4 mr-2" />Add Event</Button></DialogTrigger>
+          <DialogContent>
+            <DialogHeader><DialogTitle>{editing ? 'Edit' : 'Add'} Event</DialogTitle></DialogHeader>
+            <div className="space-y-4">
+              <Input placeholder="Title *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+              <Input type="date" value={form.event_date} onChange={(e) => setForm({ ...form, event_date: e.target.value })} />
+              <Input placeholder="Time (e.g. 7:00 PM)" value={form.event_time} onChange={(e) => setForm({ ...form, event_time: e.target.value })} />
+              <Input placeholder="Location" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} />
+              <Textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+              <div>
+                <label className="text-sm font-medium mb-2 block">Event Cover Image</label>
+                <ImageUpload 
+                  value={form.image_url} 
+                  onChange={(url) => setForm({ ...form, image_url: url })} 
+                  folder="events"
+                />
+              </div>
+              <Button onClick={handleSave} className="w-full">Save</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+      {isLoading ? <p>Loading...</p> : (
+        <div className="grid gap-4">
+          {events?.map((e) => (
+            <Card key={e.id} className="overflow-hidden">
+              {e.image_url && (
+                <div className="h-32 w-full">
+                  <img src={e.image_url} alt={e.title} className="w-full h-full object-cover" />
+                </div>
+              )}
+              <CardHeader className="flex flex-row items-center justify-between py-3">
+                <CardTitle className="text-lg">{e.title}</CardTitle>
+                <div className="flex gap-2">
+                  <Button size="icon" variant="ghost" onClick={() => openEdit(e)}><Pencil className="h-4 w-4" /></Button>
+                  <Button size="icon" variant="ghost" onClick={() => handleDelete(e.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-0 text-sm text-muted-foreground">
+                <p>{format(new Date(e.event_date), 'MMMM d, yyyy')} {e.event_time && `at ${e.event_time}`}</p>
+                {e.location && <p>{e.location}</p>}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
