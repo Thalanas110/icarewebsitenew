@@ -12,10 +12,8 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-display font-bold text-sm">R</span>
-              </div>
-              <span className="font-display font-semibold text-lg">REFUGE</span>
+              <img src="/icc logo.jpg" alt="ICC Logo" className="h-8 w-auto" />
+              <span className="font-display font-semibold text-lg">The Refuge Church</span>
             </div>
             <p className="text-muted-foreground text-sm">
               {churchInfo?.church_name || 'I Care Center - Refuge'} - A place where faith meets community.
