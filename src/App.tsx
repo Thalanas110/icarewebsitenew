@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { PageTracker } from "@/components/PageTracker";
 import { AppLoadingScreen } from "@/components/AppLoadingScreen";
+import { useMinistries, useEvents, useServiceTimes } from "@/hooks/useChurchData";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -18,7 +19,15 @@ import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
 
 const BIBLE_VERSES = [
   { verse: "For I know the plans I have for you, declares the Lord, plans for welfare and not for evil, to give you a future and a hope.", reference: "Jeremiah 29:11" },
@@ -73,27 +82,81 @@ const BIBLE_VERSES = [
   { verse: "The Lord is righteous in all his ways and kind in all his works.", reference: "Psalm 145:17" }
 ];
 
-const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
+// Component to check internet connectivity and initial data loading
+function AppInitializer({ children }: { children: React.ReactNode }) {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [hasInitialData, setHasInitialData] = useState(false);
   const [currentVerse, setCurrentVerse] = useState(BIBLE_VERSES[0]);
   const [progress, setProgress] = useState(0);
 
+  // Check internet connectivity
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  // Fetch critical data for initial load
+  const ministriesQuery = useMinistries();
+  const eventsQuery = useEvents(); 
+  const serviceTimesQuery = useServiceTimes();
+
+  const criticalQueries = [ministriesQuery, eventsQuery, serviceTimesQuery];
+  const allQueriesLoaded = criticalQueries.every(query => 
+    query.isSuccess || query.isError
+  );
+  const anyQueryLoading = criticalQueries.some(query => query.isLoading);
+
+  // Update progress based on query states
+  useEffect(() => {
+    if (!isOnline) {
+      setProgress(0);
+      return;
+    }
+
+    const successfulQueries = criticalQueries.filter(query => query.isSuccess).length;
+    const errorQueries = criticalQueries.filter(query => query.isError).length;
+    const completedQueries = successfulQueries + errorQueries;
+    const totalQueries = criticalQueries.length;
+    
+    const calculatedProgress = (completedQueries / totalQueries) * 100;
+    
+    // Smooth progress transition
+    const progressInterval = setInterval(() => {
+      setProgress(prev => {
+        const target = calculatedProgress;
+        if (Math.abs(prev - target) < 1) {
+          clearInterval(progressInterval);
+          return target;
+        }
+        return prev + (target - prev) * 0.1;
+      });
+    }, 50);
+
+    return () => clearInterval(progressInterval);
+  }, [criticalQueries.map(q => q.status).join(','), isOnline]);
+
+  // Check if initial data loading is complete
+  useEffect(() => {
+    if (isOnline && allQueriesLoaded && !anyQueryLoading) {
+      // Add a small delay to ensure smooth UX
+      const timer = setTimeout(() => setHasInitialData(true), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isOnline, allQueriesLoaded, anyQueryLoading]);
+
+  // Bible verse rotation
   useEffect(() => {
     // Set initial random verse
     const randomIndex = Math.floor(Math.random() * BIBLE_VERSES.length);
     setCurrentVerse(BIBLE_VERSES[randomIndex]);
-
-    // Progress bar animation
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          setTimeout(() => setIsLoading(false), 300); // Small delay after 100%
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 50);
 
     // Change verse every 3 seconds
     const verseInterval = setInterval(() => {
@@ -101,14 +164,17 @@ const App = () => {
       setCurrentVerse(BIBLE_VERSES[randomIndex]);
     }, 3000);
 
-    return () => {
-      clearInterval(progressInterval);
-      clearInterval(verseInterval);
-    };
+    return () => clearInterval(verseInterval);
   }, []);
 
-  // Loading screen JSX
-  if (isLoading) {
+  // Show loading screen while offline or data is loading
+  if (!isOnline || !hasInitialData) {
+    const loadingText = !isOnline 
+      ? "Connecting..." 
+      : anyQueryLoading 
+        ? "Loading church data..." 
+        : "Loading.";
+
     return (
       <div className="fixed inset-0 bg-white flex flex-col items-center justify-center z-50">
         {/* Cross Icon */}
@@ -133,7 +199,7 @@ const App = () => {
 
         {/* Loading Text */}
         <div className="mb-6">
-          <h2 className="text-xl font-medium text-gray-800">Loading.</h2>
+          <h2 className="text-xl font-medium text-gray-800">{loadingText}</h2>
         </div>
 
         {/* Bible Verse */}
@@ -149,35 +215,41 @@ const App = () => {
         {/* Progress Bar */}
         <div className="w-80 h-1 bg-gray-200 rounded-full overflow-hidden">
           <div 
-            className="h-full bg-church-orange transition-all duration-100 ease-out"
-            style={{ width: `${progress}%` }}
+            className="h-full bg-church-orange transition-all duration-300 ease-out"
+            style={{ width: `${Math.max(progress, 5)}%` }}
           />
         </div>
       </div>
     );
   }
 
+  return <>{children}</>;
+}
+
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <AuthProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <PageTracker />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/ministries" element={<Ministries />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/sermons" element={<Sermons />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
+          <AppInitializer>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <PageTracker />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/ministries" element={<Ministries />} />
+                <Route path="/events" element={<Events />} />
+                <Route path="/sermons" element={<Sermons />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </AppInitializer>
         </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
