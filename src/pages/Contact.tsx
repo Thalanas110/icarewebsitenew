@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Map } from '@/components/Map';
 import { useChurchInfo } from '@/hooks/useChurchData';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { toast } from 'sonner';
@@ -112,17 +113,14 @@ export default function Contact() {
                 )}
               </div>
 
-              {/* Map placeholder */}
+              {/* Interactive Map */}
               <Card className="border-none shadow-lg overflow-hidden">
-                <div className="h-64 bg-secondary flex items-center justify-center">
-                  <div className="text-center text-muted-foreground">
-                    <MapPin className="h-8 w-8 mx-auto mb-2" />
-                    <p className="font-medium">Interactive Map</p>
-                    <p className="text-sm">
-                      {churchInfo?.address}, {churchInfo?.city}
-                    </p>
-                  </div>
-                </div>
+                <Map 
+                  latitude={14.848607} 
+                  longitude={120.312585} 
+                  address="2057 Jose Abad Santos Avenue, Brgy. Old Cabalan, Olongapo City, Zambales 2200"
+                  className="rounded-lg"
+                />
               </Card>
             </div>
 
