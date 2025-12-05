@@ -44,6 +44,25 @@ export interface ServiceTime {
 
 export type ServiceTimeInsert = Omit<ServiceTime, 'id' | 'created_at' | 'updated_at'> & { id?: string };
 
+export interface Sermon {
+  id: string;
+  title: string;
+  description: string | null;
+  speaker: string;
+  sermon_date: string;
+  video_url: string | null;
+  audio_url: string | null;
+  scripture_reference: string | null;
+  series_name: string | null;
+  thumbnail_url: string | null;
+  duration_minutes: number | null;
+  is_featured: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export type SermonInsert = Omit<Sermon, 'id' | 'created_at' | 'updated_at'> & { id?: string };
+
 export interface ChurchInfo {
   id: string;
   pastor_name: string | null;
@@ -242,4 +261,76 @@ export function useChurchInfoMutation() {
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['church_info'] }),
   });
+}
+
+// Sermons
+export function useSermons() {
+  return useQuery({
+    queryKey: ['sermons'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('sermons')
+        .select('*')
+        .order('sermon_date', { ascending: false });
+      if (error) throw error;
+      return data as Sermon[];
+    },
+  });
+}
+
+export function useLatestSermon() {
+  return useQuery({
+    queryKey: ['latest_sermon'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('sermons')
+        .select('*')
+        .order('sermon_date', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) throw error;
+      return data as Sermon | null;
+    },
+  });
+}
+
+export function useSermonMutations() {
+  const queryClient = useQueryClient();
+  
+  const createSermon = useMutation({
+    mutationFn: async (sermon: SermonInsert) => {
+      const { data, error } = await supabase.from('sermons').insert([sermon]).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sermons'] });
+      queryClient.invalidateQueries({ queryKey: ['latest_sermon'] });
+    },
+  });
+
+  const updateSermon = useMutation({
+    mutationFn: async ({ id, ...updates }: Partial<Sermon> & { id: string }) => {
+      const { data, error } = await supabase.from('sermons').update(updates).eq('id', id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sermons'] });
+      queryClient.invalidateQueries({ queryKey: ['latest_sermon'] });
+    },
+  });
+
+  const deleteSermon = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('sermons').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sermons'] });
+      queryClient.invalidateQueries({ queryKey: ['latest_sermon'] });
+    },
+  });
+
+  return { createSermon, updateSermon, deleteSermon };
 }

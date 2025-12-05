@@ -10,6 +10,7 @@ import About from "./pages/About";
 import Services from "./pages/Services";
 import Ministries from "./pages/Ministries";
 import Events from "./pages/Events";
+import Sermons from "./pages/Sermons";
 import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/services" element={<Services />} />
             <Route path="/ministries" element={<Ministries />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/sermons" element={<Sermons />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
