@@ -1,24 +1,4 @@
-import { useState, useEffect } from "react";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/hooks/useAuth";
-import { PageTracker } from "@/components/PageTracker";
-import { AppLoadingScreen } from "@/components/AppLoadingScreen";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Services from "./pages/Services";
-import Ministries from "./pages/Ministries";
-import Events from "./pages/Events";
-import Sermons from "./pages/Sermons";
-import Contact from "./pages/Contact";
-import Auth from "./pages/Auth";
-import Admin from "./pages/Admin";
-import NotFound from "./pages/NotFound";
-
-const queryClient = new QueryClient();
+import { useEffect, useState } from 'react';
 
 const BIBLE_VERSES = [
   { verse: "For I know the plans I have for you, declares the Lord, plans for welfare and not for evil, to give you a future and a hope.", reference: "Jeremiah 29:11" },
@@ -73,115 +53,91 @@ const BIBLE_VERSES = [
   { verse: "The Lord is righteous in all his ways and kind in all his works.", reference: "Psalm 145:17" }
 ];
 
-const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
+interface AppLoadingScreenProps {
+  isVisible: boolean;
+  onComplete?: () => void;
+}
+
+export function AppLoadingScreen({ isVisible, onComplete }: AppLoadingScreenProps) {
   const [currentVerse, setCurrentVerse] = useState(BIBLE_VERSES[0]);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Set initial random verse
-    const randomIndex = Math.floor(Math.random() * BIBLE_VERSES.length);
-    setCurrentVerse(BIBLE_VERSES[randomIndex]);
-
-    // Progress bar animation
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          setTimeout(() => setIsLoading(false), 300); // Small delay after 100%
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 50);
-
-    // Change verse every 3 seconds
-    const verseInterval = setInterval(() => {
+    if (isVisible) {
+      // Set initial random verse
       const randomIndex = Math.floor(Math.random() * BIBLE_VERSES.length);
       setCurrentVerse(BIBLE_VERSES[randomIndex]);
-    }, 3000);
 
-    return () => {
-      clearInterval(progressInterval);
-      clearInterval(verseInterval);
-    };
-  }, []);
+      // Progress bar animation
+      const progressInterval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(progressInterval);
+            return 100;
+          }
+          return prev + 2;
+        });
+      }, 50);
 
-  // Loading screen JSX
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 bg-white flex flex-col items-center justify-center z-50">
-        {/* Cross Icon */}
-        <div className="mb-8">
-          <div className="w-16 h-16 bg-church-orange rounded-lg flex items-center justify-center">
-            <svg 
-              width="32" 
-              height="32" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              className="text-white"
-            >
-              <path 
-                d="M12 2L12 22M2 12L22 12" 
-                stroke="currentColor" 
-                strokeWidth="3" 
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-        </div>
+      // Change verse every 3 seconds
+      const verseInterval = setInterval(() => {
+        const randomIndex = Math.floor(Math.random() * BIBLE_VERSES.length);
+        setCurrentVerse(BIBLE_VERSES[randomIndex]);
+      }, 3000);
 
-        {/* Loading Text */}
-        <div className="mb-6">
-          <h2 className="text-xl font-medium text-gray-800">Loading.</h2>
-        </div>
+      return () => {
+        clearInterval(progressInterval);
+        clearInterval(verseInterval);
+      };
+    }
+  }, [isVisible]);
 
-        {/* Bible Verse */}
-        <div className="mb-8 max-w-lg text-center px-6">
-          <p className="text-gray-600 italic text-sm leading-relaxed">
-            {currentVerse.verse}
-          </p>
-          <p className="text-gray-500 text-xs mt-2">
-            - {currentVerse.reference}
-          </p>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="w-80 h-1 bg-gray-200 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-church-orange transition-all duration-100 ease-out"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      </div>
-    );
-  }
+  if (!isVisible) return null;
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AuthProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <PageTracker />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/ministries" element={<Ministries />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/sermons" element={<Sermons />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </AuthProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
-};
+    <div className="fixed inset-0 bg-white flex flex-col items-center justify-center z-50">
+      {/* Cross Icon */}
+      <div className="mb-8">
+        <div className="w-16 h-16 bg-church-orange rounded-lg flex items-center justify-center">
+          <svg 
+            width="32" 
+            height="32" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            className="text-white"
+          >
+            <path 
+              d="M12 2L12 22M2 12L22 12" 
+              stroke="currentColor" 
+              strokeWidth="3" 
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
+      </div>
 
-export default App;
+      {/* Loading Text */}
+      <div className="mb-6">
+        <h2 className="text-xl font-medium text-gray-800">Loading.</h2>
+      </div>
+
+      {/* Bible Verse */}
+      <div className="mb-8 max-w-lg text-center px-6">
+        <p className="text-gray-600 italic text-sm leading-relaxed">
+          {currentVerse.verse}
+        </p>
+        <p className="text-gray-500 text-xs mt-2">
+          - {currentVerse.reference}
+        </p>
+      </div>
+
+      {/* Progress Bar */}
+      <div className="w-80 h-1 bg-gray-200 rounded-full overflow-hidden">
+        <div 
+          className="h-full bg-church-orange transition-all duration-100 ease-out"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+    </div>
+  );
+}
