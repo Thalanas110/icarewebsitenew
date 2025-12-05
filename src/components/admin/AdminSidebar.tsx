@@ -25,7 +25,7 @@ export function AdminSidebar({ activeTab, setActiveTab }: Props) {
     <Sidebar className="border-r">
       <SidebarContent className="p-4">
         <div className="mb-6">
-          <span className="font-display font-bold text-lg">Admin Panel</span>
+          <span className="font-display font-bold text-lg">I Care Center | Admin Panel</span>
         </div>
         <SidebarGroup>
           <SidebarGroupContent>
