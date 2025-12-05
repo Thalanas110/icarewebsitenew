@@ -26,7 +26,7 @@ export default function About() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <img 
-                src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=800" 
+                src="/during worship.jpg" 
                 alt="Our church community"
                 className="rounded-lg shadow-xl"
               />
