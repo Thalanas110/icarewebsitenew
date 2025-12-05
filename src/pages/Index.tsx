@@ -16,7 +16,7 @@ const Index = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-church-navy via-church-navy/95 to-church-gold/20">
+      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-church-navy via-church-navy/95 to-church-gold/20">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1920')] bg-cover bg-center opacity-40" />
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 container mx-auto px-4 text-center">
@@ -156,7 +156,7 @@ const Index = () => {
       </section>
 
       {/* Location Section */}
-      <section className="py-20 bg-church-navy text-white">
+      <section className="py-20 bg-church-cream text-black">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -166,7 +166,7 @@ const Index = () => {
                   <MapPin className="w-6 h-6 text-church-gold flex-shrink-0 mt-1" />
                   <div>
                     <p className="font-semibold">Address</p>
-                    <p className="text-white/80">
+                    <p className="text-black/70">
                       {churchInfo?.address || '123 Faith Street'}<br />
                       {churchInfo?.city || 'City'}, {churchInfo?.state || 'State'} {churchInfo?.zip || '12345'}
                     </p>
@@ -176,7 +176,7 @@ const Index = () => {
                   <Clock className="w-6 h-6 text-church-gold flex-shrink-0 mt-1" />
                   <div>
                     <p className="font-semibold">Office Hours</p>
-                    <p className="text-white/80">{churchInfo?.office_hours || 'Mon-Fri: 9AM - 5PM'}</p>
+                    <p className="text-black/70">{churchInfo?.office_hours || 'Mon-Fri: 9AM - 5PM'}</p>
                   </div>
                 </div>
               </div>
@@ -184,11 +184,11 @@ const Index = () => {
                 <Link to="/contact">Contact Us</Link>
               </Button>
             </div>
-            <div className="bg-white/10 rounded-lg p-8 text-center">
+            <div className="bg-church-navy rounded-lg p-8 text-center">
               <p className="text-2xl font-display italic text-church-gold mb-4">
                 "Come to me, all you who are weary and burdened, and I will give you rest."
               </p>
-              <p className="text-white/60">— Matthew 11:28</p>
+              <p className="text-black/60">— Matthew 11:28</p>
             </div>
           </div>
         </div>
