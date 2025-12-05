@@ -10,7 +10,7 @@ export default function Services() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="hero-gradient py-20">
+      <section id="hero" className="hero-gradient py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
             <span className="text-gradient">Service</span> Times
@@ -22,7 +22,7 @@ export default function Services() {
       </section>
 
       {/* Service Times */}
-      <section className="section-padding">
+      <section id="service-times" className="section-padding">
         <div className="container mx-auto px-4">
           {isLoading ? (
             <div className="text-center text-muted-foreground">Loading services...</div>

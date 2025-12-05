@@ -9,7 +9,7 @@ export default function Ministries() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="hero-gradient py-20">
+      <section id="hero" className="hero-gradient py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
             Our <span className="text-gradient">Ministries</span>
@@ -21,7 +21,7 @@ export default function Ministries() {
       </section>
 
       {/* Ministries List */}
-      <section className="section-padding">
+      <section id="ministries-list" className="section-padding">
         <div className="container mx-auto px-4">
           {isLoading ? (
             <div className="text-center text-muted-foreground">Loading ministries...</div>

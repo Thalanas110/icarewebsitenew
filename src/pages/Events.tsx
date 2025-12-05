@@ -10,7 +10,7 @@ export default function Events() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="hero-gradient py-20">
+      <section id="hero" className="hero-gradient py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
             Upcoming <span className="text-gradient">Events</span>
@@ -23,7 +23,7 @@ export default function Events() {
       </section>
 
       {/* Events List */}
-      <section className="section-padding">
+      <section id="events-list" className="section-padding">
         <div className="container mx-auto px-4">
           {isLoading ? (
             <div className="text-center text-muted-foreground">Loading events...</div>
