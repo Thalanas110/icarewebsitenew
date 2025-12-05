@@ -74,9 +74,7 @@ const Index = () => {
             <div>
               <h2 className="text-4xl font-display font-bold text-foreground mb-6">About Our Church</h2>
               <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                I Care Worship Center is a vibrant, faith-filled community dedicated to spreading the 
-                love of Jesus Christ. We believe in the power of worship, prayer, and community to 
-                transform lives and bring hope to all.
+                I Care Center is a community focused on (pakilagay dito)
               </p>
               <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="text-center">
