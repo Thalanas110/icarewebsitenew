@@ -98,9 +98,9 @@ export default function Auth() {
                   {isLogin ? 'Welcome Back' : 'Create Account'}
                 </CardTitle>
                 <CardDescription>
-                  {isLogin 
+                  {/*isLogin 
                     ? 'Sign in to access your account' 
-                    : 'Sign up to get started'}
+                    : 'Sign up to get started'*/}
                 </CardDescription>
               </CardHeader>
               <CardContent>
