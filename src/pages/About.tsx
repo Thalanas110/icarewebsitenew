@@ -34,18 +34,15 @@ export default function About() {
             <div className="space-y-6">
               <h2 className="text-3xl font-display font-bold">Our Story</h2>
               <p className="text-muted-foreground">
-                I Care Center - Refuge was founded with a simple mission: to be a place where everyone 
-                can experience God's unconditional love and find their purpose in Christ.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
               </p>
               <p className="text-muted-foreground">
-                What started as a small gathering has grown into a vibrant community of believers 
-                committed to making a difference in our city and beyond. Through the years, we've 
-                remained dedicated to our founding principles of love, faith, and service.
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
               </p>
               <p className="text-muted-foreground">
-                Today, we continue to reach out to our community through various ministries, 
-                outreach programs, and worship services that bring people together in fellowship 
-                and spiritual growth.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
             </div>
           </div>
@@ -63,9 +60,7 @@ export default function About() {
                 </div>
                 <h3 className="text-2xl font-display font-bold">Our Mission</h3>
                 <p className="text-muted-foreground">
-                  We exist to help people find and follow Jesus Christ. Our mission is to create a safe haven 
-                  where individuals and families can discover God's purpose for their lives, grow in their faith, 
-                  and make a positive impact in our community.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </p>
               </CardContent>
             </Card>
@@ -76,9 +71,7 @@ export default function About() {
                 </div>
                 <h3 className="text-2xl font-display font-bold">Our Vision</h3>
                 <p className="text-muted-foreground">
-                  Through compassionate care, biblical teaching, and authentic fellowship, we strive to be a 
-                  refuge for all who are seeking hope, healing, and purpose. We envision a community transformed 
-                  by God's love, reaching out to share that love with the world.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </p>
               </CardContent>
             </Card>
@@ -97,17 +90,17 @@ export default function About() {
               { 
                 icon: Heart, 
                 title: 'Love', 
-                desc: "We believe in showing Christ's love through our actions, welcoming all with open hearts and open arms. Love is at the center of everything we do." 
+                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
               },
               { 
                 icon: Users, 
                 title: 'Community', 
-                desc: "Building authentic relationships and supporting one another through life's joys and challenges. We are stronger together." 
+                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
               },
               { 
                 icon: BookOpen, 
                 title: 'Growth', 
-                desc: 'Encouraging spiritual maturity through Bible study, prayer, and service to others. We never stop learning and growing in our faith.' 
+                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
               },
             ].map((value, i) => (
               <Card key={i} className="border-none shadow-lg">
