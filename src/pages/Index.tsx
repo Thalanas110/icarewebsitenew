@@ -25,7 +25,7 @@ const Index = () => {
             <span className="text-church-gold">I Care Center</span>
           </h1>
           <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto">
-            A place of hope, healing, and transformation through the love of Christ
+            Miracles happen when someone cares
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="bg-church-gold hover:bg-church-gold/90 text-church-navy font-semibold">
