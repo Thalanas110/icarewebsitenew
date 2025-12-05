@@ -16,7 +16,7 @@ const Index = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-church-navy via-church-navy/95 to-church-gold/20">
+      <section id="hero" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-church-navy via-church-navy/95 to-church-gold/20">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1920')] bg-cover bg-center opacity-40" />
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 container mx-auto px-4 text-center">
@@ -39,7 +39,7 @@ const Index = () => {
       </section>
 
       {/* Service Times Section */}
-      <section className="py-20 bg-background">
+      <section id="services" className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-display font-bold text-foreground mb-4">Service Times</h2>
@@ -68,7 +68,7 @@ const Index = () => {
       </section>
 
       {/* About Section */}
-      <section className="py-20 bg-church-cream">
+      <section id="about" className="py-20 bg-church-cream">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -110,7 +110,7 @@ const Index = () => {
       </section>
 
       {/* Upcoming Events Section */}
-      <section className="py-20 bg-background">
+      <section id="events" className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-display font-bold text-foreground mb-4">Upcoming Events</h2>
@@ -156,7 +156,7 @@ const Index = () => {
       </section>
 
       {/* Location Section */}
-      <section className="py-20 bg-church-cream text-black">
+      <section id="location" className="py-20 bg-church-cream text-black">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>

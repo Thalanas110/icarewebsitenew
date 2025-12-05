@@ -9,7 +9,7 @@ export default function About() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="hero-gradient py-20">
+      <section id="hero" className="hero-gradient py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
             About <span className="text-gradient">Our Church</span>
@@ -21,7 +21,7 @@ export default function About() {
       </section>
 
       {/* Story */}
-      <section className="section-padding">
+      <section id="story" className="section-padding">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -53,7 +53,7 @@ export default function About() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="section-padding bg-secondary/30">
+      <section id="mission" className="section-padding bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8">
             <Card className="border-none shadow-lg">
@@ -87,7 +87,7 @@ export default function About() {
       </section>
 
       {/* Values */}
-      <section className="section-padding">
+      <section id="values" className="section-padding">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Our Core Values</h2>
@@ -126,7 +126,7 @@ export default function About() {
 
       {/* Pastor */}
       {churchInfo?.pastor_name && (
-        <section className="section-padding bg-secondary/30">
+        <section id="pastor" className="section-padding bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center space-y-6">
               <h2 className="text-3xl font-display font-bold">Meet Our Pastor</h2>
