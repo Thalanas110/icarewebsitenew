@@ -136,9 +136,9 @@ export default function Auth() {
                     onClick={() => setIsLogin(!isLogin)}
                     className="text-sm text-primary hover:underline"
                   >
-                    {isLogin 
+                    {/* isLogin 
                       ? "Don't have an account? Sign up" 
-                      : 'Already have an account? Sign in'}
+                      : 'Already have an account? Sign in'*/}
                   </button>
                 </div>
               </CardContent>
