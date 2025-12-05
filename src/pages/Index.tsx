@@ -31,6 +31,9 @@ const Index = () => {
             <Button asChild size="lg" className="bg-church-orange hover:bg-church-orange/90 text-church-navy font-semibold">
               <Link to="/services">Join Us This Sunday</Link>
             </Button>
+            <Button asChild size="lg" className="bg-church-teal hover:bg-church-teal/90 text-white font-semibold">
+              <a href="https://www.facebook.com/icarefellowship" target="_blank" rel="noopener noreferrer">Join Online</a>
+            </Button>
             <Button asChild variant="outline" size="lg" className="border-white text-black hover:bg-white/10 hover:text-white">
               <Link to="/about">Learn More</Link>
             </Button>
