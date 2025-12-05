@@ -2,6 +2,8 @@ import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { useMinistries } from '@/hooks/useChurchData';
 import { Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 export default function Ministries() {
   const { data: ministries, isLoading } = useMinistries();
@@ -76,6 +78,9 @@ export default function Ministries() {
             Interested in joining a ministry or starting a new one? We'd love to hear from you 
             and help you find your place to serve.
           </p>
+          <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
+            <Link to="/contact#hero">Contact Us</Link>
+          </Button>
         </div>
       </section>
     </Layout>
