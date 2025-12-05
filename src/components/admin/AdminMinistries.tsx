@@ -28,12 +28,12 @@ export function AdminMinistries() {
         toast.success('Ministry created');
       }
       setOpen(false); resetForm();
-    } catch (e: any) { toast.error(e.message); }
+    } catch (e: unknown) { toast.error(e instanceof Error ? e.message : 'An error occurred'); }
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this ministry?')) return;
-    try { await deleteMinistry.mutateAsync(id); toast.success('Deleted'); } catch (e: any) { toast.error(e.message); }
+    try { await deleteMinistry.mutateAsync(id); toast.success('Deleted'); } catch (e: unknown) { toast.error(e instanceof Error ? e.message : 'An error occurred'); }
   };
 
   const openEdit = (m: Ministry) => { setEditing(m); setForm({ name: m.name, description: m.description || '', leader: m.leader || '', meeting_time: m.meeting_time || '', image_url: m.image_url || '' }); setOpen(true); };
