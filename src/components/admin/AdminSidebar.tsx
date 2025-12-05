@@ -1,4 +1,4 @@
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger } from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -23,9 +23,8 @@ export function AdminSidebar({ activeTab, setActiveTab }: Props) {
   return (
     <Sidebar className="border-r">
       <SidebarContent className="p-4">
-        <div className="flex items-center justify-between mb-6">
-          <span className="font-display font-bold text-lg">Admin</span>
-          <SidebarTrigger />
+        <div className="mb-6">
+          <span className="font-display font-bold text-lg">Admin Panel</span>
         </div>
         <SidebarGroup>
           <SidebarGroupContent>

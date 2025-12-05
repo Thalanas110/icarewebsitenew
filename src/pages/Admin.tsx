@@ -5,7 +5,7 @@ import { AdminMinistries } from '@/components/admin/AdminMinistries';
 import { AdminEvents } from '@/components/admin/AdminEvents';
 import { AdminServiceTimes } from '@/components/admin/AdminServiceTimes';
 import { AdminChurchInfo } from '@/components/admin/AdminChurchInfo';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { useState } from 'react';
 
 export default function Admin() {
@@ -19,12 +19,18 @@ export default function Admin() {
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
         <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-        <main className="flex-1 p-8">
-          <h1 className="text-3xl font-display font-bold mb-8">Admin Dashboard</h1>
-          {activeTab === 'ministries' && <AdminMinistries />}
-          {activeTab === 'events' && <AdminEvents />}
-          {activeTab === 'services' && <AdminServiceTimes />}
-          {activeTab === 'church-info' && <AdminChurchInfo />}
+        <main className="flex-1 flex flex-col">
+          <div className="md:hidden flex items-center p-4 border-b">
+            <SidebarTrigger className="mr-4" />
+            <h1 className="text-xl font-display font-bold">Admin</h1>
+          </div>
+          <div className="flex-1 p-4 md:p-8">
+            <h1 className="hidden md:block text-3xl font-display font-bold mb-8">Admin Dashboard</h1>
+            {activeTab === 'ministries' && <AdminMinistries />}
+            {activeTab === 'events' && <AdminEvents />}
+            {activeTab === 'services' && <AdminServiceTimes />}
+            {activeTab === 'church-info' && <AdminChurchInfo />}
+          </div>
         </main>
       </div>
     </SidebarProvider>
