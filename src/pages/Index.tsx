@@ -1,15 +1,16 @@
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { useServiceTimes, useEvents, useChurchInfo } from '@/hooks/useChurchData';
+import { useServiceTimes, useEvents, useChurchInfo, useLatestSermon } from '@/hooks/useChurchData';
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, MapPin, Heart, Users, BookOpen } from 'lucide-react';
+import { Calendar, Clock, MapPin, Heart, Users, BookOpen, Play, Music, Video } from 'lucide-react';
 import { format } from 'date-fns';
 
 const Index = () => {
   const { data: serviceTimes } = useServiceTimes();
   const { data: events } = useEvents();
   const { data: churchInfo } = useChurchInfo();
+  const { data: latestSermon } = useLatestSermon();
 
   const upcomingEvents = events?.slice(0, 3) || [];
 
@@ -112,8 +113,111 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Last Week's Message Section */}
+      {latestSermon && (
+        <section id="latest-sermon" className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-display font-bold text-foreground mb-4">Last Week's Message</h2>
+              <p className="text-muted-foreground text-lg">Catch up on our latest sermon</p>
+            </div>
+            <div className="max-w-4xl mx-auto">
+              <Card className="overflow-hidden">
+                <div className="md:flex">
+                  <div className="md:w-1/2">
+                    {latestSermon.thumbnail_url ? (
+                      <div className="relative h-64 md:h-full">
+                        <img 
+                          src={latestSermon.thumbnail_url} 
+                          alt={latestSermon.title}
+                          className="w-full h-full object-cover"
+                        />
+                        {latestSermon.video_url && (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="bg-black/50 backdrop-blur-sm rounded-full p-4">
+                              <Play className="w-8 h-8 text-white" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="h-64 md:h-full bg-gradient-to-br from-church-navy to-church-teal flex items-center justify-center">
+                        <BookOpen className="w-16 h-16 text-white" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="md:w-1/2 p-8">
+                    <div className="flex items-center gap-2 text-church-gold mb-3">
+                      <Calendar className="w-4 h-4" />
+                      <span className="text-sm font-medium">
+                        {format(new Date(latestSermon.sermon_date), 'MMMM d, yyyy')}
+                      </span>
+                    </div>
+                    
+                    <h3 className="text-2xl font-display font-bold text-foreground mb-3">
+                      {latestSermon.title}
+                    </h3>
+                    
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                      <div className="flex items-center gap-1">
+                        <BookOpen className="w-4 h-4" />
+                        <span>{latestSermon.speaker}</span>
+                      </div>
+                      {latestSermon.duration_minutes && (
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          <span>{latestSermon.duration_minutes} min</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {latestSermon.scripture_reference && (
+                      <div className="bg-church-cream p-3 rounded-lg mb-4">
+                        <p className="text-sm font-medium text-church-navy">
+                          Scripture: {latestSermon.scripture_reference}
+                        </p>
+                      </div>
+                    )}
+
+                    {latestSermon.description && (
+                      <p className="text-muted-foreground mb-6 line-clamp-3">
+                        {latestSermon.description}
+                      </p>
+                    )}
+
+                    <div className="flex gap-3">
+                      {latestSermon.video_url && (
+                        <Button asChild className="bg-church-navy hover:bg-church-navy/90">
+                          <a href={latestSermon.video_url} target="_blank" rel="noopener noreferrer">
+                            <Video className="w-4 h-4 mr-2" />
+                            Watch Video
+                          </a>
+                        </Button>
+                      )}
+                      {latestSermon.audio_url && (
+                        <Button asChild variant="outline">
+                          <a href={latestSermon.audio_url} target="_blank" rel="noopener noreferrer">
+                            <Music className="w-4 h-4 mr-2" />
+                            Listen Audio
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+            <div className="text-center mt-8">
+              <Button asChild variant="outline">
+                <Link to="/sermons">View All Sermons</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Upcoming Events Section */}
-      <section id="events" className="py-20 bg-background">
+      <section id="events" className="py-20 bg-church-cream">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-display font-bold text-foreground mb-4">Upcoming Events</h2>

@@ -4,6 +4,7 @@ import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { AdminAnalytics } from '@/components/admin/AdminAnalytics';
 import { AdminMinistries } from '@/components/admin/AdminMinistries';
 import { AdminEvents } from '@/components/admin/AdminEvents';
+import { AdminSermons } from '@/components/admin/AdminSermons';
 import { AdminServiceTimes } from '@/components/admin/AdminServiceTimes';
 import { AdminChurchInfo } from '@/components/admin/AdminChurchInfo';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
@@ -30,6 +31,7 @@ export default function Admin() {
             {activeTab === 'analytics' && <AdminAnalytics />}
             {activeTab === 'ministries' && <AdminMinistries />}
             {activeTab === 'events' && <AdminEvents />}
+            {activeTab === 'sermons' && <AdminSermons />}
             {activeTab === 'services' && <AdminServiceTimes />}
             {activeTab === 'church-info' && <AdminChurchInfo />}
           </div>
