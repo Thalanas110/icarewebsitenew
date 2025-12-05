@@ -68,14 +68,37 @@ export const useAnalyticsSummary = (daysBack = 30) => {
   return useQuery({
     queryKey: ['analytics-summary', daysBack],
     queryFn: async () => {
-      const { data, error } = await supabase.rpc('get_analytics_summary', {
-        days_back: daysBack,
-      });
+      try {
+        const { data, error } = await supabase.rpc('get_analytics_summary', {
+          days_back: daysBack,
+        });
 
-      if (error) throw error;
-      return data?.[0] || null;
+        if (error) {
+          console.error('Analytics summary error:', error);
+          throw error;
+        }
+
+        return data?.[0] || {
+          total_visits: 0,
+          unique_visitors: 0,
+          total_pages: 0,
+          avg_daily_visits: 0,
+          top_pages: []
+        };
+      } catch (error) {
+        console.error('Failed to fetch analytics summary:', error);
+        // Return default values on error
+        return {
+          total_visits: 0,
+          unique_visitors: 0,
+          total_pages: 0,
+          avg_daily_visits: 0,
+          top_pages: []
+        };
+      }
     },
     refetchInterval: 60000, // Refetch every minute
+    retry: 3,
   });
 };
 
