@@ -6,14 +6,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
 
 export function AdminServiceTimes() {
   const { data: serviceTimes, isLoading } = useServiceTimes();
-  const { createServiceTime, updateServiceTime, deleteServiceTime } = useServiceTimeMutations();
+  const { createServiceTime, updateServiceTime, deleteServiceTime, updateSortOrder } = useServiceTimeMutations();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<ServiceTime | null>(null);
   const [form, setForm] = useState({ name: '', time: '', description: '', audience: '' });
+  const [draggedItem, setDraggedItem] = useState<string | null>(null);
+  const [orderedItems, setOrderedItems] = useState<ServiceTime[]>([]);
 
   const resetForm = () => { setForm({ name: '', time: '', description: '', audience: '' }); setEditing(null); };
 
@@ -38,6 +40,43 @@ export function AdminServiceTimes() {
 
   const openEdit = (s: ServiceTime) => { setEditing(s); setForm({ name: s.name, time: s.time, description: s.description || '', audience: s.audience || '' }); setOpen(true); };
 
+  const handleDragStart = (id: string) => setDraggedItem(id);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.currentTarget.style.opacity = '0.5';
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.currentTarget.style.opacity = '1';
+  };
+
+  const handleDrop = (e: React.DragEvent, targetId: string) => {
+    e.preventDefault();
+    e.currentTarget.style.opacity = '1';
+    
+    if (!draggedItem || draggedItem === targetId || !serviceTimes) return;
+
+    const items = [...serviceTimes];
+    const draggedIdx = items.findIndex(s => s.id === draggedItem);
+    const targetIdx = items.findIndex(s => s.id === targetId);
+
+    [items[draggedIdx], items[targetIdx]] = [items[targetIdx], items[draggedIdx]];
+    setOrderedItems(items);
+    setDraggedItem(null);
+
+    // Save the new order to database
+    const sortUpdates = items.map((item, index) => ({
+      id: item.id,
+      sort_order: index + 1,
+    }));
+    updateSortOrder.mutateAsync(sortUpdates)
+      .then(() => toast.success('Order saved'))
+      .catch((e) => toast.error(e.message));
+  };
+
+  const itemsToDisplay = orderedItems.length > 0 ? orderedItems : serviceTimes;
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -58,10 +97,21 @@ export function AdminServiceTimes() {
       </div>
       {isLoading ? <p>Loading...</p> : (
         <div className="grid gap-4">
-          {serviceTimes?.map((s) => (
-            <Card key={s.id}>
+          {itemsToDisplay?.map((s) => (
+            <Card 
+              key={s.id}
+              draggable
+              onDragStart={() => handleDragStart(s.id)}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, s.id)}
+              className="cursor-move hover:bg-secondary/50 transition-colors"
+            >
               <CardHeader className="flex flex-row items-center justify-between py-3">
-                <CardTitle className="text-lg">{s.name}</CardTitle>
+                <div className="flex items-center gap-3">
+                  <GripVertical className="h-5 w-5 text-muted-foreground" />
+                  <CardTitle className="text-lg">{s.name}</CardTitle>
+                </div>
                 <div className="flex gap-2">
                   <Button size="icon" variant="ghost" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button>
                   <Button size="icon" variant="ghost" onClick={() => handleDelete(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>

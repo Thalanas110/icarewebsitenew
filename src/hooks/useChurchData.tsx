@@ -198,7 +198,20 @@ export function useServiceTimeMutations() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['service_times'] }),
   });
 
-  return { createServiceTime, updateServiceTime, deleteServiceTime };
+  const updateSortOrder = useMutation({
+    mutationFn: async (items: Array<{ id: string; sort_order: number }>) => {
+      const updates = items.map(item => 
+        supabase.from('service_times').update({ sort_order: item.sort_order }).eq('id', item.id)
+      );
+      const results = await Promise.all(updates.map(u => u));
+      const errors = results.filter(r => r.error);
+      if (errors.length > 0) throw errors[0].error;
+      return items;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['service_times'] }),
+  });
+
+  return { createServiceTime, updateServiceTime, deleteServiceTime, updateSortOrder };
 }
 
 // Church Info
