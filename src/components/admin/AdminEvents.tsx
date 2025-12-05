@@ -5,8 +5,10 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, Calendar, CalendarX, CheckCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { ImageUpload } from './ImageUpload';
 export function AdminEvents() {
@@ -14,9 +16,9 @@ export function AdminEvents() {
   const { createEvent, updateEvent, deleteEvent } = useEventMutations();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Event | null>(null);
-  const [form, setForm] = useState({ title: '', description: '', event_date: '', event_time: '', location: '', image_url: '' });
+  const [form, setForm] = useState({ title: '', description: '', event_date: '', event_time: '', location: '', image_url: '', status: 'scheduled' as 'scheduled' | 'postponed' | 'done' });
 
-  const resetForm = () => { setForm({ title: '', description: '', event_date: '', event_time: '', location: '', image_url: '' }); setEditing(null); };
+  const resetForm = () => { setForm({ title: '', description: '', event_date: '', event_time: '', location: '', image_url: '', status: 'scheduled' }); setEditing(null); };
 
   const handleSave = async () => {
     if (!form.title || !form.event_date) { toast.error('Title and date are required'); return; }
@@ -37,7 +39,7 @@ export function AdminEvents() {
     try { await deleteEvent.mutateAsync(id); toast.success('Deleted'); } catch (e: any) { toast.error(e.message); }
   };
 
-  const openEdit = (e: Event) => { setEditing(e); setForm({ title: e.title, description: e.description || '', event_date: e.event_date, event_time: e.event_time || '', location: e.location || '', image_url: e.image_url || '' }); setOpen(true); };
+  const openEdit = (e: Event) => { setEditing(e); setForm({ title: e.title, description: e.description || '', event_date: e.event_date, event_time: e.event_time || '', location: e.location || '', image_url: e.image_url || '', status: e.status || 'scheduled' }); setOpen(true); };
 
   return (
     <div>
@@ -52,6 +54,19 @@ export function AdminEvents() {
               <Input type="date" value={form.event_date} onChange={(e) => setForm({ ...form, event_date: e.target.value })} />
               <Input placeholder="Time (e.g. 7:00 PM)" value={form.event_time} onChange={(e) => setForm({ ...form, event_time: e.target.value })} />
               <Input placeholder="Location" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} />
+              <div>
+                <label className="text-sm font-medium mb-2 block">Status</label>
+                <Select value={form.status} onValueChange={(value: 'scheduled' | 'postponed' | 'done') => setForm({ ...form, status: value })}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="scheduled">Scheduled</SelectItem>
+                    <SelectItem value="postponed">Postponed</SelectItem>
+                    <SelectItem value="done">Done</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <Textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
               <div>
                 <label className="text-sm font-medium mb-2 block">Event Cover Image</label>
@@ -76,7 +91,15 @@ export function AdminEvents() {
                 </div>
               )}
               <CardHeader className="flex flex-row items-center justify-between py-3">
-                <CardTitle className="text-lg">{e.title}</CardTitle>
+                <div className="flex items-center gap-3">
+                  <CardTitle className="text-lg">{e.title}</CardTitle>
+                  <Badge variant={e.status === 'done' ? 'default' : e.status === 'postponed' ? 'destructive' : 'secondary'} className="flex items-center gap-1">
+                    {e.status === 'done' && <CheckCircle className="h-3 w-3" />}
+                    {e.status === 'postponed' && <CalendarX className="h-3 w-3" />}
+                    {e.status === 'scheduled' && <Calendar className="h-3 w-3" />}
+                    {e.status}
+                  </Badge>
+                </div>
                 <div className="flex gap-2">
                   <Button size="icon" variant="ghost" onClick={() => openEdit(e)}><Pencil className="h-4 w-4" /></Button>
                   <Button size="icon" variant="ghost" onClick={() => handleDelete(e.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
