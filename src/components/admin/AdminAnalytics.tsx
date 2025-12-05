@@ -20,9 +20,10 @@ import {
   useAnalyticsSummary, 
   useDailyVisits, 
   usePagePopularity, 
-  useRecentVisits 
+  useRecentVisits,
+  useContentAnalytics
 } from '@/hooks/useAnalytics';
-import { Eye, Users, Globe, TrendingUp, Clock, ExternalLink } from 'lucide-react';
+import { Eye, Users, Globe, TrendingUp, Clock, ExternalLink, Calendar, BookOpen, Users2, CalendarDays, CalendarX, CheckCircle } from 'lucide-react';
 import { format } from 'date-fns';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
@@ -32,8 +33,9 @@ export function AdminAnalytics() {
   const { data: dailyVisits, isLoading: dailyLoading } = useDailyVisits(30);
   const { data: pagePopularity, isLoading: pagesLoading } = usePagePopularity(30);
   const { data: recentVisits, isLoading: recentLoading } = useRecentVisits(20);
+  const { data: contentAnalytics, isLoading: contentLoading } = useContentAnalytics();
 
-  if (summaryLoading || dailyLoading || pagesLoading || recentLoading) {
+  if (summaryLoading || dailyLoading || pagesLoading || recentLoading || contentLoading) {
     return (
       <div className="flex items-center justify-center p-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -132,11 +134,70 @@ export function AdminAnalytics() {
         </Card>
       </div>
 
+      {/* Content Analytics Cards */}
+      <div>
+        <h3 className="text-lg font-display font-semibold mb-4">Content Overview</h3>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Ministries</CardTitle>
+              <BookOpen className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{contentAnalytics?.total_ministries?.toLocaleString() || '0'}</div>
+              <p className="text-xs text-muted-foreground">
+                Active ministries in your church
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Events</CardTitle>
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{contentAnalytics?.total_events?.toLocaleString() || '0'}</div>
+              <p className="text-xs text-muted-foreground">
+                All events (past and upcoming)
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Scheduled Events</CardTitle>
+              <CalendarDays className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{contentAnalytics?.scheduled_events?.toLocaleString() || '0'}</div>
+              <p className="text-xs text-muted-foreground">
+                Events ready to happen
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Completed Events</CardTitle>
+              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{contentAnalytics?.done_events?.toLocaleString() || '0'}</div>
+              <p className="text-xs text-muted-foreground">
+                Successfully completed events
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
       {/* Charts and Data */}
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="pages">Page Analytics</TabsTrigger>
+          <TabsTrigger value="content">Content Analytics</TabsTrigger>
           <TabsTrigger value="recent">Recent Activity</TabsTrigger>
         </TabsList>
 
@@ -282,6 +343,128 @@ export function AdminAnalytics() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="content">
+          <div className="grid gap-4 md:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Content Overview</CardTitle>
+                <CardDescription>
+                  Summary of your church's content
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-2">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 rounded border bg-muted/20">
+                    <div className="flex items-center gap-3">
+                      <BookOpen className="h-5 w-5 text-primary" />
+                      <div>
+                        <div className="font-medium">Ministries</div>
+                        <div className="text-sm text-muted-foreground">
+                          Active church ministries
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold">
+                      {contentAnalytics?.total_ministries || 0}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-4 rounded border bg-muted/20">
+                    <div className="flex items-center gap-3">
+                      <Calendar className="h-5 w-5 text-primary" />
+                      <div>
+                        <div className="font-medium">Total Events</div>
+                        <div className="text-sm text-muted-foreground">
+                          All events created
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold">
+                      {contentAnalytics?.total_events || 0}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Event Status Breakdown</CardTitle>
+                <CardDescription>
+                  Current status of all events
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-2">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 rounded border bg-blue-50 border-blue-200">
+                    <div className="flex items-center gap-3">
+                      <CalendarDays className="h-5 w-5 text-blue-600" />
+                      <div>
+                        <div className="font-medium text-blue-800">Scheduled Events</div>
+                        <div className="text-sm text-blue-600">
+                          Ready to happen as planned
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold text-blue-800">
+                      {contentAnalytics?.scheduled_events || 0}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-4 rounded border bg-yellow-50 border-yellow-200">
+                    <div className="flex items-center gap-3">
+                      <CalendarX className="h-5 w-5 text-yellow-600" />
+                      <div>
+                        <div className="font-medium text-yellow-800">Postponed Events</div>
+                        <div className="text-sm text-yellow-600">
+                          Events that have been delayed
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold text-yellow-800">
+                      {contentAnalytics?.postponed_events || 0}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-4 rounded border bg-green-50 border-green-200">
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600" />
+                      <div>
+                        <div className="font-medium text-green-800">Completed Events</div>
+                        <div className="text-sm text-green-600">
+                          Successfully finished events
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold text-green-800">
+                      {contentAnalytics?.done_events || 0}
+                    </div>
+                  </div>
+                  
+                  {contentAnalytics?.total_events && contentAnalytics.total_events > 0 && (
+                    <div className="mt-4 p-3 rounded bg-gray-50 border border-gray-200">
+                      <div className="text-sm text-gray-800 space-y-1">
+                        <div>
+                          <strong>Completion Rate:</strong> {' '}
+                          {Math.round((contentAnalytics.done_events / contentAnalytics.total_events) * 100)}% 
+                          of events have been completed
+                        </div>
+                        {contentAnalytics.postponed_events > 0 && (
+                          <div>
+                            <strong>Postponed Rate:</strong> {' '}
+                            {Math.round((contentAnalytics.postponed_events / contentAnalytics.total_events) * 100)}% 
+                            of events have been postponed
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="recent">

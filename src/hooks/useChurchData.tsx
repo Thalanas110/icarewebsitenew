@@ -24,11 +24,12 @@ export interface Event {
   event_time: string | null;
   location: string | null;
   image_url: string | null;
+  status: 'scheduled' | 'postponed' | 'done';
   created_at: string;
   updated_at: string;
 }
 
-export type EventInsert = Omit<Event, 'id' | 'created_at' | 'updated_at'> & { id?: string };
+export type EventInsert = Omit<Event, 'id' | 'created_at' | 'updated_at'> & { id?: string; status?: 'scheduled' | 'postponed' | 'done'; };
 
 export interface ServiceTime {
   id: string;

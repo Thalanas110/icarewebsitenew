@@ -2,6 +2,14 @@ import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 
+export interface ContentAnalytics {
+  total_ministries: number;
+  total_events: number;
+  scheduled_events: number;
+  postponed_events: number;
+  done_events: number;
+}
+
 // Generate a unique visitor ID that persists across sessions
 const getVisitorId = (): string => {
   let visitorId = localStorage.getItem('visitor_id');
@@ -185,5 +193,51 @@ export const useRecentVisits = (limit = 50) => {
       return data;
     },
     refetchInterval: 30000, // Refetch every 30 seconds
+  });
+};
+
+// Hook to fetch content analytics (admin only)
+export const useContentAnalytics = () => {
+  return useQuery({
+    queryKey: ['content-analytics'],
+    queryFn: async (): Promise<ContentAnalytics> => {
+      try {
+        // Get ministries count
+        const { data: ministriesData, error: ministriesError } = await supabase
+          .from('ministries')
+          .select('id');
+        
+        if (ministriesError) throw ministriesError;
+        
+        // Get events with status filtering
+        const { data: eventsData, error: eventsError } = await supabase
+          .from('events')
+          .select('id, status');
+          
+        if (eventsError) throw eventsError;
+        
+        const scheduledEvents = eventsData?.filter(event => event.status === 'scheduled') || [];
+        const postponedEvents = eventsData?.filter(event => event.status === 'postponed') || [];
+        const doneEvents = eventsData?.filter(event => event.status === 'done') || [];
+        
+        return {
+          total_ministries: ministriesData?.length || 0,
+          total_events: eventsData?.length || 0,
+          scheduled_events: scheduledEvents.length,
+          postponed_events: postponedEvents.length,
+          done_events: doneEvents.length,
+        };
+      } catch (error) {
+        console.error('Error fetching content analytics:', error);
+        return {
+          total_ministries: 0,
+          total_events: 0,
+          scheduled_events: 0,
+          postponed_events: 0,
+          done_events: 0,
+        };
+      }
+    },
+    refetchInterval: 60000, // Refetch every minute
   });
 };
