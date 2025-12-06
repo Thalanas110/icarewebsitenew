@@ -55,7 +55,7 @@ const Index = () => {
                 <CardContent className="pt-8 pb-6">
                   <Clock className="w-12 h-12 text-church-gold mx-auto mb-4" />
                   <h3 className="text-xl font-display font-bold text-foreground mb-2">{service.name}</h3>
-                  <p className="text-2xl font-semibold text-church-gold mb-2">{service.time}</p>
+                  <p className="text-2xl font-semibold text-church-orange mb-2">{service.time}</p>
                   {service.description && (
                     <p className="text-muted-foreground text-sm">{service.description}</p>
                   )}
