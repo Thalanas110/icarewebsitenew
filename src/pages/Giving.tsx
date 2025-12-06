@@ -73,18 +73,15 @@ const Giving = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-        <div className="container mx-auto px-4 py-12 md:py-20">
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+      ) : (
+        <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+          <div className="container mx-auto px-4 py-12 md:py-20">
           {/* Header Section */}
           <div className="text-center mb-12 md:mb-16 space-y-4">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
@@ -216,6 +213,7 @@ const Giving = () => {
         </div>
         </div>
       </div>
+      )}
     </Layout>
   );
 };
