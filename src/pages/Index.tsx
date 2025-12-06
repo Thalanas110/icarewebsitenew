@@ -78,7 +78,8 @@ const Index = () => {
             <div>
               <h2 className="text-4xl font-display font-bold text-foreground mb-6">About Our Church</h2>
               <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                I Care Center welcomes all individuals seeking God’s love, and keep our doors open to every soul seeking to welcome Jesus into their hearts. We invite you to open your heart and allow His grace to penetrate into your soul.
+                Our church stands as a beacon of hope in Olongapo City. We are a place of acceptance, peace and joy to all who are moved to join us. Our church family is richly diverse, with people of different ages and backgrounds coming together to worship and serve together. Get in touch to find out more or join us for a service.
               </p>
               <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="text-center">
