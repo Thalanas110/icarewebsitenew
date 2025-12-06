@@ -7,6 +7,7 @@ import { AdminEvents } from '@/components/admin/AdminEvents';
 import { AdminSermons } from '@/components/admin/AdminSermons';
 import { AdminServiceTimes } from '@/components/admin/AdminServiceTimes';
 import { AdminChurchInfo } from '@/components/admin/AdminChurchInfo';
+import AdminGiving from '@/components/admin/AdminGiving';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { useState } from 'react';
 
@@ -34,6 +35,7 @@ export default function Admin() {
             {activeTab === 'sermons' && <AdminSermons />}
             {activeTab === 'services' && <AdminServiceTimes />}
             {activeTab === 'church-info' && <AdminChurchInfo />}
+            {activeTab === 'giving' && <AdminGiving />}
           </div>
         </main>
       </div>
