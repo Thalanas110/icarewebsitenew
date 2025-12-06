@@ -15,6 +15,7 @@ import Ministries from "./pages/Ministries";
 import Events from "./pages/Events";
 import Sermons from "./pages/Sermons";
 import Contact from "./pages/Contact";
+import Giving from "./pages/Giving";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
@@ -244,6 +245,7 @@ const App = () => {
                 <Route path="/events" element={<Events />} />
                 <Route path="/sermons" element={<Sermons />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/giving" element={<Giving />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />
