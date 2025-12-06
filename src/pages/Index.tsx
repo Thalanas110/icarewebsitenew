@@ -23,7 +23,7 @@ const Index = () => {
         <div className="relative z-10 container mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-6 animate-fade-in">
             Welcome to<br />
-            <span className="text-church-gold">I Care Center</span>
+            <span className="text-church-gold">I Care Center - the Refuge Church</span>
           </h1>
           <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto">
             Miracles happen when someone cares
