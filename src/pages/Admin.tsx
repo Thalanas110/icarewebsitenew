@@ -20,14 +20,14 @@ export default function Admin() {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full">
+      <div className="min-h-screen flex w-full overflow-x-hidden">
         <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-        <main className="flex-1 flex flex-col">
+        <main className="flex-1 flex flex-col min-w-0">
           <div className="md:hidden flex items-center p-4 border-b">
             <SidebarTrigger className="mr-4" />
             <h1 className="text-xl font-display font-bold">Admin</h1>
           </div>
-          <div className="flex-1 p-4 md:p-8">
+          <div className="flex-1 p-4 md:p-8 overflow-x-hidden">
             <h1 className="hidden md:block text-3xl font-display font-bold mb-8">Admin Dashboard</h1>
             {activeTab === 'analytics' && <AdminAnalytics />}
             {activeTab === 'ministries' && <AdminMinistries />}
