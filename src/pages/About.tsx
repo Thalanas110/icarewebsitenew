@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { useChurchInfo } from '@/hooks/useChurchData';
-import { Heart, Users, Music, Megaphone } from 'lucide-react';
+import { Heart, Users, Music, Megaphone, Target, BookOpen } from 'lucide-react';
 
 export default function About() {
   const { data: churchInfo } = useChurchInfo();
