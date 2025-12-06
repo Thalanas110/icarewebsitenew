@@ -87,6 +87,7 @@ const BIBLE_VERSES = [
 function AppInitializer({ children }: { children: React.ReactNode }) {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [hasInitialData, setHasInitialData] = useState(false);
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
   const [currentVerse, setCurrentVerse] = useState(BIBLE_VERSES[0]);
   const [progress, setProgress] = useState(0);
 
@@ -148,7 +149,10 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (isOnline && allQueriesLoaded && !anyQueryLoading) {
       // Add a small delay to ensure smooth UX
-      const timer = setTimeout(() => setHasInitialData(true), 500);
+      const timer = setTimeout(() => {
+        setHasInitialData(true);
+        setHasLoadedOnce(true);
+      }, 500);
       return () => clearTimeout(timer);
     }
   }, [isOnline, allQueriesLoaded, anyQueryLoading]);
@@ -168,63 +172,64 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
     return () => clearInterval(verseInterval);
   }, []);
 
-  // Show loading screen while offline or data is loading
-  if (!isOnline || !hasInitialData) {
-    const loadingText = !isOnline 
-      ? "Connecting..." 
-      : anyQueryLoading 
-        ? "Loading church data..." 
-        : "Loading.";
+  const showLoading = (!isOnline || !hasInitialData) && !hasLoadedOnce;
+  const loadingText = !isOnline 
+    ? "Connecting..." 
+    : anyQueryLoading 
+      ? "Loading church data..." 
+      : "Loading.";
 
-    return (
-      <div className="fixed inset-0 bg-white flex flex-col items-center justify-center z-50">
-        {/* Cross Icon */}
-        <div className="mb-8">
-          <div className="w-16 h-16 bg-church-orange rounded-lg flex items-center justify-center">
-            <svg 
-              width="32" 
-              height="32" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              className="text-white"
-            >
-              <path 
-                d="M12 2L12 22M2 12L22 12" 
-                stroke="currentColor" 
-                strokeWidth="3" 
-                strokeLinecap="round"
-              />
-            </svg>
+  return (
+    <>
+      {showLoading && (
+        <div className="fixed inset-0 bg-white flex flex-col items-center justify-center z-50">
+          {/* Cross Icon */}
+          <div className="mb-8">
+            <div className="w-16 h-16 bg-church-orange rounded-lg flex items-center justify-center">
+              <svg 
+                width="32" 
+                height="32" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                className="text-white"
+              >
+                <path 
+                  d="M12 2L12 22M2 12L22 12" 
+                  stroke="currentColor" 
+                  strokeWidth="3" 
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Loading Text */}
+          <div className="mb-6">
+            <h2 className="text-xl font-medium text-gray-800">{loadingText}</h2>
+          </div>
+
+          {/* Bible Verse */}
+          <div className="mb-8 max-w-lg text-center px-6">
+            <p className="text-gray-600 italic text-sm leading-relaxed">
+              {currentVerse.verse}
+            </p>
+            <p className="text-gray-500 text-xs mt-2">
+              - {currentVerse.reference}
+            </p>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="w-80 h-1 bg-gray-200 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-church-orange transition-all duration-300 ease-out"
+              style={{ width: `${Math.max(progress, 5)}%` }}
+            />
           </div>
         </div>
-
-        {/* Loading Text */}
-        <div className="mb-6">
-          <h2 className="text-xl font-medium text-gray-800">{loadingText}</h2>
-        </div>
-
-        {/* Bible Verse */}
-        <div className="mb-8 max-w-lg text-center px-6">
-          <p className="text-gray-600 italic text-sm leading-relaxed">
-            {currentVerse.verse}
-          </p>
-          <p className="text-gray-500 text-xs mt-2">
-            - {currentVerse.reference}
-          </p>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="w-80 h-1 bg-gray-200 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-church-orange transition-all duration-300 ease-out"
-            style={{ width: `${Math.max(progress, 5)}%` }}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  return <>{children}</>;
+      )}
+      {children}
+    </>
+  );
 }
 
 const App = () => {
