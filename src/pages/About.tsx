@@ -71,7 +71,7 @@ export default function About() {
                 </div>
                 <h3 className="text-2xl font-display font-bold">Our Vision</h3>
                 <p className="text-muted-foreground">
-                  The Refuge Church is a unified Church body committed to be a reflection of God's love as a Refuge for the lost to come and be Cared for, Lifted up, and Encouraged too
+                  The Refuge Church is a unified Church body committed to be a reflection of God's love as a Refuge for the lost to come and be Cared for, Lifted up, and Encouraged to Grow in personal relationship with the Lord Jesus Christ for the Glory of God.
                 </p>
               </CardContent>
             </Card>

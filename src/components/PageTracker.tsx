@@ -6,6 +6,9 @@ export function PageTracker() {
   const location = useLocation();
 
   useEffect(() => {
+    // Scroll to the top when the location changes
+    window.scrollTo(0, 0);
+    
     // Track the page visit when the location changes
     trackPageVisit(location.pathname);
   }, [location.pathname]);
