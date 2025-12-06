@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { useChurchInfo } from '@/hooks/useChurchData';
-import { Heart, Users, BookOpen, Target } from 'lucide-react';
+import { Heart, Users, Music, Megaphone } from 'lucide-react';
 
 export default function About() {
   const { data: churchInfo } = useChurchInfo();
@@ -60,7 +60,7 @@ export default function About() {
                 </div>
                 <h3 className="text-2xl font-display font-bold">Our Mission</h3>
                 <p className="text-muted-foreground">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  The Refuge Church is determined  to Share the Gospel, teach Biblical Truth, and encourage disciples to grow in Godly obedience until the return of our Lord Jesus Christ.
                 </p>
               </CardContent>
             </Card>
@@ -71,7 +71,7 @@ export default function About() {
                 </div>
                 <h3 className="text-2xl font-display font-bold">Our Vision</h3>
                 <p className="text-muted-foreground">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  The Refuge Church is a unified Church body committed to be a reflection of God's love as a Refuge for the lost to come and be Cared for, Lifted up, and Encouraged too
                 </p>
               </CardContent>
             </Card>
@@ -85,21 +85,26 @@ export default function About() {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Our Core Values</h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {[
               { 
-                icon: Heart, 
-                title: 'Love', 
+                icon: Megaphone, 
+                title: 'Evangelism', 
                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
               },
               { 
                 icon: Users, 
-                title: 'Community', 
+                title: 'Christ Centered Discipleship', 
                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
               },
               { 
-                icon: BookOpen, 
-                title: 'Growth', 
+                icon: Music, 
+                title: 'Spiirit filled Worship', 
+                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
+              },
+              { 
+                icon: Heart, 
+                title: 'Godly Love & Care', 
                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
               },
             ].map((value, i) => (
