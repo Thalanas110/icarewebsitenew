@@ -88,7 +88,7 @@ const Giving = () => {
               <Heart className="w-8 h-8 text-primary" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-              Partner With Us
+              Ways We Give
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Your generous giving helps us continue our mission to serve the community and spread hope.
