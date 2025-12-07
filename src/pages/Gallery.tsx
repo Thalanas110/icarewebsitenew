@@ -2,9 +2,13 @@ import { Layout } from '@/components/layout/Layout';
 import { useGallery } from '@/hooks/useChurchData';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, Image as ImageIcon } from 'lucide-react';
+import { Marquee } from '@/components/ui/marquee';
 
 const Gallery = () => {
     const { data: images, isLoading } = useGallery();
+
+    const firstRow = images ? images.slice(0, Math.ceil(images.length / 2)) : [];
+    const secondRow = images ? images.slice(Math.ceil(images.length / 2)) : [];
 
     return (
         <Layout>
@@ -19,35 +23,26 @@ const Gallery = () => {
                 </div>
             </section>
 
-            <section className="py-20 bg-background">
+            <section className="py-20 bg-background overflow-hidden">
                 <div className="container mx-auto px-4">
                     {isLoading ? (
                         <div className="flex justify-center py-20">
                             <Loader2 className="w-12 h-12 text-church-orange animate-spin" />
                         </div>
                     ) : images && images.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {images.map((image) => (
-                                <Card key={image.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                                    <div className="relative aspect-video group">
-                                        <img
-                                            src={image.image_url}
-                                            alt={image.title}
-                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                            <h3 className="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                                {image.title}
-                                            </h3>
-                                            {image.description && (
-                                                <p className="text-white/80 text-sm mt-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                                                    {image.description}
-                                                </p>
-                                            )}
-                                        </div>
-                                    </div>
-                                </Card>
-                            ))}
+                        <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+                            <Marquee pauseOnHover className="[--duration:20s]">
+                                {firstRow.map((image) => (
+                                    <GalleryCard key={image.id} image={image} />
+                                ))}
+                            </Marquee>
+                            <Marquee reverse pauseOnHover className="[--duration:20s]">
+                                {secondRow.map((image) => (
+                                    <GalleryCard key={image.id} image={image} />
+                                ))}
+                            </Marquee>
+                            <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background"></div>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background"></div>
                         </div>
                     ) : (
                         <div className="text-center py-20">
@@ -65,6 +60,30 @@ const Gallery = () => {
                 </div>
             </section>
         </Layout>
+    );
+};
+
+const GalleryCard = ({ image }: { image: any }) => {
+    return (
+        <Card className="w-96 overflow-hidden mx-4 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <div className="relative aspect-video group/card">
+                <img
+                    src={image.image_url}
+                    alt={image.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <h3 className="text-white font-display font-bold text-xl translate-y-4 group-hover/card:translate-y-0 transition-transform duration-300">
+                        {image.title}
+                    </h3>
+                    {image.description && (
+                        <p className="text-white/80 text-sm mt-2 translate-y-4 group-hover/card:translate-y-0 transition-transform duration-300 delay-75">
+                            {image.description}
+                        </p>
+                    )}
+                </div>
+            </div>
+        </Card>
     );
 };
 
