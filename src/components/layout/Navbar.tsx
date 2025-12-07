@@ -11,6 +11,7 @@ const navLinks = [
   { href: '/ministries', label: 'Ministries' },
   { href: '/events', label: 'Events' },
   { href: '/sermons', label: 'Sermons' },
+  { href: '/gallery', label: 'Gallery' },
   { href: '/giving', label: 'Giving' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -35,11 +36,10 @@ export function Navbar() {
               <Link
                 key={link.href}
                 to={link.href}
-                className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                  location.pathname === link.href
+                className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === link.href
                     ? 'text-primary'
                     : 'text-muted-foreground hover:text-foreground'
-                }`}
+                  }`}
               >
                 {link.label}
               </Link>
@@ -90,11 +90,10 @@ export function Navbar() {
                   key={link.href}
                   to={link.href}
                   onClick={() => setIsOpen(false)}
-                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                    location.pathname === link.href
+                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === link.href
                       ? 'text-primary bg-primary/10'
                       : 'text-muted-foreground hover:text-foreground'
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </Link>

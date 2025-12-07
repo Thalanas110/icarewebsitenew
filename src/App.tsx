@@ -16,6 +16,7 @@ import Events from "./pages/Events";
 import Sermons from "./pages/Sermons";
 import Contact from "./pages/Contact";
 import Giving from "./pages/Giving";
+import Gallery from "./pages/Gallery";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
@@ -107,11 +108,11 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
 
   // Fetch critical data for initial load
   const ministriesQuery = useMinistries();
-  const eventsQuery = useEvents(); 
+  const eventsQuery = useEvents();
   const serviceTimesQuery = useServiceTimes();
 
   const criticalQueries = [ministriesQuery, eventsQuery, serviceTimesQuery];
-  const allQueriesLoaded = criticalQueries.every(query => 
+  const allQueriesLoaded = criticalQueries.every(query =>
     query.isSuccess || query.isError
   );
   const anyQueryLoading = criticalQueries.some(query => query.isLoading);
@@ -127,9 +128,9 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
     const errorQueries = criticalQueries.filter(query => query.isError).length;
     const completedQueries = successfulQueries + errorQueries;
     const totalQueries = criticalQueries.length;
-    
+
     const calculatedProgress = (completedQueries / totalQueries) * 100;
-    
+
     // Smooth progress transition
     const progressInterval = setInterval(() => {
       setProgress(prev => {
@@ -173,10 +174,10 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
   }, []);
 
   const showLoading = (!isOnline || !hasInitialData) && !hasLoadedOnce;
-  const loadingText = !isOnline 
-    ? "Connecting..." 
-    : anyQueryLoading 
-      ? "Loading church data..." 
+  const loadingText = !isOnline
+    ? "Connecting..."
+    : anyQueryLoading
+      ? "Loading church data..."
       : "Loading.";
 
   return (
@@ -186,17 +187,17 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
           {/* Cross Icon */}
           <div className="mb-8">
             <div className="w-16 h-16 bg-church-orange rounded-lg flex items-center justify-center">
-              <svg 
-                width="32" 
-                height="32" 
-                viewBox="0 0 24 24" 
-                fill="none" 
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
                 className="text-white"
               >
-                <path 
-                  d="M12 2L12 22M2 12L22 12" 
-                  stroke="currentColor" 
-                  strokeWidth="3" 
+                <path
+                  d="M12 2L12 22M2 12L22 12"
+                  stroke="currentColor"
+                  strokeWidth="3"
                   strokeLinecap="round"
                 />
               </svg>
@@ -220,7 +221,7 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
 
           {/* Progress Bar */}
           <div className="w-80 h-1 bg-gray-200 rounded-full overflow-hidden">
-            <div 
+            <div
               className="h-full bg-church-orange transition-all duration-300 ease-out"
               style={{ width: `${Math.max(progress, 5)}%` }}
             />
@@ -251,6 +252,7 @@ const App = () => {
                 <Route path="/sermons" element={<Sermons />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/giving" element={<Giving />} />
+                <Route path="/gallery" element={<Gallery />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />

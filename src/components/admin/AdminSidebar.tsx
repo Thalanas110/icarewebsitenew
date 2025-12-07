@@ -2,7 +2,7 @@ import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { Users, Calendar, Clock, Building, LogOut, Home, BarChart3, BookOpen, Heart } from 'lucide-react';
+import { Users, Calendar, Clock, Building, LogOut, Home, BarChart3, BookOpen, Heart, Image as ImageIcon } from 'lucide-react';
 
 const menuItems = [
   { id: 'analytics', label: 'Analytics', icon: BarChart3 },
@@ -11,6 +11,7 @@ const menuItems = [
   { id: 'sermons', label: 'Sermons', icon: BookOpen },
   { id: 'services', label: 'Service Times', icon: Clock },
   { id: 'church-info', label: 'Church Info', icon: Building },
+  { id: 'gallery', label: 'Gallery', icon: ImageIcon },
   { id: 'giving', label: 'Giving', icon: Heart },
 ];
 

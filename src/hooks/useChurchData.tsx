@@ -70,15 +70,20 @@ export interface ChurchInfo {
   pastor_phone: string | null;
   church_name: string | null;
   address: string | null;
-  city: string | null;
-  state: string | null;
-  zip: string | null;
-  phone: string | null;
-  email: string | null;
   office_hours: string | null;
   created_at: string;
   updated_at: string;
 }
+
+export interface GalleryImage {
+  id: string;
+  title: string;
+  description: string | null;
+  image_url: string;
+  created_at: string;
+}
+
+export type GalleryImageInsert = Omit<GalleryImage, 'id' | 'created_at'> & { id?: string };
 
 // Ministries
 export function useMinistries() {
@@ -97,7 +102,7 @@ export function useMinistries() {
 
 export function useMinistryMutations() {
   const queryClient = useQueryClient();
-  
+
   const createMinistry = useMutation({
     mutationFn: async (ministry: MinistryInsert) => {
       const { data, error } = await supabase.from('ministries').insert([ministry]).select().single();
@@ -144,7 +149,7 @@ export function useEvents() {
 
 export function useEventMutations() {
   const queryClient = useQueryClient();
-  
+
   const createEvent = useMutation({
     mutationFn: async (event: EventInsert) => {
       const { data, error } = await supabase.from('events').insert([event]).select().single();
@@ -191,7 +196,7 @@ export function useServiceTimes() {
 
 export function useServiceTimeMutations() {
   const queryClient = useQueryClient();
-  
+
   const createServiceTime = useMutation({
     mutationFn: async (serviceTime: ServiceTimeInsert) => {
       const { data, error } = await supabase.from('service_times').insert([serviceTime]).select().single();
@@ -220,7 +225,7 @@ export function useServiceTimeMutations() {
 
   const updateSortOrder = useMutation({
     mutationFn: async (items: Array<{ id: string; sort_order: number }>) => {
-      const updates = items.map(item => 
+      const updates = items.map(item =>
         supabase.from('service_times').update({ sort_order: item.sort_order }).eq('id', item.id)
       );
       const results = await Promise.all(updates.map(u => u));
@@ -252,7 +257,7 @@ export function useChurchInfo() {
 
 export function useChurchInfoMutation() {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: async ({ id, ...updates }: Partial<ChurchInfo> & { id: string }) => {
       const { data, error } = await supabase.from('church_info').update(updates).eq('id', id).select().single();
@@ -296,7 +301,7 @@ export function useLatestSermon() {
 
 export function useSermonMutations() {
   const queryClient = useQueryClient();
-  
+
   const createSermon = useMutation({
     mutationFn: async (sermon: SermonInsert) => {
       const { data, error } = await supabase.from('sermons').insert([sermon]).select().single();
@@ -334,3 +339,42 @@ export function useSermonMutations() {
 
   return { createSermon, updateSermon, deleteSermon };
 }
+
+// Gallery
+export function useGallery() {
+  return useQuery({
+    queryKey: ['gallery'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('gallery_images')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      return data as GalleryImage[];
+    },
+  });
+}
+
+export function useGalleryMutations() {
+  const queryClient = useQueryClient();
+
+  const uploadImage = useMutation({
+    mutationFn: async (image: GalleryImageInsert) => {
+      const { data, error } = await supabase.from('gallery_images').insert([image]).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['gallery'] }),
+  });
+
+  const deleteImage = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('gallery_images').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['gallery'] }),
+  });
+
+  return { uploadImage, deleteImage };
+}
+
