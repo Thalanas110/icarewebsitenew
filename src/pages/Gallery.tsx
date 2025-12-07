@@ -11,9 +11,9 @@ const Gallery = () => {
             <section className="bg-church-navy py-20 text-white">
                 <div className="container mx-auto px-4 text-center">
                     <h1 className="text-4xl md:text-6xl font-display font-bold mb-6 animate-fade-in">
-                        Photo Gallery
+                        <span className="text-black">Photo</span> <span className="text-church-orange">Gallery</span>
                     </h1>
-                    <p className="text-xl text-church-gold max-w-2xl mx-auto">
+                    <p className="text-xl text-black max-w-2xl mx-auto">
                         Glimpses of our life together in worship and community
                     </p>
                 </div>
