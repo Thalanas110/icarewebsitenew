@@ -1,14 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  Legend, 
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
   ResponsiveContainer,
   BarChart,
   Bar,
@@ -16,10 +16,10 @@ import {
   Pie,
   Cell
 } from 'recharts';
-import { 
-  useAnalyticsSummary, 
-  useDailyVisits, 
-  usePagePopularity, 
+import {
+  useAnalyticsSummary,
+  useDailyVisits,
+  usePagePopularity,
   useRecentVisits,
   useContentAnalytics
 } from '@/hooks/useAnalytics';
@@ -217,8 +217,8 @@ export function AdminAnalytics() {
                   <ResponsiveContainer width="100%" height={250}>
                     <LineChart data={formatChartData(dailyVisits || [])} margin={{ left: -20, right: 10, top: 5, bottom: 5 }}>
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis 
-                        dataKey="date" 
+                      <XAxis
+                        dataKey="date"
                         tick={{ fontSize: 9 }}
                         angle={-45}
                         textAnchor="end"
@@ -228,18 +228,18 @@ export function AdminAnalytics() {
                       <YAxis tick={{ fontSize: 9 }} width={40} />
                       <Tooltip />
                       <Legend wrapperStyle={{ fontSize: '10px' }} iconSize={8} />
-                      <Line 
-                        type="monotone" 
-                        dataKey="total_visits" 
-                        stroke="#8884d8" 
+                      <Line
+                        type="monotone"
+                        dataKey="total_visits"
+                        stroke="#8884d8"
                         strokeWidth={2}
                         name="Total Visits"
                         dot={false}
                       />
-                      <Line 
-                        type="monotone" 
-                        dataKey="unique_visitors" 
-                        stroke="#82ca9d" 
+                      <Line
+                        type="monotone"
+                        dataKey="unique_visitors"
+                        stroke="#82ca9d"
                         strokeWidth={2}
                         name="Unique Visitors"
                         dot={false}
@@ -276,8 +276,8 @@ export function AdminAnalytics() {
                         ))}
                       </Pie>
                       <Tooltip />
-                      <Legend 
-                        wrapperStyle={{ fontSize: '10px' }} 
+                      <Legend
+                        wrapperStyle={{ fontSize: '10px' }}
                         iconSize={8}
                       />
                     </PieChart>
@@ -301,8 +301,8 @@ export function AdminAnalytics() {
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={pagePopularity?.slice(0, 8) || []} margin={{ left: -20, right: 10, top: 5, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="page_path" 
+                    <XAxis
+                      dataKey="page_path"
                       tick={{ fontSize: 9 }}
                       angle={-45}
                       textAnchor="end"
@@ -311,26 +311,26 @@ export function AdminAnalytics() {
                       interval={0}
                     />
                     <YAxis tick={{ fontSize: 9 }} width={40} />
-                    <Tooltip 
+                    <Tooltip
                       labelFormatter={(label) => formatPagePath(label)}
-                    formatter={(value: number, name: string) => [
-                      value.toLocaleString(), 
-                      name === 'total_visits' ? 'Total Visits' : 'Unique Visitors'
-                    ]}
-                  />
-                  <Legend wrapperStyle={{ fontSize: '10px' }} iconSize={8} />
-                  <Bar 
-                    dataKey="total_visits" 
-                    fill="#8884d8" 
-                    name="Total Visits" 
-                  />
-                  <Bar 
-                    dataKey="unique_visitors" 
-                    fill="#82ca9d" 
-                    name="Unique Visitors" 
-                  />
-                </BarChart>
-              </ResponsiveContainer>
+                      formatter={(value: number, name: string) => [
+                        value.toLocaleString(),
+                        name === 'total_visits' ? 'Total Visits' : 'Unique Visitors'
+                      ]}
+                    />
+                    <Legend wrapperStyle={{ fontSize: '10px' }} iconSize={8} />
+                    <Bar
+                      dataKey="total_visits"
+                      fill="#8884d8"
+                      name="Total Visits"
+                    />
+                    <Bar
+                      dataKey="unique_visitors"
+                      fill="#82ca9d"
+                      name="Unique Visitors"
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
@@ -386,7 +386,7 @@ export function AdminAnalytics() {
                       {contentAnalytics?.total_ministries || 0}
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between p-3 md:p-4 rounded border bg-muted/20">
                     <div className="flex items-center gap-2 md:gap-3 min-w-0">
                       <Calendar className="h-4 w-4 md:h-5 md:w-5 text-primary shrink-0" />
@@ -428,7 +428,7 @@ export function AdminAnalytics() {
                       {contentAnalytics?.scheduled_events || 0}
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between p-3 md:p-4 rounded border bg-yellow-50 border-yellow-200">
                     <div className="flex items-center gap-2 md:gap-3 min-w-0">
                       <CalendarX className="h-4 w-4 md:h-5 md:w-5 text-yellow-600 shrink-0" />
@@ -443,7 +443,7 @@ export function AdminAnalytics() {
                       {contentAnalytics?.postponed_events || 0}
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between p-3 md:p-4 rounded border bg-green-50 border-green-200">
                     <div className="flex items-center gap-2 md:gap-3 min-w-0">
                       <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-green-600 shrink-0" />
@@ -458,19 +458,19 @@ export function AdminAnalytics() {
                       {contentAnalytics?.done_events || 0}
                     </div>
                   </div>
-                  
+
                   {contentAnalytics?.total_events && contentAnalytics.total_events > 0 && (
                     <div className="mt-3 md:mt-4 p-2 md:p-3 rounded bg-gray-50 border border-gray-200">
                       <div className="text-xs md:text-sm text-gray-800 space-y-1">
                         <div>
                           <strong>Completion Rate:</strong> {' '}
-                          {Math.round((contentAnalytics.done_events / contentAnalytics.total_events) * 100)}% 
+                          {Math.round((contentAnalytics.done_events / contentAnalytics.total_events) * 100)}%
                           of events have been completed
                         </div>
                         {contentAnalytics.postponed_events > 0 && (
                           <div>
                             <strong>Postponed Rate:</strong> {' '}
-                            {Math.round((contentAnalytics.postponed_events / contentAnalytics.total_events) * 100)}% 
+                            {Math.round((contentAnalytics.postponed_events / contentAnalytics.total_events) * 100)}%
                             of events have been postponed
                           </div>
                         )}

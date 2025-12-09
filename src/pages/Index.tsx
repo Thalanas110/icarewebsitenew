@@ -69,7 +69,7 @@ const Index = () => {
             </Button>
           </div>
         </div>
-      </section>
+      </section> 
 
       {/* About Section */}
       <section id="about" className="py-20 bg-church-cream">

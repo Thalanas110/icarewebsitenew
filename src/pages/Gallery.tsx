@@ -3,6 +3,11 @@ import { useGallery } from '@/hooks/useChurchData';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, Image as ImageIcon } from 'lucide-react';
 import { Marquee } from '@/components/ui/marquee';
+import {
+    Dialog,
+    DialogContent,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 
 const Gallery = () => {
     const { data: images, isLoading } = useGallery();
@@ -65,25 +70,44 @@ const Gallery = () => {
 
 const GalleryCard = ({ image }: { image: any }) => {
     return (
-        <Card className="w-96 overflow-hidden mx-4 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-            <div className="relative aspect-video group/card">
-                <img
-                    src={image.image_url}
-                    alt={image.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                    <h3 className="text-white font-display font-bold text-xl translate-y-4 group-hover/card:translate-y-0 transition-transform duration-300">
-                        {image.title}
-                    </h3>
+        <Dialog>
+            <DialogTrigger asChild>
+                <Card className="w-96 overflow-hidden mx-4 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+                    <div className="relative aspect-video group/card">
+                        <img
+                            src={image.image_url}
+                            alt={image.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <h3 className="text-white font-display font-bold text-xl translate-y-4 group-hover/card:translate-y-0 transition-transform duration-300">
+                                {image.title}
+                            </h3>
+                            {image.description && (
+                                <p className="text-white/80 text-sm mt-2 translate-y-4 group-hover/card:translate-y-0 transition-transform duration-300 delay-75">
+                                    {image.description}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                </Card>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl w-full p-0 overflow-hidden bg-transparent border-none shadow-none">
+                <div className="relative w-full h-full flex items-center justify-center">
+                    <img
+                        src={image.image_url}
+                        alt={image.title}
+                        className="w-full h-auto max-h-[85vh] object-contain rounded-lg shadow-2xl"
+                    />
                     {image.description && (
-                        <p className="text-white/80 text-sm mt-2 translate-y-4 group-hover/card:translate-y-0 transition-transform duration-300 delay-75">
-                            {image.description}
-                        </p>
+                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-black/60 text-white backdrop-blur-sm rounded-b-lg">
+                            <h3 className="font-bold text-lg">{image.title}</h3>
+                            <p className="text-sm text-white/90">{image.description}</p>
+                        </div>
                     )}
                 </div>
-            </div>
-        </Card>
+            </DialogContent>
+        </Dialog>
     );
 };
 

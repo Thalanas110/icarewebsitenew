@@ -67,12 +67,12 @@ export function ImageUpload({ value, onChange, folder = 'general' }: ImageUpload
         onChange={handleUpload}
         className="hidden"
       />
-      
+
       {value ? (
         <div className="relative group">
-          <img 
-            src={value} 
-            alt="Preview" 
+          <img
+            src={value}
+            alt="Preview"
             className="w-full h-32 object-cover rounded-md border"
           />
           <Button
@@ -86,7 +86,7 @@ export function ImageUpload({ value, onChange, folder = 'general' }: ImageUpload
           </Button>
         </div>
       ) : (
-        <div 
+        <div
           onClick={() => fileInputRef.current?.click()}
           className="w-full h-32 border-2 border-dashed border-muted-foreground/25 rounded-md flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 transition-colors"
         >
@@ -94,11 +94,11 @@ export function ImageUpload({ value, onChange, folder = 'general' }: ImageUpload
           <span className="text-sm text-muted-foreground">Click to upload</span>
         </div>
       )}
-      
+
       <div className="flex gap-2">
-        <Button 
-          type="button" 
-          variant="outline" 
+        <Button
+          type="button"
+          variant="outline"
           size="sm"
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
@@ -108,7 +108,7 @@ export function ImageUpload({ value, onChange, folder = 'general' }: ImageUpload
           {uploading ? 'Uploading...' : 'Upload'}
         </Button>
       </div>
-      
+
       <Input
         placeholder="Or paste image URL"
         value={value}
