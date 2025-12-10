@@ -55,43 +55,6 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Location */}
-      <section className="section-padding bg-secondary/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h2 className="text-3xl font-display font-bold">Visit Us</h2>
-            {churchInfo?.address && (
-              <div className="flex items-center justify-center gap-2 text-lg">
-                <MapPin className="h-5 w-5 text-primary" />
-                <span>
-                  {churchInfo.address}, {churchInfo.city}, {churchInfo.state} {churchInfo.zip}
-                </span>
-              </div>
-            )}
-            <div className="grid md:grid-cols-3 gap-6 mt-8">
-              <div className="text-center">
-                <h4 className="font-semibold mb-2">Free Parking</h4>
-                <p className="text-sm text-muted-foreground">
-                  Ample parking available for all visitors
-                </p>
-              </div>
-              <div className="text-center">
-                <h4 className="font-semibold mb-2">Wheelchair Accessible</h4>
-                <p className="text-sm text-muted-foreground">
-                  Our facilities are fully accessible
-                </p>
-              </div>
-              <div className="text-center">
-                <h4 className="font-semibold mb-2">Children's Areas</h4>
-                <p className="text-sm text-muted-foreground">
-                  Safe and fun spaces for kids of all ages
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* What to Expect */}
       <section className="section-padding">
         <div className="container mx-auto px-4">
@@ -141,6 +104,44 @@ export default function Services() {
                     Connect with others over refreshments after the service.
                   </p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* Location */}
+      <section className="section-padding bg-secondary/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center space-y-6">
+            <h2 className="text-3xl font-display font-bold">Visit Us</h2>
+            {churchInfo?.address && (
+              <div className="flex items-center justify-center gap-2 text-lg">
+                <MapPin className="h-5 w-5 text-primary" />
+                <span>
+                  {churchInfo.address}, {churchInfo.city}, {churchInfo.state} {churchInfo.zip}
+                </span>
+              </div>
+            )}
+            <div className="grid md:grid-cols-3 gap-6 mt-8">
+              <div className="text-center">
+                <h4 className="font-semibold mb-2">Free Parking</h4>
+                <p className="text-sm text-muted-foreground">
+                  Ample parking available for all visitors
+                </p>
+              </div>
+              <div className="text-center">
+                <h4 className="font-semibold mb-2">Wheelchair Accessible</h4>
+                <p className="text-sm text-muted-foreground">
+                  Our facilities are fully accessible
+                </p>
+              </div>
+              <div className="text-center">
+                <h4 className="font-semibold mb-2">Children's Areas</h4>
+                <p className="text-sm text-muted-foreground">
+                  Safe and fun spaces for kids of all ages
+                </p>
               </div>
             </div>
           </div>
