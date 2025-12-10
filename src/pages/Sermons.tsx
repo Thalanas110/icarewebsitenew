@@ -34,6 +34,44 @@ const Sermons = () => {
         </div>
       </section>
 
+      {/* Facebook Livestream Section */}
+      <section className="py-12 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-display font-bold mb-3">
+                <span className="text-foreground">Watch </span>
+                <span className="text-church-orange">Live</span>
+              </h2>
+              <p className="text-muted-foreground">
+                Join us live on Facebook for our services and special events
+              </p>
+            </div>
+            
+            <Card className="overflow-hidden">
+              <CardContent className="p-0">
+                <div className="w-full flex justify-center" style={{ minHeight: '150px' }}>
+                  <iframe 
+                    src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook&tabs=videos&width=450&height=150&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" 
+                    width="450" 
+                    height="150" 
+                    style={{ border: 'none', overflow: 'hidden' }} 
+                    scrolling="no" 
+                    frameBorder="0" 
+                    allowFullScreen={true}
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <p className="text-center text-sm text-muted-foreground mt-4">
+              Can't see the videos? <a href="https://www.facebook.com/search/top?q=i%20care%20center" target="_blank" rel="noopener noreferrer" className="text-church-orange hover:underline">Visit our Facebook page</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Sermons Section */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
