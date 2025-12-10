@@ -52,9 +52,9 @@ const Sermons = () => {
               <CardContent className="p-0">
                 <div className="w-full flex justify-center" style={{ minHeight: '150px' }}>
                   <iframe 
-                    src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook&tabs=videos&width=450&height=150&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" 
+                    src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ficarefellowship&tabs=timeline%2C%20events&width=450&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" 
                     width="450" 
-                    height="150" 
+                    height="500" 
                     style={{ border: 'none', overflow: 'hidden' }} 
                     scrolling="no" 
                     frameBorder="0" 
@@ -66,7 +66,7 @@ const Sermons = () => {
             </Card>
             
             <p className="text-center text-sm text-muted-foreground mt-4">
-              Can't see the videos? <a href="https://www.facebook.com/search/top?q=i%20care%20center" target="_blank" rel="noopener noreferrer" className="text-church-orange hover:underline">Visit our Facebook page</a>
+              Can't see the embed? <a href="https://www.facebook.com/icarefellowship" target="_blank" rel="noopener noreferrer" className="text-church-orange hover:underline">Visit our Facebook page</a>
             </p>
           </div>
         </div>
