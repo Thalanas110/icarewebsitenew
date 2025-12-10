@@ -20,7 +20,7 @@ export default function Admin() {
   if (!isAdmin) return <Navigate to="/auth" replace />;
 
   return (
-    <SidebarProvider>
+    <SidebarProvider style={{ "--sidebar-width": "20rem" } as React.CSSProperties}>
       <div className="min-h-screen flex w-full overflow-x-hidden">
         <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
         <main className="flex-1 flex flex-col min-w-0">

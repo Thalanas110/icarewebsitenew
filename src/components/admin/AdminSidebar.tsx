@@ -27,16 +27,16 @@ export function AdminSidebar({ activeTab, setActiveTab }: Props) {
   return (
     <Sidebar className="border-r">
       <SidebarContent className="p-4">
-        <div className="mb-6">
-          <span className="font-display font-bold text-lg">I Care Center | Admin Panel</span>
+        <div className="mb-6 md:mb-8 md:mt-2">
+          <span className="font-display font-bold text-lg md:text-2xl">I Care Center | Admin Panel</span>
         </div>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton onClick={() => setActiveTab(item.id)} className={activeTab === item.id ? 'bg-sidebar-accent' : ''}>
-                    <item.icon className="h-4 w-4 mr-2" />
+                  <SidebarMenuButton onClick={() => setActiveTab(item.id)} className={`text-base md:text-lg h-auto py-3 ${activeTab === item.id ? 'bg-sidebar-accent' : ''}`}>
+                    <item.icon className="h-4 w-4 md:h-6 md:w-6 mr-3" />
                     {item.label}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -45,11 +45,11 @@ export function AdminSidebar({ activeTab, setActiveTab }: Props) {
           </SidebarGroupContent>
         </SidebarGroup>
         <div className="mt-auto pt-6 space-y-2">
-          <Button variant="ghost" className="w-full justify-start" onClick={() => navigate('/')}>
-            <Home className="h-4 w-4 mr-2" /> Back to Site
+          <Button variant="ghost" className="w-full justify-start text-base md:text-lg h-auto py-3" onClick={() => navigate('/')}>
+            <Home className="h-4 w-4 md:h-6 md:w-6 mr-3" /> Back to Site
           </Button>
-          <Button variant="ghost" className="w-full justify-start text-destructive" onClick={signOut}>
-            <LogOut className="h-4 w-4 mr-2" /> Sign Out
+          <Button variant="ghost" className="w-full justify-start text-destructive text-base md:text-lg h-auto py-3" onClick={signOut}>
+            <LogOut className="h-4 w-4 md:h-6 md:w-6 mr-3" /> Sign Out
           </Button>
         </div>
       </SidebarContent>
