@@ -49,8 +49,11 @@ export function AdminChurchInfo() {
       <Card>
         <CardHeader><CardTitle>Pastor Information</CardTitle></CardHeader>
         <CardContent className="space-y-4">
+          <h5>Pastor Name</h5>
           <Input placeholder="Pastor Name" value={form.pastor_name} onChange={(e) => setForm({ ...form, pastor_name: e.target.value })} />
+          <h5>Pastor Email</h5>
           <Input placeholder="Pastor Email" value={form.pastor_email} onChange={(e) => setForm({ ...form, pastor_email: e.target.value })} />
+          <h5>Pastor Phone</h5>
           <Input placeholder="Pastor Phone" value={form.pastor_phone} onChange={(e) => setForm({ ...form, pastor_phone: e.target.value })} />
         </CardContent>
       </Card>
@@ -58,9 +61,13 @@ export function AdminChurchInfo() {
       <Card>
         <CardHeader><CardTitle>Church Details</CardTitle></CardHeader>
         <CardContent className="space-y-4">
+          <h5>Church Name</h5>
           <Input placeholder="Church Name" value={form.church_name} onChange={(e) => setForm({ ...form, church_name: e.target.value })} />
+          <h5>Contact Information</h5>
           <Input placeholder="Phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+          <h5>Email</h5>
           <Input placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+          <h5>Office Hours</h5>
           <Input placeholder="Office Hours" value={form.office_hours} onChange={(e) => setForm({ ...form, office_hours: e.target.value })} />
         </CardContent>
       </Card>
@@ -70,8 +77,11 @@ export function AdminChurchInfo() {
         <CardContent className="space-y-4">
           <Input placeholder="Address" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
           <div className="grid grid-cols-3 gap-4">
+            <h5>City</h5>
             <Input placeholder="City" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
+            <h5>State</h5>
             <Input placeholder="State" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} />
+            <h5>Zip</h5>
             <Input placeholder="Zip" value={form.zip} onChange={(e) => setForm({ ...form, zip: e.target.value })} />
           </div>
         </CardContent>
