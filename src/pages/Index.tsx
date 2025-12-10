@@ -1,18 +1,12 @@
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { useServiceTimes, useEvents, useChurchInfo, useLatestSermon } from '@/hooks/useChurchData';
+import { useChurchInfo } from '@/hooks/useChurchData';
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, MapPin, Heart, Users, BookOpen, Play, Music, Video } from 'lucide-react';
-import { format } from 'date-fns';
+import { Heart, Users, BookOpen, MapPin, Clock } from 'lucide-react';
 
 const Index = () => {
-  const { data: serviceTimes } = useServiceTimes();
-  const { data: events } = useEvents();
   const { data: churchInfo } = useChurchInfo();
-  const { data: latestSermon } = useLatestSermon();
-
-  const upcomingEvents = events?.slice(0, 3) || [];
 
   return (
     <Layout>
@@ -42,34 +36,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Service Times Section */}
-      <section id="services" className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-display font-bold text-foreground mb-4">Service Times</h2>
-            <p className="text-muted-foreground text-lg">Join us for worship and fellowship</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {serviceTimes?.map((service) => (
-              <Card key={service.id} className="text-center border-church-gold/20 hover:border-church-gold/50 transition-colors">
-                <CardContent className="pt-8 pb-6">
-                  <Clock className="w-12 h-12 text-church-gold mx-auto mb-4" />
-                  <h3 className="text-xl font-display font-bold text-foreground mb-2">{service.name}</h3>
-                  <p className="text-2xl font-semibold text-church-orange mb-2">{service.time}</p>
-                  {service.description && (
-                    <p className="text-muted-foreground text-sm">{service.description}</p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Button asChild variant="outline">
-              <Link to="/services">View All Services</Link>
-            </Button>
-          </div>
-        </div>
-      </section> 
+
 
       {/* About Section */}
       <section id="about" className="py-20 bg-church-cream">
@@ -100,9 +67,9 @@ const Index = () => {
               </Button>
             </div>
             <div className="relative">
-              <img 
-                src="/bg.jpeg" 
-                alt="Church community" 
+              <img
+                src="/bg.jpeg"
+                alt="Church community"
                 className="rounded-lg shadow-2xl"
               />
               <div className="absolute -bottom-6 -left-6 bg-church-gold text-church-navy p-6 rounded-lg shadow-xl">
@@ -114,154 +81,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Last Week's Message Section */}
-      {latestSermon && (
-        <section id="latest-sermon" className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-display font-bold text-foreground mb-4">Last Week's Message</h2>
-              <p className="text-muted-foreground text-lg">Catch up on our latest sermon</p>
-            </div>
-            <div className="max-w-4xl mx-auto">
-              <Card className="overflow-hidden">
-                <div className="md:flex">
-                  <div className="md:w-1/2">
-                    {latestSermon.thumbnail_url ? (
-                      <div className="relative h-64 md:h-full">
-                        <img 
-                          src={latestSermon.thumbnail_url} 
-                          alt={latestSermon.title}
-                          className="w-full h-full object-cover"
-                        />
-                        {latestSermon.video_url && (
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="bg-black/50 backdrop-blur-sm rounded-full p-4">
-                              <Play className="w-8 h-8 text-white" />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="h-64 md:h-full bg-gradient-to-br from-church-navy to-church-teal flex items-center justify-center">
-                        <BookOpen className="w-16 h-16 text-white" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="md:w-1/2 p-8">
-                    <div className="flex items-center gap-2 text-church-gold mb-3">
-                      <Calendar className="w-4 h-4" />
-                      <span className="text-sm font-medium">
-                        {format(new Date(latestSermon.sermon_date), 'MMMM d, yyyy')}
-                      </span>
-                    </div>
-                    
-                    <h3 className="text-2xl font-display font-bold text-foreground mb-3">
-                      {latestSermon.title}
-                    </h3>
-                    
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                      <div className="flex items-center gap-1">
-                        <BookOpen className="w-4 h-4" />
-                        <span>{latestSermon.speaker}</span>
-                      </div>
-                      {latestSermon.duration_minutes && (
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          <span>{latestSermon.duration_minutes} min</span>
-                        </div>
-                      )}
-                    </div>
 
-                    {latestSermon.scripture_reference && (
-                      <div className="bg-church-cream p-3 rounded-lg mb-4">
-                        <p className="text-sm font-medium text-church-navy">
-                          Scripture: {latestSermon.scripture_reference}
-                        </p>
-                      </div>
-                    )}
 
-                    {latestSermon.description && (
-                      <p className="text-muted-foreground mb-6 line-clamp-3">
-                        {latestSermon.description}
-                      </p>
-                    )}
 
-                    <div className="flex gap-3">
-                      {latestSermon.video_url && (
-                        <Button asChild className="bg-church-navy hover:bg-church-navy/90">
-                          <a href={latestSermon.video_url} target="_blank" rel="noopener noreferrer">
-                            <Video className="w-4 h-4 mr-2" />
-                            Watch Video
-                          </a>
-                        </Button>
-                      )}
-                      {latestSermon.audio_url && (
-                        <Button asChild variant="outline">
-                          <a href={latestSermon.audio_url} target="_blank" rel="noopener noreferrer">
-                            <Music className="w-4 h-4 mr-2" />
-                            Listen Audio
-                          </a>
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </div>
-            <div className="text-center mt-8">
-              <Button asChild variant="outline">
-                <Link to="/sermons">View All Sermons</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-      )}
 
-      {/* Upcoming Events Section */}
-      <section id="events" className="py-20 bg-church-cream">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-display font-bold text-foreground mb-4">Upcoming Events</h2>
-            <p className="text-muted-foreground text-lg">Don't miss what's happening at I Care</p>
-          </div>
-          {upcomingEvents.length > 0 ? (
-            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {upcomingEvents.map((event) => (
-                <Card key={event.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  {event.image_url && (
-                    <img src={event.image_url} alt={event.title} className="w-full h-48 object-cover" />
-                  )}
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-2 text-church-gold mb-2">
-                      <Calendar className="w-4 h-4" />
-                      <span className="text-sm font-medium">
-                        {format(new Date(event.event_date), 'MMMM d, yyyy')}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-display font-bold text-foreground mb-2">{event.title}</h3>
-                    {event.description && (
-                      <p className="text-muted-foreground text-sm line-clamp-2">{event.description}</p>
-                    )}
-                    {event.location && (
-                      <div className="flex items-center gap-1 text-muted-foreground text-sm mt-3">
-                        <MapPin className="w-4 h-4" />
-                        <span>{event.location}</span>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-muted-foreground">No upcoming events at this time.</p>
-          )}
-          <div className="text-center mt-8">
-            <Button asChild variant="outline">
-              <Link to="/events">View All Events</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
 
       {/* Location Section */}
       <section id="location" className="py-20 bg-church-cream text-black">

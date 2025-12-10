@@ -25,8 +25,8 @@ export default function About() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <img 
-                src="/during worship.jpg" 
+              <img
+                src="/during worship.jpg"
                 alt="Our church community"
                 className="rounded-lg shadow-xl"
               />
@@ -34,11 +34,11 @@ export default function About() {
             <div className="space-y-6">
               <h2 className="text-3xl font-display font-bold">Our Story</h2>
               <p className="text-muted-foreground">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
               <p className="text-muted-foreground">
                 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
                 sunt in culpa qui officia deserunt mollit anim id est laborum.
               </p>
               <p className="text-muted-foreground">
@@ -87,25 +87,25 @@ export default function About() {
           </div>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {[
-              { 
-                icon: Megaphone, 
-                title: 'Evangelism', 
-                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
+              {
+                icon: Megaphone,
+                title: 'Evangelism',
+                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
               },
-              { 
-                icon: Users, 
-                title: 'Christ Centered Discipleship', 
-                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
+              {
+                icon: Users,
+                title: 'Christ Centered Discipleship',
+                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
               },
-              { 
-                icon: Music, 
-                title: 'Spiirit filled Worship', 
-                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
+              {
+                icon: Music,
+                title: 'Spiirit filled Worship',
+                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
               },
-              { 
-                icon: Heart, 
-                title: 'Godly Love & Care', 
-                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
+              {
+                icon: Heart,
+                title: 'Godly Love & Care',
+                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
               },
             ].map((value, i) => (
               <Card key={i} className="border-none shadow-lg">
@@ -135,7 +135,7 @@ export default function About() {
               </div>
               <h3 className="text-2xl font-semibold">{churchInfo.pastor_name}</h3>
               <p className="text-muted-foreground">
-                Our senior pastor leads with compassion and dedication, guiding our congregation 
+                Our senior pastor leads with compassion and dedication, guiding our congregation
                 in spiritual growth and community service.
               </p>
               {churchInfo.pastor_email && (
