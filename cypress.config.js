@@ -1,0 +1,12 @@
+const { defineConfig } = require("cypress");
+
+module.exports = defineConfig({
+    e2e: {
+        baseUrl: "http://localhost:8080",
+        screenshotsFolder: "cypress/screenshots",
+        trashAssetsBeforeRuns: true,
+        setupNodeEvents(on, config) {
+            // implement node event listeners here
+        },
+    },
+});
