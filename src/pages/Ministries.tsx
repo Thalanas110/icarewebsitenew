@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 export default function Ministries() {
   const { data: ministries, isLoading } = useMinistries();
 
+  const churchMinistries = ministries?.filter(m => m.category === 'ministry' || !m.category) || [];
+  const outreaches = ministries?.filter(m => m.category === 'outreach') || [];
+
   return (
     <Layout>
       {/* Hero */}
@@ -30,11 +33,11 @@ export default function Ministries() {
           ) : ministries && ministries.length > 0 ? (
             <div className="space-y-16">
               {/* Church Ministries Section */}
-              <div className="space-y-6">
-                <h2 className="text-3xl font-display font-bold text-center">Church Ministries</h2>
+              <div className="space-y-6" id="church-ministries">
+                <h2 className="text-3xl font-display font-bold text-center md:text-left">Church Ministries</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {ministries.filter(m => m.category === 'ministry' || !m.category).map((ministry) => (
-                    <Card key={ministry.id} className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-shadow flex flex-col h-full">
+                  {churchMinistries.map((ministry) => (
+                    <Card key={ministry.id} id={ministry.id} className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-shadow flex flex-col h-full">
                       {ministry.image_url ? (
                         <img
                           src={ministry.image_url}
@@ -64,18 +67,18 @@ export default function Ministries() {
                       </CardContent>
                     </Card>
                   ))}
-                  {ministries.filter(m => m.category === 'ministry' || !m.category).length === 0 && (
+                  {churchMinistries.length === 0 && (
                     <div className="col-span-full text-center text-muted-foreground">No ministries found.</div>
                   )}
                 </div>
               </div>
 
               {/* Outreaches Section */}
-              <div className="space-y-6">
-                <h2 className="text-3xl font-display font-bold text-center">Outreaches</h2>
+              <div className="space-y-6" id="outreaches">
+                <h2 className="text-3xl font-display font-bold text-center md:text-left">Outreaches</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {ministries.filter(m => m.category === 'outreach').map((ministry) => (
-                    <Card key={ministry.id} className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-shadow flex flex-col h-full">
+                  {outreaches.map((ministry) => (
+                    <Card key={ministry.id} id={ministry.id} className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-shadow flex flex-col h-full">
                       {ministry.image_url ? (
                         <img
                           src={ministry.image_url}
@@ -105,7 +108,7 @@ export default function Ministries() {
                       </CardContent>
                     </Card>
                   ))}
-                  {ministries.filter(m => m.category === 'outreach').length === 0 && (
+                  {outreaches.length === 0 && (
                     <div className="col-span-full text-center text-muted-foreground">No outreaches found.</div>
                   )}
                 </div>

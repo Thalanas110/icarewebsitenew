@@ -3,6 +3,15 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -33,16 +42,58 @@ export function Navbar() {
           {/* Desktop Nav - Absolutely Centered */}
           <div className="hidden md:flex items-center space-x-1 absolute left-1/2 transform -translate-x-1/2">
             {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === link.href
+              link.label === 'Ministries' ? (
+                <NavigationMenu key={link.href} className="list-none">
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger
+                        className={`bg-transparent ${location.pathname.startsWith(link.href) ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                      >
+                        {link.label}
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <ul className="grid w-[200px] gap-2 p-4 bg-popover text-popover-foreground rounded-md shadow-md">
+                          <li>
+                            <Link
+                              to="/ministries"
+                              className="block p-2 hover:bg-muted rounded-md text-sm font-medium"
+                            >
+                              All Ministries
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to="/ministries#church-ministries"
+                              className="block p-2 hover:bg-muted rounded-md text-sm font-medium"
+                            >
+                              Church Ministries
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to="/ministries#outreaches"
+                              className="block p-2 hover:bg-muted rounded-md text-sm font-medium"
+                            >
+                              Outreaches
+                            </Link>
+                          </li>
+                        </ul>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              ) : (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === link.href
                     ? 'text-primary'
                     : 'text-muted-foreground hover:text-foreground'
-                  }`}
-              >
-                {link.label}
-              </Link>
+                    }`}
+                >
+                  {link.label}
+                </Link>
+              )
             ))}
           </div>
 
@@ -91,8 +142,8 @@ export function Navbar() {
                   to={link.href}
                   onClick={() => setIsOpen(false)}
                   className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === link.href
-                      ? 'text-primary bg-primary/10'
-                      : 'text-muted-foreground hover:text-foreground'
+                    ? 'text-primary bg-primary/10'
+                    : 'text-muted-foreground hover:text-foreground'
                     }`}
                 >
                   {link.label}
