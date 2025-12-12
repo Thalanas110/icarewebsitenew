@@ -12,6 +12,12 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const navLinks = [
   {
@@ -193,26 +199,53 @@ export function Navbar() {
 
         {/* Mobile Nav */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t">
-            <div className="flex flex-col space-y-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === link.href
-                    ? 'text-primary bg-primary/10'
-                    : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+          <div className="md:hidden py-4 border-t max-h-[calc(100vh-4rem)] overflow-y-auto">
+            <div className="flex flex-col space-y-2 px-4">
+              <Accordion type="single" collapsible className="w-full">
+                {navLinks.map((link) => (
+                  link.subLinks ? (
+                    <AccordionItem value={link.label} key={link.label} className="border-b-0">
+                      <AccordionTrigger className="hover:no-underline py-2 text-base font-medium">
+                        {link.label}
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <ul className="flex flex-col space-y-2 pl-4">
+                          {link.subLinks.map((subLink) => (
+                            <li key={subLink.href}>
+                              <Link
+                                to={subLink.href}
+                                onClick={() => setIsOpen(false)}
+                                className="block py-2 text-sm text-muted-foreground hover:text-foreground"
+                              >
+                                {subLink.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ) : (
+                    <div key={link.href} className="py-2">
+                      <Link
+                        to={link.href}
+                        onClick={() => setIsOpen(false)}
+                        className={`flex flex-1 items-center justify-between py-2 text-base font-medium transition-all hover:underline ${location.pathname === link.href
+                          ? 'text-primary'
+                          : 'text-foreground'
+                          }`}
+                      >
+                        {link.label}
+                      </Link>
+                    </div>
+                  )
+                ))}
+              </Accordion>
+
               {isAdmin && (
                 <Link
                   to="/admin"
                   onClick={() => setIsOpen(false)}
-                  className="px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:text-foreground flex items-center"
+                  className="px-0 py-4 text-base font-medium text-muted-foreground hover:text-foreground flex items-center"
                 >
                   <Settings className="h-4 w-4 mr-2" />
                   Admin Dashboard
@@ -222,13 +255,13 @@ export function Navbar() {
                 <Link
                   to="/auth"
                   onClick={() => setIsOpen(false)}
-                  className="px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:text-foreground"
+                  className="px-0 py-2 text-base font-medium text-muted-foreground hover:text-foreground"
                 >
                   Login
                 </Link>
               )}
               <Link to="/contact" onClick={() => setIsOpen(false)}>
-                <Button size="sm" className="w-full mt-2">
+                <Button size="sm" className="w-full mt-4">
                   Plan Your Visit
                 </Button>
               </Link>
