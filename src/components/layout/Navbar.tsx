@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
@@ -94,7 +94,14 @@ const navLinks = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, isAdmin } = useAuth();
+
+  const handleParentClick = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    navigate(href);
+    window.scrollTo(0, 0);
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
@@ -115,6 +122,7 @@ export function Navbar() {
                       <>
                         <NavigationMenuTrigger
                           className={`bg-transparent ${location.pathname.startsWith(link.href) ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                          onClick={(e) => handleParentClick(e, link.href)}
                         >
                           {link.label}
                         </NavigationMenuTrigger>
