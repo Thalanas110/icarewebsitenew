@@ -10,6 +10,7 @@ export interface Ministry {
   meeting_time: string | null;
   image_url: string | null;
   sort_order: number | null;
+  category: 'ministry' | 'outreach';
   created_at: string;
   updated_at: string;
 }
@@ -132,7 +133,20 @@ export function useMinistryMutations() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['ministries'] }),
   });
 
-  return { createMinistry, updateMinistry, deleteMinistry };
+  const updateSortOrder = useMutation({
+    mutationFn: async (items: Array<{ id: string; sort_order: number }>) => {
+      const updates = items.map(item =>
+        supabase.from('ministries').update({ sort_order: item.sort_order }).eq('id', item.id)
+      );
+      const results = await Promise.all(updates.map(u => u));
+      const errors = results.filter(r => r.error);
+      if (errors.length > 0) throw errors[0].error;
+      return items;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['ministries'] }),
+  });
+
+  return { createMinistry, updateMinistry, deleteMinistry, updateSortOrder };
 }
 
 // Events
