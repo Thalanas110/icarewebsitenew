@@ -7,8 +7,8 @@ begin
     select count(*) into image_count
     from public.gallery_images;
 
-    if image_count >= 15 then
-        raise exception 'Gallery limit reached. Maximum 15 images allowed.';
+    if image_count >= 40 then
+        raise exception 'Gallery limit reached. Maximum 40 images allowed.';
     end if;
 
     return new;

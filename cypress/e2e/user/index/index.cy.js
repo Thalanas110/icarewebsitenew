@@ -1,4 +1,4 @@
-describe('Index Page', () => {
+edescribe('Index Page', () => {
     beforeEach(() => {
         cy.visit('/');
     });

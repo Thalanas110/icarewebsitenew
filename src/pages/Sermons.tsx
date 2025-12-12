@@ -47,24 +47,24 @@ const Sermons = () => {
                 Join us live on Facebook for our services and special events
               </p>
             </div>
-            
+
             <Card className="overflow-hidden">
               <CardContent className="p-0">
-                <div className="w-full flex justify-center" style={{ minHeight: '150px' }}>
-                  <iframe 
-                    src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ficarefellowship&tabs=timeline%2C%20events&width=450&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" 
-                    width="450" 
-                    height="500" 
-                    style={{ border: 'none', overflow: 'hidden' }} 
-                    scrolling="no" 
-                    frameBorder="0" 
+                <div className="w-full aspect-video bg-black">
+                  <iframe
+                    src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2F100064902870970%2Flive&show_text=false&t=0"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 'none', overflow: 'hidden' }}
+                    scrolling="no"
+                    frameBorder="0"
                     allowFullScreen={true}
                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                   />
                 </div>
               </CardContent>
             </Card>
-            
+
             <p className="text-center text-sm text-muted-foreground mt-4">
               Can't see the embed? <a href="https://www.facebook.com/icarefellowship" target="_blank" rel="noopener noreferrer" className="text-church-orange hover:underline">Visit our Facebook page</a>
             </p>
@@ -84,8 +84,8 @@ const Sermons = () => {
                     <div className="md:w-1/3">
                       {sermon.thumbnail_url ? (
                         <div className="relative h-48 md:h-full">
-                          <img 
-                            src={sermon.thumbnail_url} 
+                          <img
+                            src={sermon.thumbnail_url}
                             alt={sermon.title}
                             className="w-full h-full object-cover"
                           />
@@ -119,11 +119,11 @@ const Sermons = () => {
                           </Badge>
                         )}
                       </div>
-                      
+
                       <h2 className="text-xl md:text-2xl font-display font-bold text-foreground mb-3">
                         {sermon.title}
                       </h2>
-                      
+
                       <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-3">
                         <div className="flex items-center gap-1">
                           <BookOpen className="w-4 h-4" />
