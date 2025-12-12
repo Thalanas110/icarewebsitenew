@@ -56,7 +56,7 @@ export default function Services() {
       </section>
 
       {/* What to Expect */}
-      <section className="section-padding">
+      <section id="expect" className="section-padding">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl font-display font-bold text-center mb-8">What to Expect</h2>
@@ -112,7 +112,7 @@ export default function Services() {
 
 
       {/* Location */}
-      <section className="section-padding bg-secondary/30">
+      <section id="location" className="section-padding bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h2 className="text-3xl font-display font-bold">Visit Us</h2>

@@ -14,15 +14,81 @@ import {
 } from "@/components/ui/navigation-menu";
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/services', label: 'Services' },
-  { href: '/ministries', label: 'Ministries' },
-  { href: '/events', label: 'Events' },
-  { href: '/sermons', label: 'Sermons' },
-  { href: '/gallery', label: 'Gallery' },
-  { href: '/giving', label: 'Giving' },
-  { href: '/contact', label: 'Contact' },
+  {
+    href: '/',
+    label: 'Home',
+    subLinks: [
+      { href: '/', label: 'Welcome' },
+      { href: '/#about', label: 'About Us' },
+      { href: '/#location', label: 'Visit Us' },
+    ]
+  },
+  {
+    href: '/about',
+    label: 'About',
+    subLinks: [
+      { href: '/about#story', label: 'Our Story' },
+      { href: '/about#mission', label: 'Mission & Vision' },
+      { href: '/about#values', label: 'Core Values' },
+      { href: '/about#pastor', label: 'Leadership' },
+    ]
+  },
+  {
+    href: '/services',
+    label: 'Services',
+    subLinks: [
+      { href: '/services#service-times', label: 'Service Times' },
+      { href: '/services#expect', label: 'What to Expect' },
+      { href: '/services#location', label: 'Location' },
+    ]
+  },
+  {
+    href: '/ministries',
+    label: 'Ministries',
+    subLinks: [
+      { href: '/ministries', label: 'All Ministries' },
+      { href: '/ministries#church-ministries', label: 'Church Ministries' },
+      { href: '/ministries#outreaches', label: 'Outreaches' },
+    ]
+  },
+  {
+    href: '/events',
+    label: 'Events',
+    subLinks: [
+      { href: '/events#events-list', label: 'Upcoming Events' },
+      { href: '/events#newsletter', label: 'Stay Updated' },
+    ]
+  },
+  {
+    href: '/sermons',
+    label: 'Sermons',
+    subLinks: [
+      { href: '/sermons#sermons-list', label: 'Latest Sermons' },
+      { href: '/sermons#livestream', label: 'Watch Live' },
+    ]
+  },
+  {
+    href: '/gallery',
+    label: 'Gallery',
+    subLinks: [
+      { href: '/gallery#gallery-grid', label: 'Photo Gallery' },
+    ]
+  },
+  {
+    href: '/giving',
+    label: 'Giving',
+    subLinks: [
+      { href: '/giving#ways-to-give', label: 'Ways to Give' },
+    ]
+  },
+  {
+    href: '/contact',
+    label: 'Contact',
+    subLinks: [
+      { href: '/contact', label: 'Get in Touch' },
+      { href: '/contact#contact-info', label: 'Contact Info' },
+    ]
+  },
 ];
 
 export function Navbar() {
@@ -42,58 +108,43 @@ export function Navbar() {
           {/* Desktop Nav - Absolutely Centered */}
           <div className="hidden md:flex items-center space-x-1 absolute left-1/2 transform -translate-x-1/2">
             {navLinks.map((link) => (
-              link.label === 'Ministries' ? (
-                <NavigationMenu key={link.href} className="list-none">
-                  <NavigationMenuList>
-                    <NavigationMenuItem>
-                      <NavigationMenuTrigger
-                        className={`bg-transparent ${location.pathname.startsWith(link.href) ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
-                      >
-                        {link.label}
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <ul className="grid w-[200px] gap-2 p-4 bg-popover text-popover-foreground rounded-md shadow-md">
-                          <li>
-                            <Link
-                              to="/ministries"
-                              className="block p-2 hover:bg-muted rounded-md text-sm font-medium"
-                            >
-                              All Ministries
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to="/ministries#church-ministries"
-                              className="block p-2 hover:bg-muted rounded-md text-sm font-medium"
-                            >
-                              Church Ministries
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to="/ministries#outreaches"
-                              className="block p-2 hover:bg-muted rounded-md text-sm font-medium"
-                            >
-                              Outreaches
-                            </Link>
-                          </li>
-                        </ul>
-                      </NavigationMenuContent>
-                    </NavigationMenuItem>
-                  </NavigationMenuList>
-                </NavigationMenu>
-              ) : (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === link.href
-                    ? 'text-primary'
-                    : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                >
-                  {link.label}
-                </Link>
-              )
+              <NavigationMenu key={link.href} className="list-none">
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    {link.subLinks ? (
+                      <>
+                        <NavigationMenuTrigger
+                          className={`bg-transparent ${location.pathname.startsWith(link.href) ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                          {link.label}
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <ul className="grid w-[200px] gap-2 p-4 bg-popover text-popover-foreground rounded-md shadow-md">
+                            {link.subLinks.map((subLink) => (
+                              <li key={subLink.href}>
+                                <Link
+                                  to={subLink.href}
+                                  className="block p-2 hover:bg-muted rounded-md text-sm font-medium"
+                                >
+                                  {subLink.label}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </NavigationMenuContent>
+                      </>
+                    ) : (
+                      <Link to={link.href}>
+                        <NavigationMenuLink
+                          className={navigationMenuTriggerStyle() + ` bg-transparent ${location.pathname === link.href ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                          {link.label}
+                        </NavigationMenuLink>
+                      </Link>
+                    )}
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
             ))}
           </div>
 

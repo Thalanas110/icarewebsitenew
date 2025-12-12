@@ -16,7 +16,7 @@ export default function Events() {
             Upcoming <span className="text-gradient">Events</span>
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Stay connected with what's happening in our church community. Join us for special services, 
+            Stay connected with what's happening in our church community. Join us for special services,
             fellowship events, and opportunities to grow together.
           </p>
         </div>
@@ -46,7 +46,7 @@ export default function Events() {
                       {/* Event Details */}
                       <div className="flex-1 space-y-3">
                         <h3 className="text-xl font-display font-bold">{event.title}</h3>
-                        
+
                         <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
@@ -85,11 +85,11 @@ export default function Events() {
       </section>
 
       {/* Newsletter CTA */}
-      <section className="section-padding bg-secondary/30">
+      <section id="newsletter" className="section-padding bg-secondary/30">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-display font-bold mb-4">Stay Updated</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Subscribe to our newsletter to receive updates about upcoming events, special services, 
+            Subscribe to our newsletter to receive updates about upcoming events, special services,
             and church news.
           </p>
         </div>

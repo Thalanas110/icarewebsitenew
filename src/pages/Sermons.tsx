@@ -22,7 +22,7 @@ const Sermons = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="py-20 bg-background">
+      <section id="hero" className="py-20 bg-background">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-display font-bold mb-4">
             <span className="text-foreground">Sermons & </span>
@@ -35,7 +35,7 @@ const Sermons = () => {
       </section>
 
       {/* Facebook Livestream Section */}
-      <section className="py-12 bg-muted/30">
+      <section id="livestream" className="py-12 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
@@ -73,7 +73,7 @@ const Sermons = () => {
       </section>
 
       {/* Sermons Section */}
-      <section className="py-20 bg-background">
+      <section id="sermons-list" className="py-20 bg-background">
         <div className="container mx-auto px-4">
           {sermons && sermons.length > 0 ? (
             <div className="grid gap-8 max-w-4xl mx-auto">

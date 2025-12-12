@@ -17,7 +17,7 @@ const Gallery = () => {
 
     return (
         <Layout>
-            <section className="bg-church-navy py-20 text-white">
+            <section id="hero" className="bg-church-navy py-20 text-white">
                 <div className="container mx-auto px-4 text-center">
                     <h1 className="text-4xl md:text-6xl font-display font-bold mb-6 animate-fade-in">
                         <span className="text-black">Photo</span> <span className="text-church-orange">Gallery</span>
@@ -28,7 +28,7 @@ const Gallery = () => {
                 </div>
             </section>
 
-            <section className="py-20 bg-background overflow-hidden">
+            <section id="gallery-grid" className="py-20 bg-background overflow-hidden">
                 <div className="container mx-auto px-4">
                     {isLoading ? (
                         <div className="flex justify-center py-20">

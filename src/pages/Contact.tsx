@@ -36,26 +36,26 @@ export default function Contact() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="hero-gradient py-20">
+      <section id="hero" className="hero-gradient py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
             Get In <span className="text-gradient">Touch</span>
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            We're here to help and would love to connect with you. Reach out with questions, 
+            We're here to help and would love to connect with you. Reach out with questions,
             prayer requests, or just to say hello.
           </p>
         </div>
       </section>
 
       {/* Contact Info & Form */}
-      <section className="section-padding">
+      <section id="contact-info" className="section-padding">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Info */}
             <div className="space-y-8">
               <h2 className="text-2xl font-display font-bold">Contact Information</h2>
-              
+
               <div className="space-y-6">
                 {churchInfo?.phone && (
                   <div className="flex items-start gap-4">
@@ -115,9 +115,9 @@ export default function Contact() {
 
               {/* Interactive Map */}
               <Card className="border-none shadow-lg overflow-hidden">
-                <Map 
-                  latitude={14.848607} 
-                  longitude={120.312585} 
+                <Map
+                  latitude={14.848607}
+                  longitude={120.312585}
                   address="2057 Jose Abad Santos Avenue, Brgy. Old Cabalan, Olongapo City, Zambales 2200"
                   className="rounded-lg"
                 />
