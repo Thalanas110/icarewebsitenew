@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { PageTracker } from "@/components/PageTracker";
 import { AppLoadingScreen } from "@/components/AppLoadingScreen";
+import ScrollToTop from "@/components/ScrollToTop";
 import { useMinistries, useEvents, useServiceTimes } from "@/hooks/useChurchData";
 import Index from "./pages/Index";
 import About from "./pages/About";
@@ -243,6 +244,7 @@ const App = () => {
             <Sonner />
             <BrowserRouter>
               <PageTracker />
+              <ScrollToTop />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/about" element={<About />} />
