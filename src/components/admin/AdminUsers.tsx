@@ -28,7 +28,8 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { UserPlus, Shield, ShieldAlert, Loader2 } from 'lucide-react';
+import { UserPlus, Shield, ShieldAlert, Loader2, Pencil } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 interface UserProfile {
     id: string;
@@ -39,16 +40,25 @@ interface UserProfile {
 }
 
 export function AdminUsers() {
+    const { user: currentUser } = useAuth();
     const [users, setUsers] = useState<UserProfile[]>([]);
     const [loading, setLoading] = useState(true);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [editingUser, setEditingUser] = useState<UserProfile | null>(null);
 
     // Form state
     const [newUserEmail, setNewUserEmail] = useState('');
     const [newUserPassword, setNewUserPassword] = useState('');
     const [newUserName, setNewUserName] = useState('');
     const [newUserRole, setNewUserRole] = useState<'admin' | 'moderator' | 'user'>('user');
+
+    // Edit Form state
+    const [editName, setEditName] = useState('');
+    const [editRole, setEditRole] = useState<'admin' | 'moderator' | 'user'>('user');
+
     const [isCreating, setIsCreating] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
 
     useEffect(() => {
         fetchUsers();
@@ -77,8 +87,11 @@ export function AdminUsers() {
                 return {
                     ...profile,
                     role: userRole ? userRole.role : 'user',
-                };
+                } as UserProfile;
             });
+
+            // Sort by created_at desc
+            mergedUsers.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
             setUsers(mergedUsers);
         } catch (error) {
@@ -141,6 +154,63 @@ export function AdminUsers() {
             toast.error(error.message || 'Failed to create user');
         } finally {
             setIsCreating(false);
+        }
+    };
+
+    const handleEditClick = (user: UserProfile) => {
+        setEditingUser(user);
+        setEditName(user.full_name || '');
+        setEditRole(user.role || 'user');
+        setIsEditOpen(true);
+    };
+
+    const handleUpdateUser = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!editingUser) return;
+
+        setIsUpdating(true);
+        try {
+            // 1. Update Profile (Name)
+            const { error: profileError } = await supabase
+                .from('profiles')
+                .update({ full_name: editName })
+                .eq('id', editingUser.id);
+
+            if (profileError) throw profileError;
+
+            // 2. Update Role
+            if (editRole !== editingUser.role) {
+                if (editRole === 'user') {
+                    // Remove role entry if downgrading to user
+                    const { error: deleteError } = await supabase
+                        .from('user_roles')
+                        .delete()
+                        .eq('user_id', editingUser.id);
+
+                    if (deleteError) throw deleteError;
+                } else {
+                    // Upsert role (insert or update)
+                    const { error: roleError } = await supabase
+                        .from('user_roles')
+                        .upsert({
+                            user_id: editingUser.id,
+                            role: editRole
+                        }, { onConflict: 'user_id' }); // user_id is part of unique constraint
+
+                    if (roleError) throw roleError;
+                }
+            }
+
+            toast.success('User updated successfully');
+            setIsEditOpen(false);
+            setEditingUser(null);
+            fetchUsers();
+
+        } catch (error: any) {
+            console.error('Error updating user:', error);
+            toast.error(error.message || 'Failed to update user');
+        } finally {
+            setIsUpdating(false);
         }
     };
 
@@ -236,6 +306,58 @@ export function AdminUsers() {
                         </form>
                     </DialogContent>
                 </Dialog>
+
+                {/* Edit User Dialog */}
+                <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Edit User</DialogTitle>
+                        </DialogHeader>
+                        <form onSubmit={handleUpdateUser} className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-email">Email</Label>
+                                <Input
+                                    id="edit-email"
+                                    type="email"
+                                    value={editingUser?.email || ''}
+                                    disabled
+                                    className="bg-muted"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-name">Full Name</Label>
+                                <Input
+                                    id="edit-name"
+                                    value={editName}
+                                    onChange={(e) => setEditName(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-role">Role</Label>
+                                <Select
+                                    value={editRole}
+                                    onValueChange={(value: 'admin' | 'moderator' | 'user') => setEditRole(value)}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select role" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="user">User</SelectItem>
+                                        <SelectItem value="moderator">Moderator</SelectItem>
+                                        <SelectItem value="admin">Admin</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="flex justify-end pt-4">
+                                <Button type="submit" disabled={isUpdating}>
+                                    {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    Save Changes
+                                </Button>
+                            </div>
+                        </form>
+                    </DialogContent>
+                </Dialog>
             </div>
 
             <Card>
@@ -255,6 +377,7 @@ export function AdminUsers() {
                                     <TableHead>Email</TableHead>
                                     <TableHead>Role</TableHead>
                                     <TableHead>Joined</TableHead>
+                                    <TableHead className="text-right">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -264,11 +387,22 @@ export function AdminUsers() {
                                         <TableCell>{user.email}</TableCell>
                                         <TableCell>{getRoleBadge(user.role)}</TableCell>
                                         <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
+                                        <TableCell className="text-right">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => handleEditClick(user)}
+                                                disabled={user.id === currentUser?.id} // Prevent editing self to avoid locking out
+                                                title={user.id === currentUser?.id ? "Cannot edit your own role here" : "Edit user"}
+                                            >
+                                                <Pencil className="h-4 w-4" />
+                                            </Button>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                                 {users.length === 0 && (
                                     <TableRow>
-                                        <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                                        <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
                                             No users found
                                         </TableCell>
                                     </TableRow>
