@@ -182,7 +182,7 @@ export default function Auth() {
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? 'Please wait...' : (
                       authMode === 'login' ? 'Sign In' :
-                        authMode === 'signup' ? 'Sign Up' : 'Send Reset Link'
+                        authMode === 'signup' ? 'Sign Up' : 'Send Link'
                     )}
                   </Button>
                 </form>
