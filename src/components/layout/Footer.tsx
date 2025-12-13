@@ -12,7 +12,7 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <img src="/icc logo no bg.png" alt="ICC Logo" className="h-8 w-auto" />
+              <img src="/icc logo.jpg" alt="ICC Logo" className="h-8 w-auto" />
               <span className="font-display font-semibold text-lg">The Refuge Church</span>
             </div>
             <p className="text-muted-foreground text-sm">
@@ -72,7 +72,7 @@ export function Footer() {
         <div className="border-t border-muted-foreground/20 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground">
           <p>© {new Date().getFullYear()} {churchInfo?.church_name || 'I Care Center - Refuge'}. All rights reserved.</p>
           <p className="flex items-center gap-1 mt-2 sm:mt-0">
-            Made by the ICC Media Team with <Heart className="h-4 w-4 text-primary" /> for our community
+            Made by the ICC Media Team with 🧡 for our community
           </p>
         </div>
       </div>
