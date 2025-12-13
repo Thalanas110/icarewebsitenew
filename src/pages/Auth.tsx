@@ -19,7 +19,7 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [justLoggedIn, setJustLoggedIn] = useState(false);
-  const { signIn, signUp, user, isAdmin, loading: authLoading } = useAuth();
+  const { signIn, signUp, user, isAdmin, isModerator, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   // Redirect when user is logged in and admin status is determined
@@ -28,7 +28,7 @@ export default function Auth() {
       if (justLoggedIn) {
         // Small delay to let admin status update
         const timer = setTimeout(() => {
-          if (isAdmin) {
+          if (isAdmin || isModerator) {
             navigate('/admin');
           } else {
             navigate('/');
@@ -37,18 +37,18 @@ export default function Auth() {
         return () => clearTimeout(timer);
       } else {
         // Already logged in, redirect based on role
-        if (isAdmin) {
+        if (isAdmin || isModerator) {
           navigate('/admin');
         } else {
           navigate('/');
         }
       }
     }
-  }, [user, isAdmin, authLoading, justLoggedIn, navigate]);
+  }, [user, isAdmin, isModerator, authLoading, justLoggedIn, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const validation = authSchema.safeParse({ email, password });
     if (!validation.success) {
       toast.error(validation.error.errors[0].message);
@@ -56,7 +56,7 @@ export default function Auth() {
     }
 
     setLoading(true);
-    
+
     try {
       if (isLogin) {
         const { error } = await signIn(email, password);
@@ -98,8 +98,8 @@ export default function Auth() {
                   {isLogin ? 'Welcome Back' : 'Create Account'}
                 </CardTitle>
                 <CardDescription>
-                  {isLogin 
-                    ? 'Sign in to access your account' 
+                  {isLogin
+                    ? 'Sign in to access your account'
                     : 'Sign up to get started'}
                 </CardDescription>
               </CardHeader>
@@ -136,8 +136,8 @@ export default function Auth() {
                     onClick={() => setIsLogin(!isLogin)}
                     className="text-sm text-primary hover:underline"
                   >
-                    {isLogin 
-                      ? "Don't have an account? Sign up" 
+                    {isLogin
+                      ? "Don't have an account? Sign up"
                       : 'Already have an account? Sign in'}
                   </button>
                 </div>

@@ -101,7 +101,7 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, isModerator } = useAuth();
 
   const handleParentClick = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
@@ -164,7 +164,7 @@ export function Navbar() {
 
           {/* Right Side */}
           <div className="flex items-center space-x-2">
-            {isAdmin && (
+            {(isAdmin || isModerator) && (
               <Link to="/admin">
                 <Button variant="ghost" size="sm" className="hidden 2xl:flex">
                   <Settings className="h-4 w-4 mr-2" />
@@ -241,7 +241,7 @@ export function Navbar() {
                 ))}
               </Accordion>
 
-              {isAdmin && (
+              {(isAdmin || isModerator) && (
                 <Link
                   to="/admin"
                   onClick={() => setIsOpen(false)}
