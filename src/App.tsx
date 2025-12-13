@@ -21,7 +21,6 @@ import Gallery from "./pages/Gallery";
 import Auth from "./pages/Auth";
 import UpdatePassword from "./pages/UpdatePassword";
 import Admin from "./pages/Admin";
-import SecurityTest from "./pages/SecurityTest";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -260,7 +259,6 @@ const App = () => {
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/update-password" element={<UpdatePassword />} />
                 <Route path="/admin" element={<Admin />} />
-                <Route path="/security-test" element={<SecurityTest />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
