@@ -21,33 +21,19 @@ export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [justLoggedIn, setJustLoggedIn] = useState(false);
   const { signIn, signUp, user, isAdmin, isModerator, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   // Redirect when user is logged in and admin status is determined
   useEffect(() => {
     if (user && !authLoading) {
-      if (justLoggedIn) {
-        // Small delay to let admin status update
-        const timer = setTimeout(() => {
-          if (isAdmin || isModerator) {
-            navigate('/admin');
-          } else {
-            navigate('/');
-          }
-        }, 500);
-        return () => clearTimeout(timer);
+      if (isAdmin || isModerator) {
+        navigate('/admin');
       } else {
-        // Already logged in, redirect based on role
-        if (isAdmin || isModerator) {
-          navigate('/admin');
-        } else {
-          navigate('/');
-        }
+        navigate('/');
       }
     }
-  }, [user, isAdmin, isModerator, authLoading, justLoggedIn, navigate]);
+  }, [user, isAdmin, isModerator, authLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,7 +78,6 @@ export default function Auth() {
             }
           } else {
             toast.success('Welcome back!');
-            setJustLoggedIn(true);
           }
         } else {
           const { error } = await signUp(email, password);

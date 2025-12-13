@@ -35,6 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         if (session?.user) {
           // Fetch role immediately on auth change
+          setLoading(true);
           fetchUserRole(session.user.id);
         } else {
           setRole(null);
@@ -107,6 +108,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = async () => {
     await supabase.auth.signOut();
     setRole(null);
+    setSession(null);
+    setUser(null);
     setIsAdmin(false);
     setIsModerator(false);
   };
