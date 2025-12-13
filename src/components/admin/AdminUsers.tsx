@@ -21,6 +21,16 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
     Select,
     SelectContent,
     SelectItem,
@@ -28,7 +38,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { UserPlus, Shield, ShieldAlert, Loader2, Pencil } from 'lucide-react';
+import { UserPlus, Shield, ShieldAlert, Loader2, Pencil, Trash2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 interface UserProfile {
@@ -46,6 +56,7 @@ export function AdminUsers() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [editingUser, setEditingUser] = useState<UserProfile | null>(null);
+    const [deleteUser, setDeleteUser] = useState<UserProfile | null>(null);
 
     // Form state
     const [newUserEmail, setNewUserEmail] = useState('');
@@ -59,6 +70,7 @@ export function AdminUsers() {
 
     const [isCreating, setIsCreating] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
         fetchUsers();
@@ -214,6 +226,32 @@ export function AdminUsers() {
         }
     };
 
+    const handleDeleteClick = (user: UserProfile) => {
+        setDeleteUser(user);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!deleteUser) return;
+
+        setIsDeleting(true);
+        try {
+            const { error } = await supabase.rpc('delete_user', {
+                target_user_id: deleteUser.id
+            });
+
+            if (error) throw error;
+
+            toast.success('User deleted successfully');
+            setDeleteUser(null);
+            fetchUsers();
+        } catch (error: any) {
+            console.error('Error deleting user:', error);
+            toast.error(error.message || 'Failed to delete user');
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
     const resetForm = () => {
         setNewUserEmail('');
         setNewUserPassword('');
@@ -358,6 +396,33 @@ export function AdminUsers() {
                         </form>
                     </DialogContent>
                 </Dialog>
+
+                {/* Delete Confirmation Alert */}
+                <AlertDialog open={!!deleteUser} onOpenChange={(open) => !open && setDeleteUser(null)}>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete the user account
+                                for <span className="font-semibold text-foreground">{deleteUser?.email}</span> and remove their data from the servers.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleConfirmDelete();
+                                }}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                disabled={isDeleting}
+                            >
+                                {isDeleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                Delete User
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </div>
 
             <Card>
@@ -387,15 +452,25 @@ export function AdminUsers() {
                                         <TableCell>{user.email}</TableCell>
                                         <TableCell>{getRoleBadge(user.role)}</TableCell>
                                         <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
-                                        <TableCell className="text-right">
+                                        <TableCell className="text-right space-x-2">
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
                                                 onClick={() => handleEditClick(user)}
-                                                disabled={user.id === currentUser?.id} // Prevent editing self to avoid locking out
+                                                disabled={user.id === currentUser?.id}
                                                 title={user.id === currentUser?.id ? "Cannot edit your own role here" : "Edit user"}
                                             >
                                                 <Pencil className="h-4 w-4" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => handleDeleteClick(user)}
+                                                disabled={user.id === currentUser?.id}
+                                                className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                                                title={user.id === currentUser?.id ? "Cannot delete yourself" : "Delete user"}
+                                            >
+                                                <Trash2 className="h-4 w-4" />
                                             </Button>
                                         </TableCell>
                                     </TableRow>
