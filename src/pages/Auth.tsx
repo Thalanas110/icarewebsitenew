@@ -7,14 +7,17 @@ import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { supabase } from '@/integrations/supabase/client';
 
 const authSchema = z.object({
   email: z.string().email('Please enter a valid email'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
+type AuthMode = 'login' | 'signup' | 'forgot_password';
+
 export default function Auth() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [authMode, setAuthMode] = useState<AuthMode>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -48,42 +51,80 @@ export default function Auth() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const validation = authSchema.safeParse({ email, password });
-    if (!validation.success) {
-      toast.error(validation.error.errors[0].message);
-      return;
-    }
-
     setLoading(true);
 
     try {
-      if (isLogin) {
-        const { error } = await signIn(email, password);
-        if (error) {
-          if (error.message.includes('Invalid login credentials')) {
-            toast.error('Invalid email or password');
-          } else {
-            toast.error(error.message);
-          }
-        } else {
-          toast.success('Welcome back!');
-          setJustLoggedIn(true);
+      if (authMode === 'forgot_password') {
+        // Forgot Password Flow
+        if (!email) {
+          toast.error('Please enter your email');
+          setLoading(false);
+          return;
         }
-      } else {
-        const { error } = await signUp(email, password);
+
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/update-password`,
+        });
+
         if (error) {
-          if (error.message.includes('already registered')) {
-            toast.error('This email is already registered. Please sign in instead.');
+          toast.error(error.message);
+        } else {
+          toast.success('Check your email for the password reset link');
+          setAuthMode('login');
+        }
+
+      } else {
+        // Login / Signup Flow
+        const validation = authSchema.safeParse({ email, password });
+        if (!validation.success) {
+          toast.error(validation.error.errors[0].message);
+          setLoading(false);
+          return;
+        }
+
+        if (authMode === 'login') {
+          const { error } = await signIn(email, password);
+          if (error) {
+            if (error.message.includes('Invalid login credentials')) {
+              toast.error('Invalid email or password');
+            } else {
+              toast.error(error.message);
+            }
           } else {
-            toast.error(error.message);
+            toast.success('Welcome back!');
+            setJustLoggedIn(true);
           }
         } else {
-          toast.success('Account created! Please check your email to confirm your account.');
+          const { error } = await signUp(email, password);
+          if (error) {
+            if (error.message.includes('already registered')) {
+              toast.error('This email is already registered. Please sign in instead.');
+            } else {
+              toast.error(error.message);
+            }
+          } else {
+            toast.success('Account created! Please check your email to confirm your account.');
+          }
         }
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getTitle = () => {
+    switch (authMode) {
+      case 'login': return 'Welcome Back';
+      case 'signup': return 'Create Account';
+      case 'forgot_password': return 'Reset Password';
+    }
+  };
+
+  const getDescription = () => {
+    switch (authMode) {
+      case 'login': return 'Sign in to access your account';
+      case 'signup': return 'Sign up to get started';
+      case 'forgot_password': return 'Enter your email to receive a reset link';
     }
   };
 
@@ -95,12 +136,10 @@ export default function Auth() {
             <Card className="border-none shadow-lg">
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl font-display">
-                  {isLogin ? 'Welcome Back' : 'Create Account'}
+                  {getTitle()}
                 </CardTitle>
                 <CardDescription>
-                  {isLogin
-                    ? 'Sign in to access your account'
-                    : 'Sign up to get started'}
+                  {getDescription()}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -115,31 +154,67 @@ export default function Auth() {
                       required
                     />
                   </div>
-                  <div>
-                    <label className="text-sm font-medium mb-1 block">Password</label>
-                    <Input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      required
-                    />
-                  </div>
+
+                  {authMode !== 'forgot_password' && (
+                    <div>
+                      <div className="flex justify-between items-center mb-1">
+                        <label className="text-sm font-medium block">Password</label>
+                        {authMode === 'login' && (
+                          <button
+                            type="button"
+                            onClick={() => setAuthMode('forgot_password')}
+                            className="text-xs text-primary hover:underline"
+                          >
+                            Forgot Password?
+                          </button>
+                        )}
+                      </div>
+                      <Input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        required
+                      />
+                    </div>
+                  )}
+
                   <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? 'Please wait...' : (isLogin ? 'Sign In' : 'Sign Up')}
+                    {loading ? 'Please wait...' : (
+                      authMode === 'login' ? 'Sign In' :
+                        authMode === 'signup' ? 'Sign Up' : 'Send Reset Link'
+                    )}
                   </Button>
                 </form>
 
-                <div className="mt-6 text-center">
-                  <button
-                    type="button"
-                    onClick={() => setIsLogin(!isLogin)}
-                    className="text-sm text-primary hover:underline"
-                  >
-                    {isLogin
-                      ? "Don't have an account? Sign up"
-                      : 'Already have an account? Sign in'}
-                  </button>
+                <div className="mt-6 text-center space-y-2">
+                  {authMode === 'login' && (
+                    <button
+                      type="button"
+                      onClick={() => setAuthMode('signup')}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      Don't have an account? Sign up
+                    </button>
+                  )}
+                  {authMode === 'signup' && (
+                    <button
+                      type="button"
+                      onClick={() => setAuthMode('login')}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      Already have an account? Sign in
+                    </button>
+                  )}
+                  {authMode === 'forgot_password' && (
+                    <button
+                      type="button"
+                      onClick={() => setAuthMode('login')}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      Back to Sign In
+                    </button>
+                  )}
                 </div>
               </CardContent>
             </Card>
