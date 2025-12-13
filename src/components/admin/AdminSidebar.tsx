@@ -2,17 +2,18 @@ import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { Users, Calendar, Clock, Building, LogOut, Home, BarChart3, BookOpen, Heart, Image as ImageIcon } from 'lucide-react';
+import { Users, Calendar, Clock, Building, LogOut, Home, BarChart3, BookOpen, Heart, Image as ImageIcon, UserCog } from 'lucide-react';
 
 const menuItems = [
-  { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-  { id: 'ministries', label: 'Ministries', icon: Users },
-  { id: 'events', label: 'Events', icon: Calendar },
-  { id: 'sermons', label: 'Sermons', icon: BookOpen },
-  { id: 'services', label: 'Service Times', icon: Clock },
-  { id: 'church-info', label: 'Church Info', icon: Building },
-  { id: 'gallery', label: 'Gallery', icon: ImageIcon },
-  { id: 'giving', label: 'Giving', icon: Heart },
+  { id: 'analytics', label: 'Analytics', icon: BarChart3, roles: ['admin'] },
+  { id: 'ministries', label: 'Ministries', icon: Users, roles: ['admin', 'moderator'] },
+  { id: 'events', label: 'Events', icon: Calendar, roles: ['admin', 'moderator'] },
+  { id: 'sermons', label: 'Sermons', icon: BookOpen, roles: ['admin', 'moderator'] },
+  { id: 'services', label: 'Service Times', icon: Clock, roles: ['admin'] },
+  { id: 'church-info', label: 'Church Info', icon: Building, roles: ['admin'] },
+  { id: 'gallery', label: 'Gallery', icon: ImageIcon, roles: ['admin', 'moderator'] },
+  { id: 'giving', label: 'Giving', icon: Heart, roles: ['admin'] },
+  { id: 'users', label: 'Users', icon: UserCog, roles: ['admin'] },
 ];
 
 interface Props {
@@ -21,8 +22,12 @@ interface Props {
 }
 
 export function AdminSidebar({ activeTab, setActiveTab }: Props) {
-  const { signOut } = useAuth();
+  const { signOut, role } = useAuth();
   const navigate = useNavigate();
+
+  const filteredMenuItems = menuItems.filter(item =>
+    role && item.roles.includes(role)
+  );
 
   return (
     <Sidebar className="border-r">
@@ -33,7 +38,7 @@ export function AdminSidebar({ activeTab, setActiveTab }: Props) {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menuItems.map((item) => (
+              {filteredMenuItems.map((item) => (
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton onClick={() => setActiveTab(item.id)} className={`h-auto py-3 md:py-4 px-4 text-base md:text-xl ${activeTab === item.id ? 'bg-sidebar-accent' : ''}`}>
                     <item.icon className="h-4 w-4 md:h-7 md:w-7 mr-3 md:mr-4" />

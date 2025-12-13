@@ -9,15 +9,36 @@ import { AdminServiceTimes } from '@/components/admin/AdminServiceTimes';
 import { AdminChurchInfo } from '@/components/admin/AdminChurchInfo';
 import { AdminGallery } from '@/components/admin/AdminGallery';
 import AdminGiving from '@/components/admin/AdminGiving';
+import { AdminUsers } from '@/components/admin/AdminUsers';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Admin() {
-  const { isAdmin, loading } = useAuth();
+  const { isAdmin, isModerator, loading, role } = useAuth();
   const [activeTab, setActiveTab] = useState('analytics');
 
+  useEffect(() => {
+    // Redirect moderators to a safe tab if they land on 'analytics' (default) or restricted tabs
+    if (role === 'moderator') {
+      const allowedTabs = ['events', 'sermons', 'ministries', 'gallery'];
+      if (!allowedTabs.includes(activeTab)) {
+        setActiveTab('events');
+      }
+    }
+  }, [role, activeTab]);
+
   if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
-  if (!isAdmin) return <Navigate to="/auth" replace />;
+
+  // Use a more permissive check here, filtering is done per-tab
+  if (!isAdmin && !isModerator) return <Navigate to="/auth" replace />;
+
+  const isTabAllowed = (tab: string) => {
+    if (isAdmin) return true;
+    if (isModerator) {
+      return ['events', 'sermons', 'ministries', 'gallery'].includes(tab);
+    }
+    return false;
+  };
 
   return (
     <SidebarProvider style={{ "--sidebar-width": "24rem" } as React.CSSProperties}>
@@ -30,14 +51,22 @@ export default function Admin() {
           </div>
           <div className="flex-1 p-4 md:p-8 overflow-x-hidden">
             <h1 className="hidden md:block text-3xl font-display font-bold mb-8">Admin Dashboard</h1>
-            {activeTab === 'analytics' && <AdminAnalytics />}
-            {activeTab === 'ministries' && <AdminMinistries />}
-            {activeTab === 'events' && <AdminEvents />}
-            {activeTab === 'sermons' && <AdminSermons />}
-            {activeTab === 'services' && <AdminServiceTimes />}
-            {activeTab === 'church-info' && <AdminChurchInfo />}
-            {activeTab === 'gallery' && <AdminGallery />}
-            {activeTab === 'giving' && <AdminGiving />}
+
+            {activeTab === 'analytics' && isTabAllowed('analytics') && <AdminAnalytics />}
+            {activeTab === 'ministries' && isTabAllowed('ministries') && <AdminMinistries />}
+            {activeTab === 'events' && isTabAllowed('events') && <AdminEvents />}
+            {activeTab === 'sermons' && isTabAllowed('sermons') && <AdminSermons />}
+            {activeTab === 'services' && isTabAllowed('services') && <AdminServiceTimes />}
+            {activeTab === 'church-info' && isTabAllowed('church-info') && <AdminChurchInfo />}
+            {activeTab === 'gallery' && isTabAllowed('gallery') && <AdminGallery />}
+            {activeTab === 'giving' && isTabAllowed('giving') && <AdminGiving />}
+            {activeTab === 'users' && isTabAllowed('users') && <AdminUsers />}
+
+            {!isTabAllowed(activeTab) && (
+              <div className="flex h-full items-center justify-center text-muted-foreground">
+                Access Denied or Invalid Tab
+              </div>
+            )}
           </div>
         </main>
       </div>
