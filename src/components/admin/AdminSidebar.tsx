@@ -53,6 +53,13 @@ export function AdminSidebar({ activeTab, setActiveTab }: Props) {
           <Button variant="ghost" className="w-full justify-start h-auto py-3 md:py-4 px-4 text-base md:text-xl" onClick={() => navigate('/')}>
             <Home className="h-4 w-4 md:h-7 md:w-7 mr-3 md:mr-4" /> Back to Site
           </Button>
+          <Button
+            variant="ghost"
+            className={`w-full justify-start h-auto py-3 md:py-4 px-4 text-base md:text-xl ${activeTab === 'profile' ? 'bg-sidebar-accent' : ''}`}
+            onClick={() => setActiveTab('profile')}
+          >
+            <UserCog className="h-4 w-4 md:h-7 md:w-7 mr-3 md:mr-4" /> My Profile
+          </Button>
           <Button variant="ghost" className="w-full justify-start text-destructive h-auto py-3 md:py-4 px-4 text-base md:text-xl" onClick={signOut}>
             <LogOut className="h-4 w-4 md:h-7 md:w-7 mr-3 md:mr-4" /> Sign Out
           </Button>

@@ -10,6 +10,7 @@ import { AdminChurchInfo } from '@/components/admin/AdminChurchInfo';
 import { AdminGallery } from '@/components/admin/AdminGallery';
 import AdminGiving from '@/components/admin/AdminGiving';
 import { AdminUsers } from '@/components/admin/AdminUsers';
+import { AdminProfile } from '@/components/admin/AdminProfile';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { useState, useEffect } from 'react';
 
@@ -19,8 +20,8 @@ export default function Admin() {
 
   useEffect(() => {
     // Redirect moderators to a safe tab if they land on 'analytics' (default) or restricted tabs
-    if (role === 'moderator') {
-      const allowedTabs = ['events', 'sermons', 'ministries', 'gallery'];
+    if (role === 'moderator' && activeTab !== 'profile') {
+      const allowedTabs = ['events', 'sermons', 'ministries', 'gallery', 'profile'];
       if (!allowedTabs.includes(activeTab)) {
         setActiveTab('events');
       }
@@ -33,6 +34,7 @@ export default function Admin() {
   if (!isAdmin && !isModerator) return <Navigate to="/auth" replace />;
 
   const isTabAllowed = (tab: string) => {
+    if (tab === 'profile') return true; // Allowed for everyone
     if (isAdmin) return true;
     if (isModerator) {
       return ['events', 'sermons', 'ministries', 'gallery'].includes(tab);
@@ -61,6 +63,7 @@ export default function Admin() {
             {activeTab === 'gallery' && isTabAllowed('gallery') && <AdminGallery />}
             {activeTab === 'giving' && isTabAllowed('giving') && <AdminGiving />}
             {activeTab === 'users' && isTabAllowed('users') && <AdminUsers />}
+            {activeTab === 'profile' && <AdminProfile />}
 
             {!isTabAllowed(activeTab) && (
               <div className="flex h-full items-center justify-center text-muted-foreground">
