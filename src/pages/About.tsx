@@ -90,22 +90,22 @@ export default function About() {
               {
                 icon: Megaphone,
                 title: 'Evangelism',
-                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                desc: ""
               },
               {
                 icon: Users,
                 title: 'Christ Centered Discipleship',
-                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                desc: ""
               },
               {
                 icon: Music,
                 title: 'Spiirit filled Worship',
-                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                desc: ""
               },
               {
                 icon: Heart,
                 title: 'Godly Love & Care',
-                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                desc: ""
               },
             ].map((value, i) => (
               <Card key={i} className="border-none shadow-lg">
