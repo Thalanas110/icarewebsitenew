@@ -29,21 +29,21 @@ export default function Services() {
           ) : (
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               {serviceTimes?.map((service) => (
-                <Card key={service.id} className="border-none shadow-lg hover:shadow-xl transition-shadow">
-                  <CardContent className="p-8 space-y-4">
+                <Card key={service.id} className="border-none shadow-lg hover:shadow-xl transition-shadow w-full">
+                  <CardContent className="p-5 md:p-8 space-y-4">
                     <div className="flex items-start justify-between">
-                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
                         <Clock className="h-6 w-6 text-primary" />
                       </div>
                       {service.audience && (
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                          <Users className="h-4 w-4" />
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground text-right ml-2">
+                          <Users className="h-4 w-4 shrink-0" />
                           {service.audience}
                         </div>
                       )}
                     </div>
-                    <h3 className="text-2xl font-display font-bold">{service.name}</h3>
-                    <p className="text-3xl font-bold text-primary">{service.time}</p>
+                    <h3 className="text-xl md:text-2xl font-display font-bold">{service.name}</h3>
+                    <p className="text-2xl md:text-3xl font-bold text-primary">{service.time}</p>
                     {service.description && (
                       <p className="text-muted-foreground">{service.description}</p>
                     )}
