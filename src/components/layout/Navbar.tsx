@@ -119,7 +119,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Nav - Absolutely Centered */}
-          <div className="hidden md:flex items-center space-x-1 absolute left-1/2 transform -translate-x-1/2">
+          <div className="hidden 2xl:flex items-center space-x-1 absolute left-1/2 transform -translate-x-1/2">
             {navLinks.map((link) => (
               <NavigationMenu key={link.href} className="list-none">
                 <NavigationMenuList>
@@ -166,7 +166,7 @@ export function Navbar() {
           <div className="flex items-center space-x-2">
             {isAdmin && (
               <Link to="/admin">
-                <Button variant="ghost" size="sm" className="hidden sm:flex">
+                <Button variant="ghost" size="sm" className="hidden 2xl:flex">
                   <Settings className="h-4 w-4 mr-2" />
                   Admin
                 </Button>
@@ -174,13 +174,13 @@ export function Navbar() {
             )}
             {!user && (
               <Link to="/auth">
-                <Button variant="ghost" size="sm" className="hidden sm:flex">
+                <Button variant="ghost" size="sm" className="hidden 2xl:flex">
                   Login
                 </Button>
               </Link>
             )}
             <Link to="/contact">
-              <Button size="sm" className="hidden sm:flex">
+              <Button size="sm" className="hidden 2xl:flex">
                 Plan Your Visit
               </Button>
             </Link>
@@ -189,7 +189,7 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden"
+              className="2xl:hidden"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -199,7 +199,7 @@ export function Navbar() {
 
         {/* Mobile Nav */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t max-h-[calc(100vh-4rem)] overflow-y-auto">
+          <div className="2xl:hidden py-4 border-t max-h-[calc(100vh-4rem)] overflow-y-auto">
             <div className="flex flex-col space-y-2 px-4">
               <Accordion type="single" collapsible className="w-full">
                 {navLinks.map((link) => (
