@@ -137,12 +137,12 @@ icarewebsitenew/
 
 ## 📚 Documentation
 
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - System architecture and design decisions
-- **[COMPONENTS.md](./COMPONENTS.md)** - Component documentation and usage
-- **[API.md](./API.md)** - API and data layer documentation
-- **[DEVELOPMENT.md](./DEVELOPMENT.md)** - Development guide and workflows
-- **[SECURITY.md](./SECURITY.md)** - Security considerations and best practices
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Deployment guide for Netlify
+- **[ARCHITECTURE.md](./documentations/ARCHITECTURE.md)** - System architecture and design decisions
+- **[COMPONENTS.md](./documentations/COMPONENTS.md)** - Component documentation and usage
+- **[API.md](./documentations/API.md)** - API and data layer documentation
+- **[DEVELOPMENT.md](./documentations/DEVELOPMENT.md)** - Development guide and workflows
+- **[SECURITY.md](./documentations/SECURITY.md)** - Security considerations and best practices
+- **[DEPLOYMENT.md](./documentations/DEPLOYMENT.md)** - Deployment guide for Netlify
 
 ## 🔧 Available Scripts
 
