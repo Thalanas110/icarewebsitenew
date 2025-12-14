@@ -162,7 +162,7 @@ npm run lint         # Run ESLint
 
 ## 🚀 Deployment
 
-This application is configured for deployment on **Netlify**. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+This application is configured for deployment on **Netlify**. See [DEPLOYMENT.md](./documentations/DEPLOYMENT.md) for detailed instructions.
 
 ### Quick Deploy to Netlify
 
@@ -178,7 +178,7 @@ This application is configured for deployment on **Netlify**. See [DEPLOYMENT.md
 - **Input Validation**: All forms validated with Zod schemas
 - **File Upload**: Restricted file types and size limits
 
-See [SECURITY.md](./SECURITY.md) for detailed security documentation.
+See [SECURITY.md](./documentations/SECURITY.md) for detailed security documentation.
 
 ## 🤝 Contributing
 
@@ -205,8 +205,8 @@ This project is licensed under the MIT License.
 
 For issues and questions:
 - Open an issue on GitHub
-- Check the [documentation](./DEVELOPMENT.md)
-- Review [common troubleshooting steps](./DEVELOPMENT.md#troubleshooting)
+- Check the [documentation](./documentations/DEVELOPMENT.md)
+- Review [common troubleshooting steps](./documentations/DEVELOPMENT.md#troubleshooting)
 
 ---
 
