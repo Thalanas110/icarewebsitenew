@@ -1,6 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { useState } from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   LineChart,
   Line,
@@ -29,6 +37,7 @@ import { format } from 'date-fns';
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
 
 export function AdminAnalytics() {
+  const [activeTab, setActiveTab] = useState("overview");
   const { data: summary, isLoading: summaryLoading } = useAnalyticsSummary(30);
   const { data: dailyVisits, isLoading: dailyLoading } = useDailyVisits(30);
   const { data: pagePopularity, isLoading: pagesLoading } = usePagePopularity(30);
@@ -193,14 +202,32 @@ export function AdminAnalytics() {
       </div>
 
       {/* Charts and Data */}
-      <Tabs defaultValue="overview" className="space-y-4">
-        <div className="overflow-x-auto -mx-2 px-2">
-          <TabsList className="w-full md:w-auto inline-flex">
-            <TabsTrigger value="overview" className="text-xs md:text-sm">Overview</TabsTrigger>
-            <TabsTrigger value="pages" className="text-xs md:text-sm">Page Analytics</TabsTrigger>
-            <TabsTrigger value="content" className="text-xs md:text-sm">Content Analytics</TabsTrigger>
-            <TabsTrigger value="recent" className="text-xs md:text-sm">Recent Activity</TabsTrigger>
-          </TabsList>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <div className="w-full">
+          {/* Mobile View - Dropdown */}
+          <div className="min-[1100px]:hidden w-full mb-4">
+            <Select value={activeTab} onValueChange={setActiveTab}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select view" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="overview">Overview</SelectItem>
+                <SelectItem value="pages">Page Analytics</SelectItem>
+                <SelectItem value="content">Content Analytics</SelectItem>
+                <SelectItem value="recent">Recent Activity</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Desktop View - Tabs */}
+          <div className="hidden min-[1100px]:block overflow-x-auto -mx-2 px-2">
+            <TabsList className="w-full md:w-auto inline-flex">
+              <TabsTrigger value="overview" className="text-xs md:text-sm">Overview</TabsTrigger>
+              <TabsTrigger value="pages" className="text-xs md:text-sm">Page Analytics</TabsTrigger>
+              <TabsTrigger value="content" className="text-xs md:text-sm">Content Analytics</TabsTrigger>
+              <TabsTrigger value="recent" className="text-xs md:text-sm">Recent Activity</TabsTrigger>
+            </TabsList>
+          </div>
         </div>
 
         <TabsContent value="overview">
