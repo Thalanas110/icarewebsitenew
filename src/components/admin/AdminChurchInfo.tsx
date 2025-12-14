@@ -45,7 +45,7 @@ export function AdminChurchInfo() {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-semibold">Church Information</h2>
-      
+
       <Card>
         <CardHeader><CardTitle>Pastor Information</CardTitle></CardHeader>
         <CardContent className="space-y-4">
@@ -75,14 +75,23 @@ export function AdminChurchInfo() {
       <Card>
         <CardHeader><CardTitle>Location</CardTitle></CardHeader>
         <CardContent className="space-y-4">
-          <Input placeholder="Address" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
-          <div className="grid grid-cols-3 gap-4">
-            <h5>City</h5>
-            <Input placeholder="City" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
-            <h5>State</h5>
-            <Input placeholder="State" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} />
-            <h5>Zip</h5>
-            <Input placeholder="Zip" value={form.zip} onChange={(e) => setForm({ ...form, zip: e.target.value })} />
+          <div className="space-y-2">
+            <h5>Address</h5>
+            <Input placeholder="Address" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <h5>City</h5>
+              <Input placeholder="City" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <h5>State</h5>
+              <Input placeholder="State" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <h5>Zip</h5>
+              <Input placeholder="Zip" value={form.zip} onChange={(e) => setForm({ ...form, zip: e.target.value })} />
+            </div>
           </div>
         </CardContent>
       </Card>
