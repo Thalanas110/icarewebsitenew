@@ -138,6 +138,7 @@ icarewebsitenew/
 ## 📚 Documentation
 
 - **[ARCHITECTURE.md](./documentations/ARCHITECTURE.md)** - System architecture and design decisions
+- **[DIAGRAMS.md](./documentations/DIAGRAMS.md)** - Visual system diagrams (UCD, DFD, Flowchart)
 - **[COMPONENTS.md](./documentations/COMPONENTS.md)** - Component documentation and usage
 - **[API.md](./documentations/API.md)** - API and data layer documentation
 - **[DEVELOPMENT.md](./documentations/DEVELOPMENT.md)** - Development guide and workflows
