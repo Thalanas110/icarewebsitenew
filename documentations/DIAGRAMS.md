@@ -18,4 +18,4 @@ This diagram details the atomic logic and data flow across the entire system, co
 
 The following flowchart details the user navigation paths, decision points, and system states from an end-user perspective.
 
-![System Flowchart](images/flowchart.png)
+![System Flowchart](images/flowchart1.png)
