@@ -22,6 +22,7 @@ import Auth from "./pages/Auth";
 import UpdatePassword from "./pages/UpdatePassword";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -258,6 +259,7 @@ const App = () => {
                 <Route path="/gallery" element={<Gallery />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/update-password" element={<UpdatePassword />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

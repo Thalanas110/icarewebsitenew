@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Settings } from 'lucide-react';
+import { Menu, X, Settings, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import {
@@ -172,6 +172,14 @@ export function Navbar() {
                 </Button>
               </Link>
             )}
+            {user && (
+              <Link to="/profile">
+                <Button variant="ghost" size="sm" className="hidden 2xl:flex">
+                  <User className="h-4 w-4 mr-2" />
+                  Profile
+                </Button>
+              </Link>
+            )}
             {!user && (
               <Link to="/auth">
                 <Button variant="ghost" size="sm" className="hidden 2xl:flex">
@@ -249,6 +257,16 @@ export function Navbar() {
                 >
                   <Settings className="h-4 w-4 mr-2" />
                   Admin Dashboard
+                </Link>
+              )}
+              {user && (
+                <Link
+                  to="/profile"
+                  onClick={() => setIsOpen(false)}
+                  className="px-0 py-4 text-base font-medium text-muted-foreground hover:text-foreground flex items-center"
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  My Profile
                 </Link>
               )}
               {!user && (
