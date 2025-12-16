@@ -114,12 +114,14 @@ export function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between relative">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <img src="/icc logo no bg.png" alt="REFUGE Logo" className="h-10 w-auto" />
-          </Link>
+          <div className="flex-1 flex justify-start">
+            <Link to="/" className="flex items-center space-x-2">
+              <img src="/icc logo no bg.png" alt="REFUGE Logo" className="h-10 w-auto" />
+            </Link>
+          </div>
 
-          {/* Desktop Nav - Absolutely Centered */}
-          <div className="hidden 2xl:flex items-center space-x-1 absolute left-1/2 transform -translate-x-1/2">
+          {/* Desktop Nav - Centered */}
+          <div className="hidden 2xl:flex items-center space-x-1">
             {navLinks.map((link) => (
               <NavigationMenu key={link.href} className="list-none">
                 <NavigationMenuList>
@@ -163,7 +165,7 @@ export function Navbar() {
           </div>
 
           {/* Right Side */}
-          <div className="flex items-center space-x-2">
+          <div className="flex-1 flex justify-end items-center space-x-2">
             {(isAdmin || isModerator) && (
               <Link to="/admin">
                 <Button variant="ghost" size="sm" className="hidden 2xl:flex">
@@ -172,7 +174,7 @@ export function Navbar() {
                 </Button>
               </Link>
             )}
-            {user && (
+            {user && !isAdmin && !isModerator && (
               <Link to="/profile">
                 <Button variant="ghost" size="sm" className="hidden 2xl:flex">
                   <User className="h-4 w-4 mr-2" />
@@ -259,7 +261,7 @@ export function Navbar() {
                   Admin Dashboard
                 </Link>
               )}
-              {user && (
+              {user && !isAdmin && !isModerator && (
                 <Link
                   to="/profile"
                   onClick={() => setIsOpen(false)}
