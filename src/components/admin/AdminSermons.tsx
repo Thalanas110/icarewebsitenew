@@ -11,12 +11,23 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, Pencil, Trash2, Video, Music, BookOpen, Clock, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export function AdminSermons() {
   const { data: sermons, isLoading } = useSermons();
   const { createSermon, updateSermon, deleteSermon } = useSermonMutations();
   const [isOpen, setIsOpen] = useState(false);
   const [editingSermon, setEditingSermon] = useState<Sermon | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<SermonInsert>({
     title: '',
@@ -51,7 +62,7 @@ export function AdminSermons() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.title || !formData.speaker || !formData.sermon_date) {
       toast.error('Please fill in all required fields');
       return;
@@ -90,14 +101,19 @@ export function AdminSermons() {
     setIsOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this sermon?')) {
-      try {
-        await deleteSermon.mutateAsync(id);
-        toast.success('Sermon deleted successfully');
-      } catch (error) {
-        toast.error('Failed to delete sermon');
-      }
+  const handleDeleteClick = (id: string) => {
+    setDeleteId(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await deleteSermon.mutateAsync(deleteId);
+      toast.success('Sermon deleted successfully');
+    } catch (error) {
+      toast.error('Failed to delete sermon');
+    } finally {
+      setDeleteId(null);
     }
   };
 
@@ -167,9 +183,9 @@ export function AdminSermons() {
                     id="duration_minutes"
                     type="number"
                     value={formData.duration_minutes || ''}
-                    onChange={(e) => setFormData({ 
-                      ...formData, 
-                      duration_minutes: e.target.value ? parseInt(e.target.value) : null 
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      duration_minutes: e.target.value ? parseInt(e.target.value) : null
                     })}
                   />
                 </div>
@@ -279,7 +295,7 @@ export function AdminSermons() {
                         </Badge>
                       )}
                     </div>
-                    
+
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-muted-foreground mb-3">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
@@ -342,7 +358,7 @@ export function AdminSermons() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleDelete(sermon.id)}
+                      onClick={() => handleDeleteClick(sermon.id)}
                       className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -354,6 +370,23 @@ export function AdminSermons() {
           ))
         )}
       </div>
+
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the sermon.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -13,6 +13,16 @@ import { ImageUpload } from './ImageUpload';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 function SortableMinistryCard({ ministry, onEdit, onDelete }: { ministry: Ministry; onEdit: (m: Ministry) => void; onDelete: (id: string) => void }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: ministry.id });
@@ -69,6 +79,7 @@ export function AdminMinistries() {
     image_url: '',
     category: 'ministry' as 'ministry' | 'outreach'
   });
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -96,9 +107,20 @@ export function AdminMinistries() {
     } catch (e: unknown) { toast.error(e instanceof Error ? e.message : 'An error occurred'); }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Delete this item?')) return;
-    try { await deleteMinistry.mutateAsync(id); toast.success('Deleted'); } catch (e: unknown) { toast.error(e instanceof Error ? e.message : 'An error occurred'); }
+  const handleDeleteClick = (id: string) => {
+    setDeleteId(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await deleteMinistry.mutateAsync(deleteId);
+      toast.success('Deleted');
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : 'An error occurred');
+    } finally {
+      setDeleteId(null);
+    }
   };
 
   const openEdit = (m: Ministry) => {
@@ -211,7 +233,7 @@ export function AdminMinistries() {
               <SortableContext items={churchMinistries.map(m => m.id)} strategy={verticalListSortingStrategy}>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {churchMinistries.map((m) => (
-                    <SortableMinistryCard key={m.id} ministry={m} onEdit={openEdit} onDelete={handleDelete} />
+                    <SortableMinistryCard key={m.id} ministry={m} onEdit={openEdit} onDelete={handleDeleteClick} />
                   ))}
                   {churchMinistries.length === 0 && <p className="text-muted-foreground col-span-full">No church ministries yet.</p>}
                 </div>
@@ -225,7 +247,7 @@ export function AdminMinistries() {
               <SortableContext items={outreaches.map(m => m.id)} strategy={verticalListSortingStrategy}>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {outreaches.map((m) => (
-                    <SortableMinistryCard key={m.id} ministry={m} onEdit={openEdit} onDelete={handleDelete} />
+                    <SortableMinistryCard key={m.id} ministry={m} onEdit={openEdit} onDelete={handleDeleteClick} />
                   ))}
                   {outreaches.length === 0 && <p className="text-muted-foreground col-span-full">No outreaches yet.</p>}
                 </div>
@@ -234,6 +256,23 @@ export function AdminMinistries() {
           </section>
         </div>
       </DndContext>
+
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the ministry/outreach.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

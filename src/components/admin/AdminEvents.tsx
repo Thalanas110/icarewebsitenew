@@ -11,12 +11,24 @@ import { toast } from 'sonner';
 import { Plus, Pencil, Trash2, Calendar, CalendarX, CheckCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { ImageUpload } from './ImageUpload';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
 export function AdminEvents() {
   const { data: events, isLoading } = useEvents();
   const { createEvent, updateEvent, deleteEvent } = useEventMutations();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Event | null>(null);
   const [form, setForm] = useState({ title: '', description: '', event_date: '', event_time: '', location: '', image_url: '', status: 'scheduled' as 'scheduled' | 'postponed' | 'done' });
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const resetForm = () => { setForm({ title: '', description: '', event_date: '', event_time: '', location: '', image_url: '', status: 'scheduled' }); setEditing(null); };
 
@@ -34,9 +46,20 @@ export function AdminEvents() {
     } catch (e: any) { toast.error(e.message); }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Delete this event?')) return;
-    try { await deleteEvent.mutateAsync(id); toast.success('Deleted'); } catch (e: any) { toast.error(e.message); }
+  const handleDeleteClick = (id: string) => {
+    setDeleteId(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await deleteEvent.mutateAsync(deleteId);
+      toast.success('Deleted');
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally {
+      setDeleteId(null);
+    }
   };
 
   const openEdit = (e: Event) => { setEditing(e); setForm({ title: e.title, description: e.description || '', event_date: e.event_date, event_time: e.event_time || '', location: e.location || '', image_url: e.image_url || '', status: e.status || 'scheduled' }); setOpen(true); };
@@ -70,9 +93,9 @@ export function AdminEvents() {
               <Textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
               <div>
                 <label className="text-sm font-medium mb-2 block">Event Cover Image</label>
-                <ImageUpload 
-                  value={form.image_url} 
-                  onChange={(url) => setForm({ ...form, image_url: url })} 
+                <ImageUpload
+                  value={form.image_url}
+                  onChange={(url) => setForm({ ...form, image_url: url })}
                   folder="events"
                 />
               </div>
@@ -102,7 +125,7 @@ export function AdminEvents() {
                 </div>
                 <div className="flex gap-2">
                   <Button size="icon" variant="ghost" onClick={() => openEdit(e)}><Pencil className="h-4 w-4" /></Button>
-                  <Button size="icon" variant="ghost" onClick={() => handleDelete(e.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                  <Button size="icon" variant="ghost" onClick={() => handleDeleteClick(e.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                 </div>
               </CardHeader>
               <CardContent className="pt-0 text-sm text-muted-foreground">
@@ -113,6 +136,23 @@ export function AdminEvents() {
           ))}
         </div>
       )}
+
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the event.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -7,6 +7,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export function AdminServiceTimes() {
   const { data: serviceTimes, isLoading } = useServiceTimes();
@@ -16,6 +26,7 @@ export function AdminServiceTimes() {
   const [form, setForm] = useState({ name: '', time: '', description: '', audience: '' });
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
   const [orderedItems, setOrderedItems] = useState<ServiceTime[]>([]);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const resetForm = () => { setForm({ name: '', time: '', description: '', audience: '' }); setEditing(null); };
 
@@ -33,9 +44,20 @@ export function AdminServiceTimes() {
     } catch (e: any) { toast.error(e.message); }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Delete this service time?')) return;
-    try { await deleteServiceTime.mutateAsync(id); toast.success('Deleted'); } catch (e: any) { toast.error(e.message); }
+  const handleDeleteClick = (id: string) => {
+    setDeleteId(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await deleteServiceTime.mutateAsync(deleteId);
+      toast.success('Deleted');
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally {
+      setDeleteId(null);
+    }
   };
 
   const openEdit = (s: ServiceTime) => { setEditing(s); setForm({ name: s.name, time: s.time, description: s.description || '', audience: s.audience || '' }); setOpen(true); };
@@ -54,7 +76,7 @@ export function AdminServiceTimes() {
   const handleDrop = (e: React.DragEvent, targetId: string) => {
     e.preventDefault();
     (e.currentTarget as HTMLElement).style.opacity = '1';
-    
+
     if (!draggedItem || draggedItem === targetId || !serviceTimes) return;
 
     const items = [...serviceTimes];
@@ -98,7 +120,7 @@ export function AdminServiceTimes() {
       {isLoading ? <p>Loading...</p> : (
         <div className="grid gap-4">
           {itemsToDisplay?.map((s) => (
-            <Card 
+            <Card
               key={s.id}
               draggable
               onDragStart={() => handleDragStart(s.id)}
@@ -114,7 +136,7 @@ export function AdminServiceTimes() {
                 </div>
                 <div className="flex gap-2">
                   <Button size="icon" variant="ghost" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button>
-                  <Button size="icon" variant="ghost" onClick={() => handleDelete(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                  <Button size="icon" variant="ghost" onClick={() => handleDeleteClick(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                 </div>
               </CardHeader>
               <CardContent className="pt-0 text-sm text-muted-foreground">
@@ -125,6 +147,23 @@ export function AdminServiceTimes() {
           ))}
         </div>
       )}
+
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the service time.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
