@@ -89,7 +89,7 @@ const BIBLE_VERSES = [
 
 // Component to check internet connectivity and initial data loading
 function AppInitializer({ children }: { children: React.ReactNode }) {
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
   const [hasInitialData, setHasInitialData] = useState(false);
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
   const [currentVerse, setCurrentVerse] = useState(BIBLE_VERSES[0]);
@@ -244,26 +244,24 @@ const App = () => {
           <AppInitializer>
             <Toaster />
             <Sonner />
-            <BrowserRouter>
-              <PageTracker />
-              <ScrollToTop />
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/services" element={<Services />} />
-                <Route path="/ministries" element={<Ministries />} />
-                <Route path="/events" element={<Events />} />
-                <Route path="/sermons" element={<Sermons />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/giving" element={<Giving />} />
-                <Route path="/gallery" element={<Gallery />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/update-password" element={<UpdatePassword />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
+            <PageTracker />
+            <ScrollToTop />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/ministries" element={<Ministries />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/sermons" element={<Sermons />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/giving" element={<Giving />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/update-password" element={<UpdatePassword />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </AppInitializer>
         </AuthProvider>
       </TooltipProvider>

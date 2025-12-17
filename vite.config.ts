@@ -12,6 +12,10 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "react-helmet-async": path.resolve(__dirname, "node_modules/react-helmet-async/lib/index.esm.js"),
     },
+  },
+  ssr: {
+    noExternal: ['react-helmet-async'],
   },
 }));

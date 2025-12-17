@@ -2,12 +2,17 @@ import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { useChurchInfo } from '@/hooks/useChurchData';
 import { Heart, Users, Music, Megaphone, Target, BookOpen } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export default function About() {
   const { data: churchInfo } = useChurchInfo();
 
   return (
     <Layout>
+      <Helmet>
+        <title>About Us - I Care Center | The Refuge Church</title>
+        <meta name="description" content="Learn about I Care Center - The Refuge Church in Olongapo City. Our mission is to share the Gospel, teach Biblical Truth, and provide a refuge for the lost." />
+      </Helmet>
       {/* Hero */}
       <section id="hero" className="hero-gradient py-20">
         <div className="container mx-auto px-4 text-center">

@@ -4,12 +4,19 @@ import { Button } from '@/components/ui/button';
 import { useChurchInfo } from '@/hooks/useChurchData';
 import { Link } from 'react-router-dom';
 import { Heart, Users, BookOpen, MapPin, Clock } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const Index = () => {
   const { data: churchInfo } = useChurchInfo();
 
   return (
     <Layout>
+      <Helmet>
+        <title>I Care Center - The Refuge Church | Olongapo City</title>
+        <meta name="description" content="Welcome to I Care Center - The Refuge Church. A place of acceptance, love, and community in Olongapo City. Miracles happen when someone cares." />
+        <meta name="keywords" content="i care center, refuge church, olongapo church, christian church, miracles, pastor" />
+        <link rel="canonical" href="https://icarecenter.org/" />
+      </Helmet>
       {/* Hero Section */}
       <section id="hero" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-church-navy via-church-navy/95 to-church-gold/20">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1920')] bg-cover bg-center opacity-40" />

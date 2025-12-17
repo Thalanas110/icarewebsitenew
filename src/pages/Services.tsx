@@ -2,6 +2,7 @@ import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { useServiceTimes, useChurchInfo } from '@/hooks/useChurchData';
 import { Clock, Users, MapPin } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export default function Services() {
   const { data: serviceTimes, isLoading } = useServiceTimes();
@@ -9,6 +10,10 @@ export default function Services() {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Service Times - I Care Center | The Refuge Church</title>
+        <meta name="description" content="Join us for worship at I Care Center. View our service times, what to expect, and how to find us in Olongapo City." />
+      </Helmet>
       {/* Hero */}
       <section id="hero" className="hero-gradient py-20">
         <div className="container mx-auto px-4 text-center">
