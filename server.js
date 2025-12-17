@@ -130,7 +130,9 @@ export async function createServer(
     return { app, vite };
 }
 
-if (!isTest) {
+const isMainModule = import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isMainModule) {
     createServer().then(({ app }) =>
         app.listen(5173, () => {
             console.log('http://localhost:5173');
