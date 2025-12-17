@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit",
     "test:e2e": "cypress open",
     "dev:ssr": "node server.js",
-    "build:ssr": "npm run build:client && npm run build:server",
+    "build:ssr": "npm run build:client && npm run build:server && node scripts/generate-sitemap.js",
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
     "serve:ssr": "cross-env NODE_ENV=production node server.js"
