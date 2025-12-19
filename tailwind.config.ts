@@ -70,6 +70,7 @@ export default {
           teal: "hsl(var(--church-teal))",
           gold: "hsl(var(--church-gold))",
           cream: "hsl(var(--church-cream))",
+          navy: "hsl(var(--church-navy))",
         },
       },
       borderRadius: {

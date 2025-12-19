@@ -157,7 +157,7 @@ const Sermons = () => {
 
                       <div className="flex flex-wrap gap-3">
                         {sermon.video_url && (
-                          <Button asChild className="bg-church-navy hover:bg-church-navy/90">
+                          <Button asChild className="bg-church-gold hover:bg-church-gold/90 text-black">
                             <a href={sermon.video_url} target="_blank" rel="noopener noreferrer">
                               <Video className="w-4 h-4 mr-2" />
                               Watch Video
