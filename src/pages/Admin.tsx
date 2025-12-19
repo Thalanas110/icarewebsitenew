@@ -30,15 +30,14 @@ export default function Admin() {
 
   if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
 
-  // Use a more permissive check here, filtering is done per-tab
-  if (!isAdmin && !isModerator) return <Navigate to="/auth" replace />;
+  // Redirect moderators to the specific moderator dashboard
+  if (role === 'moderator') return <Navigate to="/moderator" replace />;
+
+  if (!isAdmin) return <Navigate to="/auth" replace />;
 
   const isTabAllowed = (tab: string) => {
-    if (tab === 'profile') return true; // Allowed for everyone
+    if (tab === 'profile') return true;
     if (isAdmin) return true;
-    if (isModerator) {
-      return ['events', 'sermons', 'ministries', 'gallery'].includes(tab);
-    }
     return false;
   };
 

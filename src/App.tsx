@@ -21,6 +21,7 @@ import Gallery from "./pages/Gallery";
 import Auth from "./pages/Auth";
 import UpdatePassword from "./pages/UpdatePassword";
 import Admin from "./pages/Admin";
+import Moderator from "./pages/Moderator";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 
@@ -260,6 +261,7 @@ const App = () => {
               <Route path="/update-password" element={<UpdatePassword />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/moderator" element={<Moderator />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AppInitializer>

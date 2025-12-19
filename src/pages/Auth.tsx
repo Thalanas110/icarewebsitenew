@@ -27,8 +27,10 @@ export default function Auth() {
   // Redirect when user is logged in and admin status is determined
   useEffect(() => {
     if (user && !authLoading) {
-      if (isAdmin || isModerator) {
+      if (isAdmin) {
         navigate('/admin');
+      } else if (isModerator) {
+        navigate('/moderator');
       } else {
         navigate('/');
       }
