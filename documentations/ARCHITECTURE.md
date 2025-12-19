@@ -553,7 +553,7 @@ graph LR
 6. **Environment Variables**: Secrets never committed to repository
 7. **Content Security**: File upload restrictions and validation
 
-See [SECURITY.md](./SECURITY.md) for detailed security documentation.
+See [SECURITY.md](./documentations/SECURITY.md) for detailed security documentation.
 
 ## Future Considerations
 

@@ -394,4 +394,3 @@ export function useGalleryMutations() {
 
   return { uploadImage, deleteImage };
 }
-

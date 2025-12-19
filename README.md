@@ -1,4 +1,4 @@
-# I Care Church Website
+#  I Care Church Website
 
 A modern, full-featured church website built with React, TypeScript, and Supabase. This application provides a comprehensive platform for church members and visitors to stay connected, view events, watch sermons, and engage with the church community.
 

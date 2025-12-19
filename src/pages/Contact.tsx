@@ -121,6 +121,14 @@ export default function Contact() {
                   address="2057 Jose Abad Santos Avenue, Brgy. Old Cabalan, Olongapo City, Zambales 2200"
                   className="rounded-lg"
                 />
+                <div className="p-4">
+                  <Button
+                    className="w-full"
+                    onClick={() => window.open('https://www.google.com/maps/dir/?api=1&destination=14.848607,120.312585', '_blank')}
+                  >
+                    <MapPin className="mr-2 h-4 w-4" /> Get Directions
+                  </Button>
+                </div>
               </Card>
             </div>
 
