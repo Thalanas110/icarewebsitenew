@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 // import { Card, CardContent } from '@/components/ui/card'; 
 import { useChurchInfo } from '@/hooks/useChurchData';
 import { Link } from 'react-router-dom';
-import { Heart, Users, BookOpen, MapPin, Clock } from 'lucide-react';
+import { Heart, Users, MapPin, Clock, Building2, Handshake } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 const Index = () => {
@@ -55,18 +55,22 @@ const Index = () => {
                 I Care Center welcomes all individuals seeking God’s love, and keep our doors open to every soul seeking to welcome Jesus into their hearts. We invite you to open your heart and allow His grace to penetrate into your soul.
                 Our church stands as a beacon of hope in Olongapo City. We are a place of acceptance, peace and joy to all who are moved to join us. Our church family is richly diverse, with people of different ages and backgrounds coming together to worship and serve together. Get in touch to find out more or join us for a service.
               </p>
-              <div className="grid grid-cols-3 gap-4 mb-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 <div className="text-center">
                   <Heart className="w-8 h-8 text-church-gold mx-auto mb-2" />
-                  <p className="text-sm font-medium">Love</p>
+                  <p className="text-sm font-medium">Connect to Christ</p>
                 </div>
                 <div className="text-center">
                   <Users className="w-8 h-8 text-church-gold mx-auto mb-2" />
-                  <p className="text-sm font-medium">Community</p>
+                  <p className="text-sm font-medium">Affiliate to Cell</p>
                 </div>
                 <div className="text-center">
-                  <BookOpen className="w-8 h-8 text-church-gold mx-auto mb-2" />
-                  <p className="text-sm font-medium">Faith</p>
+                  <Building2 className="w-8 h-8 text-church-gold mx-auto mb-2" />
+                  <p className="text-sm font-medium">Raise to Church</p>
+                </div>
+                <div className="text-center">
+                  <Handshake className="w-8 h-8 text-church-gold mx-auto mb-2" />
+                  <p className="text-sm font-medium">Engage to Community</p>
                 </div>
               </div>
               <Button asChild className="bg-church-navy hover:bg-church-navy/90">
@@ -121,7 +125,7 @@ const Index = () => {
               <p className="text-2xl font-display italic text-church-gold mb-4">
                 "Come to me, all you who are weary and burdened, and I will give you rest."
               </p>
-              <p className="text-black/60">— Matthew 11:28</p>
+              <p className="text-white">— Matthew 11:28</p>
             </div>
           </div>
         </div>
