@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { useServiceTimes, useChurchInfo } from '@/hooks/useChurchData';
-import { Clock, Users, MapPin } from 'lucide-react';
+import { Clock, Users, MapPin, Car, Accessibility, Baby } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 export default function Services() {
@@ -119,35 +119,63 @@ export default function Services() {
       {/* Location */}
       <section id="location" className="section-padding bg-secondary/30">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h2 className="text-3xl font-display font-bold">Visit Us</h2>
-            {churchInfo?.address && (
-              <div className="flex items-center justify-center gap-2 text-lg">
-                <MapPin className="h-5 w-5 text-primary" />
-                <span>
-                  {churchInfo.address}, {churchInfo.city}, {churchInfo.state} {churchInfo.zip}
-                </span>
-              </div>
-            )}
-            <div className="grid md:grid-cols-3 gap-6 mt-8">
-              <div className="text-center">
-                <h4 className="font-semibold mb-2">Free Parking</h4>
-                <p className="text-sm text-muted-foreground">
-                  Ample parking available for all visitors
-                </p>
-              </div>
-              <div className="text-center">
-                <h4 className="font-semibold mb-2">Wheelchair Accessible</h4>
-                <p className="text-sm text-muted-foreground">
-                  Our facilities are fully accessible
-                </p>
-              </div>
-              <div className="text-center">
-                <h4 className="font-semibold mb-2">Children's Areas</h4>
-                <p className="text-sm text-muted-foreground">
-                  Safe and fun spaces for kids of all ages
-                </p>
-              </div>
+          <div className="max-w-4xl mx-auto space-y-12">
+            <div className="text-center space-y-6">
+              <h2 className="text-3xl font-display font-bold">Visit Us</h2>
+              {churchInfo?.address && (
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                    <MapPin className="h-8 w-8 text-primary" />
+                  </div>
+                  <span className="text-xl font-medium">
+                    {churchInfo.address}, {churchInfo.city}, {churchInfo.state} {churchInfo.zip}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <Card className="border-none shadow-md hover:shadow-lg transition-all text-center group">
+                <CardContent className="p-6 space-y-4">
+                  <div className="w-12 h-12 bg-church-gold/20 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+                    <Car className="h-6 w-6 text-church-gold-dark" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg mb-2">Free Parking</h4>
+                    <p className="text-muted-foreground text-sm">
+                      Ample parking space available for all our visitors right at the venue.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-none shadow-md hover:shadow-lg transition-all text-center group">
+                <CardContent className="p-6 space-y-4">
+                  <div className="w-12 h-12 bg-church-gold/20 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+                    <Accessibility className="h-6 w-6 text-church-gold-dark" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg mb-2">Accessibility</h4>
+                    <p className="text-muted-foreground text-sm">
+                      Our facilities are fully wheelchair accessible with designated seating.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-none shadow-md hover:shadow-lg transition-all text-center group">
+                <CardContent className="p-6 space-y-4">
+                  <div className="w-12 h-12 bg-church-gold/20 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+                    <Baby className="h-6 w-6 text-church-gold-dark" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg mb-2">Kids Ministry</h4>
+                    <p className="text-muted-foreground text-sm">
+                      Safe, fun, and engaging spaces for children of all ages during service.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
@@ -155,3 +183,4 @@ export default function Services() {
     </Layout>
   );
 }
+// Force rebuild
