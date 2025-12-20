@@ -15,7 +15,7 @@ const Index = () => {
         <title>I Care Center - The Refuge Church | Olongapo City</title>
         <meta name="description" content="Welcome to I Care Center - The Refuge Church. A place of acceptance, love, and community in Olongapo City. Miracles happen when someone cares." />
         <meta name="keywords" content="i care center, refuge church, olongapo church, christian church, miracles, pastor" />
-        <link rel="canonical" href="https://icarecenter.org/" />
+        <link rel="canonical" href="https://icarecenter.netlify.app/" />
       </Helmet>
       {/* Hero Section */}
       <section id="hero" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-church-navy via-church-navy/95 to-church-gold/20">
@@ -79,7 +79,7 @@ const Index = () => {
             </div>
             <div className="relative">
               <img
-                src="/bg.jpeg"
+                src="/during worship 2.jpeg"
                 alt="Church community"
                 className="rounded-lg shadow-2xl"
               />
