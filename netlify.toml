@@ -24,6 +24,7 @@
   from = "/api/facebook-latest-video"
   to = "/.netlify/functions/facebook-latest-video"
   status = 200
+  force = true
 
 # Catch-all for SSR (Force to override index.html shadowing)
 [[redirects]]
