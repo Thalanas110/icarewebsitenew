@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useSermons } from '@/hooks/useChurchData';
+import { FacebookLiveEmbed } from '@/components/FacebookLiveEmbed';
 import { Calendar, Clock, BookOpen, Video, Music, Play } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -50,16 +51,10 @@ const Sermons = () => {
 
             <Card className="overflow-hidden">
               <CardContent className="p-0">
-                <div className="w-full aspect-video bg-black">
-                  <iframe
-                    src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2F100064902870970%2Flive&show_text=false&t=0"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 'none', overflow: 'hidden' }}
-                    scrolling="no"
-                    frameBorder="0"
-                    allowFullScreen={true}
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                <div className="w-full aspect-video bg-black flex items-center justify-center">
+                  <FacebookLiveEmbed
+                    showText={false}
+                    className="w-full h-full"
                   />
                 </div>
               </CardContent>

@@ -19,6 +19,12 @@
   to = "/assets/:splat"
   status = 200
 
+# API endpoint for Facebook latest video
+[[redirects]]
+  from = "/api/facebook-latest-video"
+  to = "/.netlify/functions/facebook-latest-video"
+  status = 200
+
 # Catch-all for SSR (Force to override index.html shadowing)
 [[redirects]]
   from = "/*"
