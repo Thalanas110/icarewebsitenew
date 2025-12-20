@@ -39,15 +39,13 @@ export default function About() {
             <div className="space-y-6">
               <h2 className="text-3xl font-display font-bold">Our Story</h2>
               <p className="text-muted-foreground">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                We’re currently working on this page to better share the journey God has been leading our church through.
               </p>
               <p className="text-muted-foreground">
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                Please check back soon to learn more about our beginnings, our mission, and the people who call this church home.
               </p>
               <p className="text-muted-foreground">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                We look forward to sharing our story with you soon. Until then, you are always welcome here.
               </p>
             </div>
           </div>
