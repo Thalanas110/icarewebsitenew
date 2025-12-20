@@ -16,10 +16,4 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 </urlset>`;
 
 // Ensure directory exists
-const distDir = path.resolve('dist/client');
-if (!fs.existsSync(distDir)) {
-    fs.mkdirSync(distDir, { recursive: true });
-}
 
-fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap);
-console.log('Sitemap generated at dist/client/sitemap.xml');

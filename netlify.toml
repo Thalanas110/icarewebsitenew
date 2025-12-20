@@ -5,10 +5,24 @@
 [functions]
   included_files = ["dist/server/**", "dist/client/index.html"]
   node_bundler = "esbuild"
+  external_node_modules = ["lightningcss"]
 
 [[redirects]]
   from = "/sitemap.xml"
   to = "/sitemap.xml"
+  status = 200
+  force = true
+
+# Prioritize static assets (images, css, js)
+[[redirects]]
+  from = "/assets/*"
+  to = "/assets/:splat"
+  status = 200
+
+# Catch-all for SSR (Force to override index.html shadowing)
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/ssr"
   status = 200
   force = true
 

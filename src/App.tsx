@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { PageTracker } from "@/components/PageTracker";
@@ -25,15 +25,7 @@ import Moderator from "./pages/Moderator";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 3,
-      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-      staleTime: 5 * 60 * 1000, // 5 minutes
-    },
-  },
-});
+
 
 const BIBLE_VERSES = [
   { verse: "For I know the plans I have for you, declares the Lord, plans for welfare and not for evil, to give you a future and a hope.", reference: "Jeremiah 29:11" },
@@ -90,14 +82,23 @@ const BIBLE_VERSES = [
 
 // Component to check internet connectivity and initial data loading
 function AppInitializer({ children }: { children: React.ReactNode }) {
-  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+  // Use deterministic initial values to avoid hydration mismatches
+  const [isOnline, setIsOnline] = useState(true);
   const [hasInitialData, setHasInitialData] = useState(false);
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
+  // Use first verse as deterministic initial value for SSR
   const [currentVerse, setCurrentVerse] = useState(BIBLE_VERSES[0]);
   const [progress, setProgress] = useState(0);
+  const [hasMounted, setHasMounted] = useState(false);
 
-  // Check internet connectivity
+  // Check internet connectivity - only on client after mount
   useEffect(() => {
+    setHasMounted(true);
+    // Update status on mount - only access navigator after hydration
+    if (typeof navigator !== 'undefined') {
+      setIsOnline(navigator.onLine);
+    }
+
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
@@ -239,35 +240,33 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AuthProvider>
-          <AppInitializer>
-            <Toaster />
-            <Sonner />
-            <PageTracker />
-            <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/ministries" element={<Ministries />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/sermons" element={<Sermons />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/giving" element={<Giving />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/update-password" element={<UpdatePassword />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/moderator" element={<Moderator />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AppInitializer>
-        </AuthProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <TooltipProvider>
+      <AuthProvider>
+        <AppInitializer>
+          <Toaster />
+          <Sonner />
+          <PageTracker />
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/ministries" element={<Ministries />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/sermons" element={<Sermons />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/giving" element={<Giving />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/update-password" element={<UpdatePassword />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/moderator" element={<Moderator />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AppInitializer>
+      </AuthProvider>
+    </TooltipProvider>
   );
 };
 

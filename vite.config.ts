@@ -18,4 +18,10 @@ export default defineConfig(({ mode }) => ({
   ssr: {
     noExternal: ['react-helmet-async'],
   },
+  css: {
+    transformer: 'postcss',
+  },
+  build: {
+    cssMinify: 'esbuild',
+  },
 }));

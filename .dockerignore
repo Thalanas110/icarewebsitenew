@@ -1,0 +1,11 @@
+node_modules
+.git
+.env
+dist
+.DS_Store
+coverage
+.vscode
+.idea
+*.log
+cypress
+cypress_output.txt

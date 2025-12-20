@@ -3,18 +3,14 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import express from 'express';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-const isTest = process.env.VITEST;
-
-process.env.MY_CUSTOM_SECRET = 'API_KEY_qwertyuiop';
+// const __dirname = path.dirname(fileURLToPath(import.meta.url)); // Removing this to avoid CJS warning
 
 export async function createServer(
     root = process.cwd(),
     isProd = process.env.NODE_ENV === 'production' || true, // Force prod for verification
     hmrPort,
 ) {
-    const resolve = (p) => path.resolve(__dirname, p);
+    const resolve = (p) => path.resolve(root, p);
 
     const indexProd = isProd
         ? fs.readFileSync(resolve('dist/client/index.html'), 'utf-8')
@@ -133,9 +129,10 @@ export async function createServer(
 const isMainModule = import.meta.url === pathToFileURL(process.argv[1]).href;
 
 if (isMainModule) {
+    const port = process.env.PORT || 5173;
     createServer().then(({ app }) =>
-        app.listen(5173, () => {
-            console.log('http://localhost:5173');
+        app.listen(port, () => {
+            console.log(`http://localhost:${port}`);
         }),
     ).catch((e) => {
         console.error("Server failed to start:", e);

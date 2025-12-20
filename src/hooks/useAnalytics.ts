@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from './simple-query-hooks';
 
 export interface ContentAnalytics {
   total_ministries: number;
@@ -35,7 +35,7 @@ export const trackPageVisit = async (pagePath: string) => {
   try {
     const visitorId = getVisitorId();
     const sessionId = getSessionId();
-    
+
     const payload = {
       page_path: pagePath,
       visitor_id: visitorId,
@@ -45,7 +45,7 @@ export const trackPageVisit = async (pagePath: string) => {
     };
 
     console.log('Attempting to track page visit with payload:', payload);
-    
+
     const { data, error } = await supabase.from('analytics_visits').insert(payload);
 
     if (error) {
@@ -206,20 +206,20 @@ export const useContentAnalytics = () => {
         const { data: ministriesData, error: ministriesError } = await supabase
           .from('ministries')
           .select('id');
-        
+
         if (ministriesError) throw ministriesError;
-        
+
         // Get events with status filtering
         const { data: eventsData, error: eventsError } = await supabase
           .from('events')
           .select('id, status');
-          
+
         if (eventsError) throw eventsError;
-        
+
         const scheduledEvents = eventsData?.filter(event => event.status === 'scheduled') || [];
         const postponedEvents = eventsData?.filter(event => event.status === 'postponed') || [];
         const doneEvents = eventsData?.filter(event => event.status === 'done') || [];
-        
+
         return {
           total_ministries: ministriesData?.length || 0,
           total_events: eventsData?.length || 0,

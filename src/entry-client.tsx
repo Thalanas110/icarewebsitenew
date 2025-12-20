@@ -5,8 +5,9 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 
-ReactDOM.hydrateRoot(
-    document.getElementById("root") as HTMLElement,
+// Use createRoot instead of hydrateRoot since the SSR returns an empty shell
+// This prevents hydration mismatch errors when the server-rendered HTML is empty
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
         <HelmetProvider>
             <BrowserRouter>
