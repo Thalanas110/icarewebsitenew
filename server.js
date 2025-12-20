@@ -129,10 +129,10 @@ export async function createServer(
 const isMainModule = import.meta.url === pathToFileURL(process.argv[1]).href;
 
 if (isMainModule) {
-    const port = process.env.PORT || 5173;
+    const port = process.env.PORT || 1010;
     createServer().then(({ app }) =>
         app.listen(port, () => {
-            console.log(`http://localhost:${port}`);
+            console.log(`✈️✈️✈️ http://localhost:${port}`);
         }),
     ).catch((e) => {
         console.error("Server failed to start:", e);
