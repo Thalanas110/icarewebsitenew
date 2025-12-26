@@ -1,10 +1,10 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import { CareGrid } from "@/components/CareGrid";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 // import { Card, CardContent } from '@/components/ui/card';
 import { useChurchInfo } from "@/hooks/useChurchData";
-import { CareGrid } from "@/components/CareGrid";
 
 const Index = () => {
   const { data: churchInfo } = useChurchInfo();
@@ -34,7 +34,7 @@ const Index = () => {
           <h1 className="mb-6 animate-fade-in font-bold font-display text-5xl text-white md:text-7xl">
             Welcome to
             <br />
-            <span className="text-church-gold">
+            <span className="text-church-orange">
               I Care Center - the Refuge Church
             </span>
           </h1>
@@ -42,16 +42,18 @@ const Index = () => {
             Miracles happen when someone cares
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
+            {/* Solid → Ghost on hover - Orange variant */}
             <Button
               asChild
-              className="bg-church-orange font-semibold text-church-navy hover:bg-church-orange/90"
+              className="border-2 border-church-orange bg-church-orange font-semibold text-church-navy transition-all duration-300 hover:bg-transparent hover:text-church-orange active:bg-transparent active:text-church-orange"
               size="lg"
             >
               <Link to="/services">Join Us This Sunday</Link>
             </Button>
+            {/* Solid → Ghost on hover - Teal variant */}
             <Button
               asChild
-              className="bg-church-teal font-semibold text-white hover:bg-church-teal/90"
+              className="border-2 border-church-teal bg-church-teal font-semibold text-white transition-all duration-300 hover:bg-transparent hover:text-church-teal active:bg-transparent active:text-church-teal"
               size="lg"
             >
               <a
@@ -62,11 +64,11 @@ const Index = () => {
                 Join Online
               </a>
             </Button>
+            {/* Solid → Ghost on hover - White variant */}
             <Button
               asChild
-              className="border-white text-black hover:bg-white/10 hover:text-white"
+              className="border-2 border-white bg-white font-semibold text-church-navy transition-all duration-300 hover:bg-transparent hover:text-white active:bg-transparent active:text-white"
               size="lg"
-              variant="outline"
             >
               <Link to="/about">Learn More</Link>
             </Button>
@@ -118,38 +120,43 @@ const Index = () => {
       </section>
 
       {/* C.A.R.E. Pathway Section */}
-      <section className="bg-gradient-to-b from-church-cream to-white py-24" id="location">
+      <section
+        className="bg-gradient-to-b from-church-cream to-white py-24"
+        id="location"
+      >
         <div className="container mx-auto px-4">
           {/* Section Header */}
           <div className="mx-auto mb-16 max-w-3xl text-center">
-            <span className="mb-4 inline-block rounded-full bg-church-gold/10 px-4 py-2 text-sm font-semibold text-church-gold">
+            <span className="mb-4 inline-block rounded-full bg-church-gold/10 px-4 py-2 font-semibold text-church-gold text-sm">
               Your Journey With Us
             </span>
             <h2 className="mb-4 font-bold font-display text-4xl text-church-navy md:text-5xl">
               Our C.A.R.E. Pathway
             </h2>
             <p className="text-lg text-muted-foreground">
-              A simple path to help you grow spiritually and find your place in our church family.
+              A simple path to help you grow spiritually and find your place in
+              our church family.
             </p>
           </div>
-          
+
           {/* C.A.R.E. Grid */}
           <CareGrid />
-          
+
           {/* Bible Verse Card */}
           <div className="mx-auto mt-16 max-w-2xl rounded-2xl bg-white p-8 text-center shadow-2xl md:p-12">
-            <p className="mb-4 font-display text-xl text-church-navy italic md:text-2xl">
-              "Come to me, all you who are weary and burdened, and I will give you rest."
+            <p className="mb-4 font-display text-church-navy text-xl italic md:text-2xl">
+              "Come to me, all you who are weary and burdened, and I will give
+              you rest."
             </p>
-            <p className="text-church-gold font-semibold">— Matthew 11:28</p>
+            <p className="font-semibold text-church-gold">— Matthew 11:28</p>
           </div>
-          
+
           {/* CTA Button */}
           <div className="mt-12 text-center">
             <Button
               asChild
+              className="bg-church-gold font-semibold text-church-navy shadow-lg hover:bg-church-gold/90"
               size="lg"
-              className="bg-church-gold text-church-navy font-semibold hover:bg-church-gold/90 shadow-lg"
             >
               <Link to="/contact">Start Your Journey Today</Link>
             </Button>
