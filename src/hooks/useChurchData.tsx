@@ -102,6 +102,23 @@ export type GalleryImageInsert = Omit<GalleryImage, "id" | "created_at"> & {
   id?: string;
 };
 
+export interface Pastor {
+  id: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  title: string | null;
+  bio: string | null;
+  image_url: string | null;
+  sort_order: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type PastorInsert = Omit<Pastor, "id" | "created_at" | "updated_at"> & {
+  id?: string;
+};
+
 // Ministries
 export function useMinistries() {
   return useQuery({
@@ -489,4 +506,79 @@ export function useGalleryMutations() {
   });
 
   return { uploadImage, deleteImage };
+}
+
+// Pastors
+export function usePastors() {
+  return useQuery({
+    queryKey: ["pastors"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("pastors")
+        .select("*")
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return data as Pastor[];
+    },
+  });
+}
+
+export function usePastorMutations() {
+  const queryClient = useQueryClient();
+
+  const createPastor = useMutation({
+    mutationFn: async (pastor: PastorInsert) => {
+      const { data, error } = await supabase
+        .from("pastors")
+        .insert([pastor])
+        .select()
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pastors"] }),
+  });
+
+  const updatePastor = useMutation({
+    mutationFn: async ({
+      id,
+      ...updates
+    }: Partial<Pastor> & { id: string }) => {
+      const { data, error } = await supabase
+        .from("pastors")
+        .update(updates)
+        .eq("id", id)
+        .select()
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pastors"] }),
+  });
+
+  const deletePastor = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("pastors").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pastors"] }),
+  });
+
+  const updateSortOrder = useMutation({
+    mutationFn: async (items: Array<{ id: string; sort_order: number }>) => {
+      const updates = items.map((item) =>
+        supabase
+          .from("pastors")
+          .update({ sort_order: item.sort_order })
+          .eq("id", item.id)
+      );
+      const results = await Promise.all(updates.map((u) => u));
+      const errors = results.filter((r) => r.error);
+      if (errors.length > 0) throw errors[0].error;
+      return items;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pastors"] }),
+  });
+
+  return { createPastor, updatePastor, deletePastor, updateSortOrder };
 }

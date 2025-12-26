@@ -42,18 +42,18 @@ const Index = () => {
             Miracles happen when someone cares
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            {/* Solid → Ghost on hover - Orange variant */}
+            {/* Ghost → Solid on hover - Orange variant */}
             <Button
               asChild
-              className="border-2 border-church-orange bg-church-orange font-semibold text-church-navy transition-all duration-300 hover:bg-transparent hover:text-church-orange active:bg-transparent active:text-church-orange"
+              className="border-0 bg-transparent font-semibold text-church-orange transition-all duration-300 hover:bg-church-orange hover:text-church-navy"
               size="lg"
             >
               <Link to="/services">Join Us This Sunday</Link>
             </Button>
-            {/* Solid → Ghost on hover - Teal variant */}
+            {/* Ghost → Solid on hover - Teal variant */}
             <Button
               asChild
-              className="border-2 border-church-teal bg-church-teal font-semibold text-white transition-all duration-300 hover:bg-transparent hover:text-church-teal active:bg-transparent active:text-church-teal"
+              className="border-0 bg-transparent font-semibold text-church-teal transition-all duration-300 hover:bg-church-teal hover:text-white"
               size="lg"
             >
               <a
@@ -64,10 +64,10 @@ const Index = () => {
                 Join Online
               </a>
             </Button>
-            {/* Solid → Ghost on hover - White variant */}
+            {/* Ghost → Solid on hover - White variant */}
             <Button
               asChild
-              className="border-2 border-white bg-white font-semibold text-church-navy transition-all duration-300 hover:bg-transparent hover:text-white active:bg-transparent active:text-white"
+              className="border-0 bg-transparent font-semibold text-white transition-all duration-300 hover:bg-white hover:text-church-navy"
               size="lg"
             >
               <Link to="/about">Learn More</Link>

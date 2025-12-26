@@ -3,10 +3,10 @@ import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { CORE_VALUES } from "@/constant/core-values";
-import { useChurchInfo } from "@/hooks/useChurchData";
+import { usePastors } from "@/hooks/useChurchData";
 
 export default function About() {
-  const { data: churchInfo } = useChurchInfo();
+  const { data: pastors } = usePastors();
 
   return (
     <Layout>
@@ -44,7 +44,7 @@ export default function About() {
             <div className="space-y-6">
               <h2 className="font-bold font-display text-3xl">Our Story</h2>
               <p className="text-muted-foreground">
-                We’re currently working on this page to better share the journey
+                We're currently working on this page to better share the journey
                 God has been leading our church through.
               </p>
               <p className="text-muted-foreground">
@@ -119,31 +119,64 @@ export default function About() {
         </div>
       </section>
 
-      {/* Pastor */}
-      {churchInfo?.pastor_name && (
+      {/* Pastors */}
+      {pastors && pastors.length > 0 && (
         <section className="section-padding bg-secondary/30" id="pastor">
           <div className="container mx-auto px-4">
-            <div className="mx-auto max-w-3xl space-y-6 text-center">
-              <h2 className="font-bold font-display text-3xl">
-                Meet Our Pastor
+            <div className="mb-12 text-center">
+              <h2 className="mb-4 font-bold font-display text-3xl md:text-4xl">
+                Meet Our {pastors.length === 1 ? "Pastor" : "Pastors"}
               </h2>
-              <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-primary/10">
-                <span className="font-bold font-display text-4xl text-primary">
-                  {churchInfo.pastor_name.charAt(0)}
-                </span>
-              </div>
-              <h3 className="font-semibold text-2xl">
-                {churchInfo.pastor_name}
-              </h3>
-              <p className="text-muted-foreground">
-                Our senior pastor leads with compassion and dedication, guiding
-                our congregation in spiritual growth and community service.
+              <p className="mx-auto max-w-2xl text-muted-foreground">
+                Our leadership team guides our congregation with compassion and
+                dedication, helping us grow in spiritual maturity and community
+                service.
               </p>
-              {churchInfo.pastor_email && (
-                <p className="text-muted-foreground text-sm">
-                  Contact: {churchInfo.pastor_email}
-                </p>
-              )}
+            </div>
+            <div
+              className={`mx-auto grid max-w-5xl gap-8 ${
+                pastors.length === 1
+                  ? "max-w-md"
+                  : pastors.length === 2
+                    ? "md:grid-cols-2"
+                    : "md:grid-cols-2 lg:grid-cols-3"
+              }`}
+            >
+              {pastors.map((pastor) => (
+                <Card className="border-none shadow-lg" key={pastor.id}>
+                  <CardContent className="space-y-4 p-8 text-center">
+                    <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-primary/10">
+                      {pastor.image_url ? (
+                        <img
+                          alt={pastor.name}
+                          className="h-24 w-24 rounded-full object-cover"
+                          src={pastor.image_url}
+                        />
+                      ) : (
+                        <span className="font-bold font-display text-3xl text-primary">
+                          {pastor.name.charAt(0)}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-xl">{pastor.name}</h3>
+                      {pastor.title && (
+                        <p className="text-primary text-sm">{pastor.title}</p>
+                      )}
+                    </div>
+                    {pastor.bio && (
+                      <p className="text-muted-foreground text-sm">
+                        {pastor.bio}
+                      </p>
+                    )}
+                    {pastor.email && (
+                      <p className="text-muted-foreground text-xs">
+                        Contact: {pastor.email}
+                      </p>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
