@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Route, Routes } from "react-router-dom";
 import { PageTracker } from "@/components/PageTracker";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { BIBLE_VERSES } from "@/constant/bible-verses";
 import { AuthProvider } from "@/hooks/useAuth";
 import {
   useEvents,
@@ -26,7 +28,6 @@ import Profile from "./pages/Profile";
 import Sermons from "./pages/Sermons";
 import Services from "./pages/Services";
 import UpdatePassword from "./pages/UpdatePassword";
-import { BIBLE_VERSES } from "@/constant/bible-verses";
 
 // Component to check internet connectivity and initial data loading
 function AppInitializer({ children }: { children: React.ReactNode }) {
@@ -198,6 +199,9 @@ const App = () => (
         <Sonner />
         <PageTracker />
         <ScrollToTop />
+        <Helmet>
+          <link href="/favicon.ico" rel="icon" type="image/x-icon" />
+        </Helmet>
         <Routes>
           <Route element={<Index />} path="/" />
           <Route element={<About />} path="/about" />
