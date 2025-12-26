@@ -34,7 +34,7 @@ const Index = () => {
           <h1 className="mb-6 animate-fade-in font-bold font-display text-5xl text-white md:text-8xl">
             Welcome to
             <br />
-            <span className="text-church-orange">
+            <span className="text-church-gold">
               I Care Center - the Refuge Church
             </span>
           </h1>

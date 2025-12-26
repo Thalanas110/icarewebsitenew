@@ -21,9 +21,9 @@ const expectItems = [
     description:
       "Our greeters are ready to welcome you and help you find your way around.",
     icon: HandHeart,
-    gradient: "from-rose-500 to-pink-500",
-    bgGlow: "bg-rose-500/10",
-    iconColor: "#f43f5e",
+    gradient: "from-church-gold to-amber-500",
+    bgGlow: "bg-church-gold/10",
+    iconColor: "#d4a24c",
   },
   {
     number: 2,
@@ -31,9 +31,9 @@ const expectItems = [
     description:
       "Experience heartfelt worship with contemporary and traditional music.",
     icon: Music,
-    gradient: "from-violet-500 to-purple-500",
-    bgGlow: "bg-violet-500/10",
-    iconColor: "#8b5cf6",
+    gradient: "from-church-gold to-amber-500",
+    bgGlow: "bg-church-gold/10",
+    iconColor: "#d4a24c",
   },
   {
     number: 3,
@@ -50,9 +50,9 @@ const expectItems = [
     title: "Fellowship Time",
     description: "Connect with others over refreshments after the service.",
     icon: Coffee,
-    gradient: "from-teal-500 to-emerald-500",
-    bgGlow: "bg-teal-500/10",
-    iconColor: "#14b8a6",
+    gradient: "from-church-gold to-amber-500",
+    bgGlow: "bg-church-gold/10",
+    iconColor: "#d4a24c",
   },
 ];
 
