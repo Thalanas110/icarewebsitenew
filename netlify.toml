@@ -9,7 +9,7 @@
 
 [[redirects]]
   from = "/sitemap.xml"
-  to = "/sitemap.xml"
+  to = "/.netlify/functions/ssr"
   status = 200
   force = true
 

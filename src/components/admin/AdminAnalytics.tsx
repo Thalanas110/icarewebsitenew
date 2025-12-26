@@ -1,103 +1,142 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { useState } from 'react';
+import { format } from "date-fns";
+import {
+  BookOpen,
+  Calendar,
+  CalendarDays,
+  CalendarX,
+  CheckCircle,
+  Clock,
+  ExternalLink,
+  Eye,
+  Globe,
+  TrendingUp,
+  Users,
+} from "lucide-react";
+import { useState } from "react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell
-} from 'recharts';
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   useAnalyticsSummary,
+  useContentAnalytics,
   useDailyVisits,
   usePagePopularity,
   useRecentVisits,
-  useContentAnalytics
-} from '@/hooks/useAnalytics';
-import { Eye, Users, Globe, TrendingUp, Clock, ExternalLink, Calendar, BookOpen, Users2, CalendarDays, CalendarX, CheckCircle } from 'lucide-react';
-import { format } from 'date-fns';
+} from "@/hooks/useAnalytics";
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884d8",
+  "#82ca9d",
+];
 
 export function AdminAnalytics() {
   const [activeTab, setActiveTab] = useState("overview");
   const { data: summary, isLoading: summaryLoading } = useAnalyticsSummary(30);
   const { data: dailyVisits, isLoading: dailyLoading } = useDailyVisits(30);
-  const { data: pagePopularity, isLoading: pagesLoading } = usePagePopularity(30);
+  const { data: pagePopularity, isLoading: pagesLoading } =
+    usePagePopularity(30);
   const { data: recentVisits, isLoading: recentLoading } = useRecentVisits(20);
-  const { data: contentAnalytics, isLoading: contentLoading } = useContentAnalytics();
+  const { data: contentAnalytics, isLoading: contentLoading } =
+    useContentAnalytics();
 
-  if (summaryLoading || dailyLoading || pagesLoading || recentLoading || contentLoading) {
+  if (
+    summaryLoading ||
+    dailyLoading ||
+    pagesLoading ||
+    recentLoading ||
+    contentLoading
+  ) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="h-8 w-8 animate-spin rounded-full border-primary border-b-2" />
       </div>
     );
   }
 
   const formatPagePath = (path: string) => {
     const pageMappings: Record<string, string> = {
-      '/': 'Home',
-      '/about': 'About',
-      '/ministries': 'Ministries',
-      '/services': 'Services',
-      '/events': 'Events',
-      '/contact': 'Contact',
-      '/auth': 'Authentication',
-      '/admin': 'Admin Dashboard',
+      "/": "Home",
+      "/about": "About",
+      "/ministries": "Ministries",
+      "/services": "Services",
+      "/events": "Events",
+      "/contact": "Contact",
+      "/auth": "Authentication",
+      "/admin": "Admin Dashboard",
     };
     return pageMappings[path] || path;
   };
 
-  const formatChartData = (data: any[]) => {
-    return data?.map(item => ({
+  const formatChartData = (data: any[]) =>
+    data?.map((item) => ({
       ...item,
-      date: format(new Date(item.date), 'MMM dd'),
+      date: format(new Date(item.date), "MMM dd"),
     })) || [];
-  };
 
-  const pieChartData = pagePopularity?.slice(0, 6).map((page, index) => ({
-    name: formatPagePath(page.page_path),
-    value: page.total_visits,
-    color: COLORS[index % COLORS.length],
-  })) || [];
+  const pieChartData =
+    pagePopularity?.slice(0, 6).map((page, index) => ({
+      name: formatPagePath(page.page_path),
+      value: page.total_visits,
+      color: COLORS[index % COLORS.length],
+    })) || [];
 
   return (
-    <div className="space-y-6 pb-6 max-w-full overflow-x-hidden">
+    <div className="max-w-full space-y-6 overflow-x-hidden pb-6">
       <div>
-        <h2 className="text-xl md:text-2xl font-display font-bold break-words">Website Analytics</h2>
-        <p className="text-sm md:text-base text-muted-foreground">
+        <h2 className="break-words font-bold font-display text-xl md:text-2xl">
+          Website Analytics
+        </h2>
+        <p className="text-muted-foreground text-sm md:text-base">
           Track your website performance and visitor insights
         </p>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid gap-3 md:gap-4 grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs md:text-sm font-medium">Total Visits</CardTitle>
-            <Eye className="h-4 w-4 text-muted-foreground shrink-0" />
+            <CardTitle className="font-medium text-xs md:text-sm">
+              Total Visits
+            </CardTitle>
+            <Eye className="h-4 w-4 shrink-0 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-lg md:text-2xl font-bold break-all">{summary?.total_visits?.toLocaleString() || '0'}</div>
-            <p className="text-xs text-muted-foreground line-clamp-2">
+            <div className="break-all font-bold text-lg md:text-2xl">
+              {summary?.total_visits?.toLocaleString() || "0"}
+            </div>
+            <p className="line-clamp-2 text-muted-foreground text-xs">
               All time visits to your website
             </p>
           </CardContent>
@@ -105,12 +144,16 @@ export function AdminAnalytics() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs md:text-sm font-medium">Unique Visitors</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground shrink-0" />
+            <CardTitle className="font-medium text-xs md:text-sm">
+              Unique Visitors
+            </CardTitle>
+            <Users className="h-4 w-4 shrink-0 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-lg md:text-2xl font-bold break-all">{summary?.unique_visitors?.toLocaleString() || '0'}</div>
-            <p className="text-xs text-muted-foreground line-clamp-2">
+            <div className="break-all font-bold text-lg md:text-2xl">
+              {summary?.unique_visitors?.toLocaleString() || "0"}
+            </div>
+            <p className="line-clamp-2 text-muted-foreground text-xs">
               Individual visitors tracked
             </p>
           </CardContent>
@@ -118,12 +161,16 @@ export function AdminAnalytics() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs md:text-sm font-medium">Pages Tracked</CardTitle>
-            <Globe className="h-4 w-4 text-muted-foreground shrink-0" />
+            <CardTitle className="font-medium text-xs md:text-sm">
+              Pages Tracked
+            </CardTitle>
+            <Globe className="h-4 w-4 shrink-0 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-lg md:text-2xl font-bold break-all">{summary?.total_pages || '0'}</div>
-            <p className="text-xs text-muted-foreground line-clamp-2">
+            <div className="break-all font-bold text-lg md:text-2xl">
+              {summary?.total_pages || "0"}
+            </div>
+            <p className="line-clamp-2 text-muted-foreground text-xs">
               Different pages visited
             </p>
           </CardContent>
@@ -131,12 +178,16 @@ export function AdminAnalytics() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs md:text-sm font-medium">Daily Average</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground shrink-0" />
+            <CardTitle className="font-medium text-xs md:text-sm">
+              Daily Average
+            </CardTitle>
+            <TrendingUp className="h-4 w-4 shrink-0 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-lg md:text-2xl font-bold break-all">{Math.round(Number(summary?.avg_daily_visits) || 0)}</div>
-            <p className="text-xs text-muted-foreground line-clamp-2">
+            <div className="break-all font-bold text-lg md:text-2xl">
+              {Math.round(Number(summary?.avg_daily_visits) || 0)}
+            </div>
+            <p className="line-clamp-2 text-muted-foreground text-xs">
               Average visits per day (30d)
             </p>
           </CardContent>
@@ -145,16 +196,22 @@ export function AdminAnalytics() {
 
       {/* Content Analytics Cards */}
       <div>
-        <h3 className="text-base md:text-lg font-display font-semibold mb-3 md:mb-4">Content Overview</h3>
-        <div className="grid gap-3 md:gap-4 grid-cols-2 lg:grid-cols-4">
+        <h3 className="mb-3 font-display font-semibold text-base md:mb-4 md:text-lg">
+          Content Overview
+        </h3>
+        <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs md:text-sm font-medium">Total Ministries</CardTitle>
-              <BookOpen className="h-4 w-4 text-muted-foreground shrink-0" />
+              <CardTitle className="font-medium text-xs md:text-sm">
+                Total Ministries
+              </CardTitle>
+              <BookOpen className="h-4 w-4 shrink-0 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-lg md:text-2xl font-bold break-all">{contentAnalytics?.total_ministries?.toLocaleString() || '0'}</div>
-              <p className="text-xs text-muted-foreground line-clamp-2">
+              <div className="break-all font-bold text-lg md:text-2xl">
+                {contentAnalytics?.total_ministries?.toLocaleString() || "0"}
+              </div>
+              <p className="line-clamp-2 text-muted-foreground text-xs">
                 Active ministries in your church
               </p>
             </CardContent>
@@ -162,12 +219,16 @@ export function AdminAnalytics() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs md:text-sm font-medium">Total Events</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground shrink-0" />
+              <CardTitle className="font-medium text-xs md:text-sm">
+                Total Events
+              </CardTitle>
+              <Calendar className="h-4 w-4 shrink-0 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-lg md:text-2xl font-bold break-all">{contentAnalytics?.total_events?.toLocaleString() || '0'}</div>
-              <p className="text-xs text-muted-foreground line-clamp-2">
+              <div className="break-all font-bold text-lg md:text-2xl">
+                {contentAnalytics?.total_events?.toLocaleString() || "0"}
+              </div>
+              <p className="line-clamp-2 text-muted-foreground text-xs">
                 All events (past and upcoming)
               </p>
             </CardContent>
@@ -175,12 +236,16 @@ export function AdminAnalytics() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs md:text-sm font-medium">Scheduled Events</CardTitle>
-              <CalendarDays className="h-4 w-4 text-muted-foreground shrink-0" />
+              <CardTitle className="font-medium text-xs md:text-sm">
+                Scheduled Events
+              </CardTitle>
+              <CalendarDays className="h-4 w-4 shrink-0 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-lg md:text-2xl font-bold break-all">{contentAnalytics?.scheduled_events?.toLocaleString() || '0'}</div>
-              <p className="text-xs text-muted-foreground line-clamp-2">
+              <div className="break-all font-bold text-lg md:text-2xl">
+                {contentAnalytics?.scheduled_events?.toLocaleString() || "0"}
+              </div>
+              <p className="line-clamp-2 text-muted-foreground text-xs">
                 Events ready to happen
               </p>
             </CardContent>
@@ -188,12 +253,16 @@ export function AdminAnalytics() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs md:text-sm font-medium">Completed Events</CardTitle>
-              <CheckCircle className="h-4 w-4 text-muted-foreground shrink-0" />
+              <CardTitle className="font-medium text-xs md:text-sm">
+                Completed Events
+              </CardTitle>
+              <CheckCircle className="h-4 w-4 shrink-0 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-lg md:text-2xl font-bold break-all">{contentAnalytics?.done_events?.toLocaleString() || '0'}</div>
-              <p className="text-xs text-muted-foreground line-clamp-2">
+              <div className="break-all font-bold text-lg md:text-2xl">
+                {contentAnalytics?.done_events?.toLocaleString() || "0"}
+              </div>
+              <p className="line-clamp-2 text-muted-foreground text-xs">
                 Successfully completed events
               </p>
             </CardContent>
@@ -202,11 +271,15 @@ export function AdminAnalytics() {
       </div>
 
       {/* Charts and Data */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+      <Tabs
+        className="space-y-4"
+        onValueChange={setActiveTab}
+        value={activeTab}
+      >
         <div className="w-full">
           {/* Mobile View - Dropdown */}
-          <div className="min-[1100px]:hidden w-full mb-4">
-            <Select value={activeTab} onValueChange={setActiveTab}>
+          <div className="mb-4 w-full min-[1100px]:hidden">
+            <Select onValueChange={setActiveTab} value={activeTab}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select view" />
               </SelectTrigger>
@@ -220,12 +293,20 @@ export function AdminAnalytics() {
           </div>
 
           {/* Desktop View - Tabs */}
-          <div className="hidden min-[1100px]:block overflow-x-auto -mx-2 px-2">
-            <TabsList className="w-full md:w-auto inline-flex">
-              <TabsTrigger value="overview" className="text-xs md:text-sm">Overview</TabsTrigger>
-              <TabsTrigger value="pages" className="text-xs md:text-sm">Page Analytics</TabsTrigger>
-              <TabsTrigger value="content" className="text-xs md:text-sm">Content Analytics</TabsTrigger>
-              <TabsTrigger value="recent" className="text-xs md:text-sm">Recent Activity</TabsTrigger>
+          <div className="-mx-2 hidden overflow-x-auto px-2 min-[1100px]:block">
+            <TabsList className="inline-flex w-full md:w-auto">
+              <TabsTrigger className="text-xs md:text-sm" value="overview">
+                Overview
+              </TabsTrigger>
+              <TabsTrigger className="text-xs md:text-sm" value="pages">
+                Page Analytics
+              </TabsTrigger>
+              <TabsTrigger className="text-xs md:text-sm" value="content">
+                Content Analytics
+              </TabsTrigger>
+              <TabsTrigger className="text-xs md:text-sm" value="recent">
+                Recent Activity
+              </TabsTrigger>
             </TabsList>
           </div>
         </div>
@@ -234,42 +315,50 @@ export function AdminAnalytics() {
           <div className="grid gap-4 md:grid-cols-2">
             <Card className="overflow-hidden">
               <CardHeader>
-                <CardTitle className="text-base md:text-lg">Daily Visits (Last 30 Days)</CardTitle>
+                <CardTitle className="text-base md:text-lg">
+                  Daily Visits (Last 30 Days)
+                </CardTitle>
                 <CardDescription className="text-xs md:text-sm">
                   Track your website traffic over time
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-2 overflow-hidden">
+              <CardContent className="overflow-hidden pt-2">
                 <div className="w-full">
-                  <ResponsiveContainer width="100%" height={250}>
-                    <LineChart data={formatChartData(dailyVisits || [])} margin={{ left: -20, right: 10, top: 5, bottom: 5 }}>
+                  <ResponsiveContainer height={250} width="100%">
+                    <LineChart
+                      data={formatChartData(dailyVisits || [])}
+                      margin={{ left: -20, right: 10, top: 5, bottom: 5 }}
+                    >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis
-                        dataKey="date"
-                        tick={{ fontSize: 9 }}
                         angle={-45}
-                        textAnchor="end"
+                        dataKey="date"
                         height={50}
                         interval="preserveStartEnd"
+                        textAnchor="end"
+                        tick={{ fontSize: 9 }}
                       />
                       <YAxis tick={{ fontSize: 9 }} width={40} />
                       <Tooltip />
-                      <Legend wrapperStyle={{ fontSize: '10px' }} iconSize={8} />
-                      <Line
-                        type="monotone"
-                        dataKey="total_visits"
-                        stroke="#8884d8"
-                        strokeWidth={2}
-                        name="Total Visits"
-                        dot={false}
+                      <Legend
+                        iconSize={8}
+                        wrapperStyle={{ fontSize: "10px" }}
                       />
                       <Line
+                        dataKey="total_visits"
+                        dot={false}
+                        name="Total Visits"
+                        stroke="#8884d8"
+                        strokeWidth={2}
                         type="monotone"
+                      />
+                      <Line
                         dataKey="unique_visitors"
+                        dot={false}
+                        name="Unique Visitors"
                         stroke="#82ca9d"
                         strokeWidth={2}
-                        name="Unique Visitors"
-                        dot={false}
+                        type="monotone"
                       />
                     </LineChart>
                   </ResponsiveContainer>
@@ -279,33 +368,35 @@ export function AdminAnalytics() {
 
             <Card className="overflow-hidden">
               <CardHeader>
-                <CardTitle className="text-base md:text-lg">Page Distribution</CardTitle>
+                <CardTitle className="text-base md:text-lg">
+                  Page Distribution
+                </CardTitle>
                 <CardDescription className="text-xs md:text-sm">
                   Most visited pages on your website
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-2 overflow-hidden">
+              <CardContent className="overflow-hidden pt-2">
                 <div className="w-full">
-                  <ResponsiveContainer width="100%" height={250}>
+                  <ResponsiveContainer height={250} width="100%">
                     <PieChart>
                       <Pie
-                        data={pieChartData}
                         cx="50%"
                         cy="50%"
-                        labelLine={false}
-                        label={false}
-                        outerRadius={80}
-                        fill="#8884d8"
+                        data={pieChartData}
                         dataKey="value"
+                        fill="#8884d8"
+                        label={false}
+                        labelLine={false}
+                        outerRadius={80}
                       >
                         {pieChartData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
+                          <Cell fill={entry.color} key={`cell-${index}`} />
                         ))}
                       </Pie>
                       <Tooltip />
                       <Legend
-                        wrapperStyle={{ fontSize: '10px' }}
                         iconSize={8}
+                        wrapperStyle={{ fontSize: "10px" }}
                       />
                     </PieChart>
                   </ResponsiveContainer>
@@ -318,34 +409,41 @@ export function AdminAnalytics() {
         <TabsContent value="pages">
           <Card className="overflow-hidden">
             <CardHeader>
-              <CardTitle className="text-base md:text-lg">Page Performance (Last 30 Days)</CardTitle>
+              <CardTitle className="text-base md:text-lg">
+                Page Performance (Last 30 Days)
+              </CardTitle>
               <CardDescription className="text-xs md:text-sm">
                 Detailed breakdown of visits per page
               </CardDescription>
             </CardHeader>
             <CardContent className="overflow-hidden">
               <div className="w-full">
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={pagePopularity?.slice(0, 8) || []} margin={{ left: -20, right: 10, top: 5, bottom: 5 }}>
+                <ResponsiveContainer height={300} width="100%">
+                  <BarChart
+                    data={pagePopularity?.slice(0, 8) || []}
+                    margin={{ left: -20, right: 10, top: 5, bottom: 5 }}
+                  >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis
-                      dataKey="page_path"
-                      tick={{ fontSize: 9 }}
                       angle={-45}
-                      textAnchor="end"
+                      dataKey="page_path"
                       height={70}
-                      tickFormatter={formatPagePath}
                       interval={0}
+                      textAnchor="end"
+                      tick={{ fontSize: 9 }}
+                      tickFormatter={formatPagePath}
                     />
                     <YAxis tick={{ fontSize: 9 }} width={40} />
                     <Tooltip
-                      labelFormatter={(label) => formatPagePath(label)}
                       formatter={(value: number, name: string) => [
                         value.toLocaleString(),
-                        name === 'total_visits' ? 'Total Visits' : 'Unique Visitors'
+                        name === "total_visits"
+                          ? "Total Visits"
+                          : "Unique Visitors",
                       ]}
+                      labelFormatter={(label) => formatPagePath(label)}
                     />
-                    <Legend wrapperStyle={{ fontSize: '10px' }} iconSize={8} />
+                    <Legend iconSize={8} wrapperStyle={{ fontSize: "10px" }} />
                     <Bar
                       dataKey="total_visits"
                       fill="#8884d8"
@@ -364,22 +462,38 @@ export function AdminAnalytics() {
 
           <Card className="mt-4">
             <CardHeader>
-              <CardTitle className="text-base md:text-lg">Top Pages Summary</CardTitle>
+              <CardTitle className="text-base md:text-lg">
+                Top Pages Summary
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 {pagePopularity?.slice(0, 10).map((page, index) => (
-                  <div key={page.page_path} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-2 md:p-3 rounded border gap-2">
-                    <div className="flex items-center gap-2 min-w-0 flex-1">
-                      <Badge variant="outline" className="w-6 h-6 md:w-8 md:h-6 flex items-center justify-center shrink-0 text-xs">
+                  <div
+                    className="flex flex-col gap-2 rounded border p-2 sm:flex-row sm:items-center sm:justify-between md:p-3"
+                    key={page.page_path}
+                  >
+                    <div className="flex min-w-0 flex-1 items-center gap-2">
+                      <Badge
+                        className="flex h-6 w-6 shrink-0 items-center justify-center text-xs md:h-6 md:w-8"
+                        variant="outline"
+                      >
                         {index + 1}
                       </Badge>
-                      <span className="font-medium text-sm md:text-base truncate">{formatPagePath(page.page_path)}</span>
-                      <span className="text-xs md:text-sm text-muted-foreground truncate hidden md:inline">({page.page_path})</span>
+                      <span className="truncate font-medium text-sm md:text-base">
+                        {formatPagePath(page.page_path)}
+                      </span>
+                      <span className="hidden truncate text-muted-foreground text-xs md:inline md:text-sm">
+                        ({page.page_path})
+                      </span>
                     </div>
-                    <div className="flex gap-3 md:gap-4 text-xs md:text-sm ml-8 sm:ml-0 shrink-0">
-                      <span><strong>{page.total_visits}</strong> visits</span>
-                      <span><strong>{page.unique_visitors}</strong> unique</span>
+                    <div className="ml-8 flex shrink-0 gap-3 text-xs sm:ml-0 md:gap-4 md:text-sm">
+                      <span>
+                        <strong>{page.total_visits}</strong> visits
+                      </span>
+                      <span>
+                        <strong>{page.unique_visitors}</strong> unique
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -392,39 +506,45 @@ export function AdminAnalytics() {
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle className="text-base md:text-lg">Content Overview</CardTitle>
+                <CardTitle className="text-base md:text-lg">
+                  Content Overview
+                </CardTitle>
                 <CardDescription className="text-xs md:text-sm">
                   Summary of your church's content
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-2">
                 <div className="space-y-3 md:space-y-4">
-                  <div className="flex items-center justify-between p-3 md:p-4 rounded border bg-muted/20">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0">
-                      <BookOpen className="h-4 w-4 md:h-5 md:w-5 text-primary shrink-0" />
+                  <div className="flex items-center justify-between rounded border bg-muted/20 p-3 md:p-4">
+                    <div className="flex min-w-0 items-center gap-2 md:gap-3">
+                      <BookOpen className="h-4 w-4 shrink-0 text-primary md:h-5 md:w-5" />
                       <div className="min-w-0">
-                        <div className="font-medium text-sm md:text-base">Ministries</div>
-                        <div className="text-xs md:text-sm text-muted-foreground">
+                        <div className="font-medium text-sm md:text-base">
+                          Ministries
+                        </div>
+                        <div className="text-muted-foreground text-xs md:text-sm">
                           Active church ministries
                         </div>
                       </div>
                     </div>
-                    <div className="text-xl md:text-2xl font-bold shrink-0">
+                    <div className="shrink-0 font-bold text-xl md:text-2xl">
                       {contentAnalytics?.total_ministries || 0}
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 md:p-4 rounded border bg-muted/20">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0">
-                      <Calendar className="h-4 w-4 md:h-5 md:w-5 text-primary shrink-0" />
+                  <div className="flex items-center justify-between rounded border bg-muted/20 p-3 md:p-4">
+                    <div className="flex min-w-0 items-center gap-2 md:gap-3">
+                      <Calendar className="h-4 w-4 shrink-0 text-primary md:h-5 md:w-5" />
                       <div className="min-w-0">
-                        <div className="font-medium text-sm md:text-base">Total Events</div>
-                        <div className="text-xs md:text-sm text-muted-foreground">
+                        <div className="font-medium text-sm md:text-base">
+                          Total Events
+                        </div>
+                        <div className="text-muted-foreground text-xs md:text-sm">
                           All events created
                         </div>
                       </div>
                     </div>
-                    <div className="text-xl md:text-2xl font-bold shrink-0">
+                    <div className="shrink-0 font-bold text-xl md:text-2xl">
                       {contentAnalytics?.total_events || 0}
                     </div>
                   </div>
@@ -434,76 +554,93 @@ export function AdminAnalytics() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-base md:text-lg">Event Status Breakdown</CardTitle>
+                <CardTitle className="text-base md:text-lg">
+                  Event Status Breakdown
+                </CardTitle>
                 <CardDescription className="text-xs md:text-sm">
                   Current status of all events
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-2">
                 <div className="space-y-3 md:space-y-4">
-                  <div className="flex items-center justify-between p-3 md:p-4 rounded border bg-blue-50 border-blue-200">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0">
-                      <CalendarDays className="h-4 w-4 md:h-5 md:w-5 text-blue-600 shrink-0" />
+                  <div className="flex items-center justify-between rounded border border-blue-200 bg-blue-50 p-3 md:p-4">
+                    <div className="flex min-w-0 items-center gap-2 md:gap-3">
+                      <CalendarDays className="h-4 w-4 shrink-0 text-blue-600 md:h-5 md:w-5" />
                       <div className="min-w-0">
-                        <div className="font-medium text-blue-800 text-sm md:text-base">Scheduled Events</div>
-                        <div className="text-xs md:text-sm text-blue-600">
+                        <div className="font-medium text-blue-800 text-sm md:text-base">
+                          Scheduled Events
+                        </div>
+                        <div className="text-blue-600 text-xs md:text-sm">
                           Ready to happen as planned
                         </div>
                       </div>
                     </div>
-                    <div className="text-xl md:text-2xl font-bold text-blue-800 shrink-0">
+                    <div className="shrink-0 font-bold text-blue-800 text-xl md:text-2xl">
                       {contentAnalytics?.scheduled_events || 0}
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 md:p-4 rounded border bg-yellow-50 border-yellow-200">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0">
-                      <CalendarX className="h-4 w-4 md:h-5 md:w-5 text-yellow-600 shrink-0" />
+                  <div className="flex items-center justify-between rounded border border-yellow-200 bg-yellow-50 p-3 md:p-4">
+                    <div className="flex min-w-0 items-center gap-2 md:gap-3">
+                      <CalendarX className="h-4 w-4 shrink-0 text-yellow-600 md:h-5 md:w-5" />
                       <div className="min-w-0">
-                        <div className="font-medium text-yellow-800 text-sm md:text-base">Postponed Events</div>
-                        <div className="text-xs md:text-sm text-yellow-600">
+                        <div className="font-medium text-sm text-yellow-800 md:text-base">
+                          Postponed Events
+                        </div>
+                        <div className="text-xs text-yellow-600 md:text-sm">
                           Events that have been delayed
                         </div>
                       </div>
                     </div>
-                    <div className="text-xl md:text-2xl font-bold text-yellow-800 shrink-0">
+                    <div className="shrink-0 font-bold text-xl text-yellow-800 md:text-2xl">
                       {contentAnalytics?.postponed_events || 0}
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 md:p-4 rounded border bg-green-50 border-green-200">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0">
-                      <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-green-600 shrink-0" />
+                  <div className="flex items-center justify-between rounded border border-green-200 bg-green-50 p-3 md:p-4">
+                    <div className="flex min-w-0 items-center gap-2 md:gap-3">
+                      <CheckCircle className="h-4 w-4 shrink-0 text-green-600 md:h-5 md:w-5" />
                       <div className="min-w-0">
-                        <div className="font-medium text-green-800 text-sm md:text-base">Completed Events</div>
-                        <div className="text-xs md:text-sm text-green-600">
+                        <div className="font-medium text-green-800 text-sm md:text-base">
+                          Completed Events
+                        </div>
+                        <div className="text-green-600 text-xs md:text-sm">
                           Successfully finished events
                         </div>
                       </div>
                     </div>
-                    <div className="text-xl md:text-2xl font-bold text-green-800 shrink-0">
+                    <div className="shrink-0 font-bold text-green-800 text-xl md:text-2xl">
                       {contentAnalytics?.done_events || 0}
                     </div>
                   </div>
 
-                  {contentAnalytics?.total_events && contentAnalytics.total_events > 0 && (
-                    <div className="mt-3 md:mt-4 p-2 md:p-3 rounded bg-gray-50 border border-gray-200">
-                      <div className="text-xs md:text-sm text-gray-800 space-y-1">
-                        <div>
-                          <strong>Completion Rate:</strong> {' '}
-                          {Math.round((contentAnalytics.done_events / contentAnalytics.total_events) * 100)}%
-                          of events have been completed
-                        </div>
-                        {contentAnalytics.postponed_events > 0 && (
+                  {contentAnalytics?.total_events &&
+                    contentAnalytics.total_events > 0 && (
+                      <div className="mt-3 rounded border border-gray-200 bg-gray-50 p-2 md:mt-4 md:p-3">
+                        <div className="space-y-1 text-gray-800 text-xs md:text-sm">
                           <div>
-                            <strong>Postponed Rate:</strong> {' '}
-                            {Math.round((contentAnalytics.postponed_events / contentAnalytics.total_events) * 100)}%
-                            of events have been postponed
+                            <strong>Completion Rate:</strong>{" "}
+                            {Math.round(
+                              (contentAnalytics.done_events /
+                                contentAnalytics.total_events) *
+                                100
+                            )}
+                            % of events have been completed
                           </div>
-                        )}
+                          {contentAnalytics.postponed_events > 0 && (
+                            <div>
+                              <strong>Postponed Rate:</strong>{" "}
+                              {Math.round(
+                                (contentAnalytics.postponed_events /
+                                  contentAnalytics.total_events) *
+                                  100
+                              )}
+                              % of events have been postponed
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               </CardContent>
             </Card>
@@ -522,21 +659,31 @@ export function AdminAnalytics() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2 max-h-96 overflow-y-auto">
+              <div className="max-h-96 space-y-2 overflow-y-auto">
                 {recentVisits?.map((visit) => (
-                  <div key={visit.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-2 md:p-3 rounded border bg-muted/20 gap-2">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                      <ExternalLink className="h-4 w-4 text-muted-foreground shrink-0" />
+                  <div
+                    className="flex flex-col gap-2 rounded border bg-muted/20 p-2 sm:flex-row sm:items-center sm:justify-between md:p-3"
+                    key={visit.id}
+                  >
+                    <div className="flex min-w-0 flex-1 items-center gap-2 md:gap-3">
+                      <ExternalLink className="h-4 w-4 shrink-0 text-muted-foreground" />
                       <div className="min-w-0 flex-1">
-                        <div className="font-medium text-sm md:text-base truncate">{formatPagePath(visit.page_path)}</div>
-                        <div className="text-xs md:text-sm text-muted-foreground">
-                          {format(new Date(visit.visited_at), 'MMM dd, yyyy HH:mm:ss')}
+                        <div className="truncate font-medium text-sm md:text-base">
+                          {formatPagePath(visit.page_path)}
+                        </div>
+                        <div className="text-muted-foreground text-xs md:text-sm">
+                          {format(
+                            new Date(visit.visited_at),
+                            "MMM dd, yyyy HH:mm:ss"
+                          )}
                         </div>
                       </div>
                     </div>
-                    <div className="text-xs md:text-sm text-muted-foreground ml-6 sm:ml-0 shrink-0">
+                    <div className="ml-6 shrink-0 text-muted-foreground text-xs sm:ml-0 md:text-sm">
                       {visit.referrer ? (
-                        <span className="truncate block max-w-[200px]">from {new URL(visit.referrer).hostname}</span>
+                        <span className="block max-w-[200px] truncate">
+                          from {new URL(visit.referrer).hostname}
+                        </span>
                       ) : (
                         <span>direct visit</span>
                       )}
@@ -544,7 +691,7 @@ export function AdminAnalytics() {
                   </div>
                 ))}
                 {(!recentVisits || recentVisits.length === 0) && (
-                  <div className="text-center py-8 text-muted-foreground">
+                  <div className="py-8 text-center text-muted-foreground">
                     No recent activity
                   </div>
                 )}

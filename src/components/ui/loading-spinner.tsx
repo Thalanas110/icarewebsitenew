@@ -1,12 +1,15 @@
-import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface LoadingSpinnerProps {
   className?: string;
   size?: "sm" | "md" | "lg";
 }
 
-export function LoadingSpinner({ className, size = "md" }: LoadingSpinnerProps) {
+export function LoadingSpinner({
+  className,
+  size = "md",
+}: LoadingSpinnerProps) {
   const sizeClasses = {
     sm: "h-4 w-4",
     md: "h-6 w-6",
@@ -14,8 +17,12 @@ export function LoadingSpinner({ className, size = "md" }: LoadingSpinnerProps) 
   };
 
   return (
-    <Loader2 
-      className={cn("animate-spin text-muted-foreground", sizeClasses[size], className)} 
+    <Loader2
+      className={cn(
+        "animate-spin text-muted-foreground",
+        sizeClasses[size],
+        className
+      )}
     />
   );
 }
@@ -27,7 +34,12 @@ interface LoadingScreenProps {
   fullScreen?: boolean;
 }
 
-export function LoadingScreen({ children, className, size = "md", fullScreen = false }: LoadingScreenProps) {
+export function LoadingScreen({
+  children,
+  className,
+  size = "md",
+  fullScreen = false,
+}: LoadingScreenProps) {
   const containerClasses = fullScreen
     ? "min-h-screen flex items-center justify-center"
     : "flex items-center justify-center py-12";

@@ -1,8 +1,13 @@
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Settings, User } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/useAuth';
+import { Menu, Settings, User, X } from "lucide-react";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,88 +17,79 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useAuth } from "@/hooks/useAuth";
 
 const navLinks = [
   {
-    href: '/',
-    label: 'Home',
+    href: "/",
+    label: "Home",
     subLinks: [
-      { href: '/', label: 'Welcome' },
-      { href: '/#about', label: 'About Us' },
-      { href: '/#location', label: 'Visit Us' },
-    ]
+      { href: "/", label: "Welcome" },
+      { href: "/#about", label: "About Us" },
+      { href: "/#location", label: "Visit Us" },
+    ],
   },
   {
-    href: '/about',
-    label: 'About',
+    href: "/about",
+    label: "About",
     subLinks: [
-      { href: '/about#story', label: 'Our Story' },
-      { href: '/about#mission', label: 'Mission & Vision' },
-      { href: '/about#values', label: 'Core Values' },
-      { href: '/about#pastor', label: 'Leadership' },
-    ]
+      { href: "/about#story", label: "Our Story" },
+      { href: "/about#mission", label: "Mission & Vision" },
+      { href: "/about#values", label: "Core Values" },
+      { href: "/about#pastor", label: "Leadership" },
+    ],
   },
   {
-    href: '/services',
-    label: 'Services',
+    href: "/services",
+    label: "Services",
     subLinks: [
-      { href: '/services#service-times', label: 'Service Times' },
-      { href: '/services#expect', label: 'What to Expect' },
-      { href: '/services#location', label: 'Location' },
-    ]
+      { href: "/services#service-times", label: "Service Times" },
+      { href: "/services#expect", label: "What to Expect" },
+      { href: "/services#location", label: "Location" },
+    ],
   },
   {
-    href: '/ministries',
-    label: 'Ministries',
+    href: "/ministries",
+    label: "Ministries",
     subLinks: [
-      { href: '/ministries', label: 'All Ministries' },
-      { href: '/ministries#church-ministries', label: 'Church Ministries' },
-      { href: '/ministries#outreaches', label: 'Outreaches' },
-    ]
+      { href: "/ministries", label: "All Ministries" },
+      { href: "/ministries#church-ministries", label: "Church Ministries" },
+      { href: "/ministries#outreaches", label: "Outreaches" },
+    ],
   },
   {
-    href: '/events',
-    label: 'Events',
+    href: "/events",
+    label: "Events",
     subLinks: [
-      { href: '/events#events-list', label: 'Upcoming Events' },
-      { href: '/events#newsletter', label: 'Stay Updated' },
-    ]
+      { href: "/events#events-list", label: "Upcoming Events" },
+      { href: "/events#newsletter", label: "Stay Updated" },
+    ],
   },
   {
-    href: '/sermons',
-    label: 'Sermons',
+    href: "/sermons",
+    label: "Sermons",
     subLinks: [
-      { href: '/sermons#sermons-list', label: 'Latest Sermons' },
-      { href: '/sermons#livestream', label: 'Watch Live' },
-    ]
+      { href: "/sermons#sermons-list", label: "Latest Sermons" },
+      { href: "/sermons#livestream", label: "Watch Live" },
+    ],
   },
   {
-    href: '/gallery',
-    label: 'Gallery',
-    subLinks: [
-      { href: '/gallery#gallery-grid', label: 'Photo Gallery' },
-    ]
+    href: "/gallery",
+    label: "Gallery",
+    subLinks: [{ href: "/gallery#gallery-grid", label: "Photo Gallery" }],
   },
   {
-    href: '/giving',
-    label: 'Giving',
-    subLinks: [
-      { href: '/giving#ways-to-give', label: 'Ways to Give' },
-    ]
+    href: "/giving",
+    label: "Giving",
+    subLinks: [{ href: "/giving#ways-to-give", label: "Ways to Give" }],
   },
   {
-    href: '/contact',
-    label: 'Contact',
+    href: "/contact",
+    label: "Contact",
     subLinks: [
-      { href: '/contact', label: 'Get in Touch' },
-      { href: '/contact#contact-info', label: 'Contact Info' },
-    ]
+      { href: "/contact", label: "Get in Touch" },
+      { href: "/contact#contact-info", label: "Contact Info" },
+    ],
   },
 ];
 
@@ -110,37 +106,41 @@ export function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+    <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between relative">
+        <div className="relative flex h-16 items-center justify-between">
           {/* Logo */}
-          <div className="flex-1 flex justify-start">
-            <Link to="/" className="flex items-center space-x-2">
-              <img src="/icc logo no bg.png" alt="REFUGE Logo" className="h-10 w-auto" />
+          <div className="flex flex-1 justify-start">
+            <Link className="flex items-center space-x-2" to="/">
+              <img
+                alt="REFUGE Logo"
+                className="h-10 w-auto"
+                src="/icc logo no bg.png"
+              />
             </Link>
           </div>
 
           {/* Desktop Nav - Centered */}
-          <div className="hidden 2xl:flex items-center space-x-1">
+          <div className="hidden items-center space-x-1 2xl:flex">
             {navLinks.map((link) => (
-              <NavigationMenu key={link.href} className="list-none">
+              <NavigationMenu className="list-none" key={link.href}>
                 <NavigationMenuList>
                   <NavigationMenuItem>
                     {link.subLinks ? (
                       <>
                         <NavigationMenuTrigger
-                          className={`bg-transparent ${location.pathname.startsWith(link.href) ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                          className={`bg-transparent ${location.pathname.startsWith(link.href) ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
                           onClick={(e) => handleParentClick(e, link.href)}
                         >
                           {link.label}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className="grid w-[200px] gap-2 p-4 bg-popover text-popover-foreground rounded-md shadow-md">
+                          <ul className="grid w-[200px] gap-2 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
                             {link.subLinks.map((subLink) => (
                               <li key={subLink.href}>
                                 <Link
+                                  className="block rounded-md p-2 font-medium text-sm hover:bg-muted"
                                   to={subLink.href}
-                                  className="block p-2 hover:bg-muted rounded-md text-sm font-medium"
                                 >
                                   {subLink.label}
                                 </Link>
@@ -152,7 +152,10 @@ export function Navbar() {
                     ) : (
                       <Link to={link.href}>
                         <NavigationMenuLink
-                          className={navigationMenuTriggerStyle() + ` bg-transparent ${location.pathname === link.href ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                          className={
+                            navigationMenuTriggerStyle() +
+                            `bg-transparent ${location.pathname === link.href ? "text-primary" : "text-muted-foreground hover:text-foreground"}`
+                          }
                         >
                           {link.label}
                         </NavigationMenuLink>
@@ -165,57 +168,65 @@ export function Navbar() {
           </div>
 
           {/* Right Side */}
-          <div className="flex-1 flex justify-end items-center space-x-2">
+          <div className="flex flex-1 items-center justify-end space-x-2">
             {(isAdmin || isModerator) && (
               <Link to="/admin">
-                <Button variant="ghost" size="sm" className="hidden 2xl:flex">
-                  <Settings className="h-4 w-4 mr-2" />
+                <Button className="hidden 2xl:flex" size="sm" variant="ghost">
+                  <Settings className="mr-2 h-4 w-4" />
                   Admin
                 </Button>
               </Link>
             )}
             {user && !isAdmin && !isModerator && (
               <Link to="/profile">
-                <Button variant="ghost" size="sm" className="hidden 2xl:flex">
-                  <User className="h-4 w-4 mr-2" />
+                <Button className="hidden 2xl:flex" size="sm" variant="ghost">
+                  <User className="mr-2 h-4 w-4" />
                   Profile
                 </Button>
               </Link>
             )}
             {!user && (
               <Link to="/auth">
-                <Button variant="ghost" size="sm" className="hidden 2xl:flex">
+                <Button className="hidden 2xl:flex" size="sm" variant="ghost">
                   Login
                 </Button>
               </Link>
             )}
             <Link to="/contact">
-              <Button size="sm" className="hidden 2xl:flex">
+              <Button className="hidden 2xl:flex" size="sm">
                 Plan Your Visit
               </Button>
             </Link>
 
             {/* Mobile Menu Button */}
             <Button
-              variant="ghost"
-              size="icon"
               className="2xl:hidden"
               onClick={() => setIsOpen(!isOpen)}
+              size="icon"
+              variant="ghost"
             >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {isOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
             </Button>
           </div>
         </div>
 
         {/* Mobile Nav */}
         {isOpen && (
-          <div className="2xl:hidden py-4 border-t max-h-[calc(100vh-4rem)] overflow-y-auto">
+          <div className="max-h-[calc(100vh-4rem)] overflow-y-auto border-t py-4 2xl:hidden">
             <div className="flex flex-col space-y-2 px-4">
-              <Accordion type="single" collapsible className="w-full">
-                {navLinks.map((link) => (
+              <Accordion className="w-full" collapsible type="single">
+                {navLinks.map((link) =>
                   link.subLinks ? (
-                    <AccordionItem value={link.label} key={link.label} className="border-b-0">
-                      <AccordionTrigger className="hover:no-underline py-2 text-base font-medium">
+                    <AccordionItem
+                      className="border-b-0"
+                      key={link.label}
+                      value={link.label}
+                    >
+                      <AccordionTrigger className="py-2 font-medium text-base hover:no-underline">
                         {link.label}
                       </AccordionTrigger>
                       <AccordionContent>
@@ -223,9 +234,9 @@ export function Navbar() {
                           {link.subLinks.map((subLink) => (
                             <li key={subLink.href}>
                               <Link
-                                to={subLink.href}
+                                className="block py-2 text-muted-foreground text-sm hover:text-foreground"
                                 onClick={() => setIsOpen(false)}
-                                className="block py-2 text-sm text-muted-foreground hover:text-foreground"
+                                to={subLink.href}
                               >
                                 {subLink.label}
                               </Link>
@@ -235,53 +246,54 @@ export function Navbar() {
                       </AccordionContent>
                     </AccordionItem>
                   ) : (
-                    <div key={link.href} className="py-2">
+                    <div className="py-2" key={link.href}>
                       <Link
-                        to={link.href}
+                        className={`flex flex-1 items-center justify-between py-2 font-medium text-base transition-all hover:underline ${
+                          location.pathname === link.href
+                            ? "text-primary"
+                            : "text-foreground"
+                        }`}
                         onClick={() => setIsOpen(false)}
-                        className={`flex flex-1 items-center justify-between py-2 text-base font-medium transition-all hover:underline ${location.pathname === link.href
-                          ? 'text-primary'
-                          : 'text-foreground'
-                          }`}
+                        to={link.href}
                       >
                         {link.label}
                       </Link>
                     </div>
                   )
-                ))}
+                )}
               </Accordion>
 
               {(isAdmin || isModerator) && (
                 <Link
-                  to="/admin"
+                  className="flex items-center px-0 py-4 font-medium text-base text-muted-foreground hover:text-foreground"
                   onClick={() => setIsOpen(false)}
-                  className="px-0 py-4 text-base font-medium text-muted-foreground hover:text-foreground flex items-center"
+                  to="/admin"
                 >
-                  <Settings className="h-4 w-4 mr-2" />
+                  <Settings className="mr-2 h-4 w-4" />
                   Admin Dashboard
                 </Link>
               )}
               {user && !isAdmin && !isModerator && (
                 <Link
-                  to="/profile"
+                  className="flex items-center px-0 py-4 font-medium text-base text-muted-foreground hover:text-foreground"
                   onClick={() => setIsOpen(false)}
-                  className="px-0 py-4 text-base font-medium text-muted-foreground hover:text-foreground flex items-center"
+                  to="/profile"
                 >
-                  <User className="h-4 w-4 mr-2" />
+                  <User className="mr-2 h-4 w-4" />
                   My Profile
                 </Link>
               )}
               {!user && (
                 <Link
-                  to="/auth"
+                  className="px-0 py-2 font-medium text-base text-muted-foreground hover:text-foreground"
                   onClick={() => setIsOpen(false)}
-                  className="px-0 py-2 text-base font-medium text-muted-foreground hover:text-foreground"
+                  to="/auth"
                 >
                   Login
                 </Link>
               )}
-              <Link to="/contact" onClick={() => setIsOpen(false)}>
-                <Button size="sm" className="w-full mt-4">
+              <Link onClick={() => setIsOpen(false)} to="/contact">
+                <Button className="mt-4 w-full" size="sm">
                   Plan Your Visit
                 </Button>
               </Link>

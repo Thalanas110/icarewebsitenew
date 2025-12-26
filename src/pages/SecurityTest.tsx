@@ -1,11 +1,4 @@
-import { ChartContainer } from "@/components/ui/chart";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ShieldAlert, CheckCircle } from "lucide-react";
-import { BarChart, Bar, XAxis } from "recharts";
-
 console.log("Hidden and commmented out. This is used to pentest the system.");
-
 
 /*
 export default function SecurityTest() {
@@ -48,7 +41,7 @@ export default function SecurityTest() {
 
                     <div className="border p-4 rounded-lg bg-gray-50">
                         <h3 className="font-semibold mb-4">Chart Render Area:</h3>
-                        {/* @ts-ignore - Demonstrating attack with invalid type *//*}
+                        {/* @ts-expect-error - Demonstrating attack with invalid type */ /*}
 <ChartContainer config={maliciousConfig} className="min-h-[200px] w-full">
     <BarChart data={data}>
         <Bar dataKey="value" fill="var(--color-safe)" />

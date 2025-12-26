@@ -1,8 +1,17 @@
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
-import { Users, Calendar, Clock, Building, LogOut, Home, BarChart3, BookOpen, Heart, Image as ImageIcon, UserCog } from 'lucide-react';
+import {
+  BarChart3,
+  BookOpen,
+  Building,
+  Calendar,
+  Clock,
+  Heart,
+  Home,
+  Image as ImageIcon,
+  LogOut,
+  UserCog,
+  Users,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,17 +23,48 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import { useAuth } from "@/hooks/useAuth";
 
 const menuItems = [
-  { id: 'analytics', label: 'Analytics', icon: BarChart3, roles: ['admin'] },
-  { id: 'ministries', label: 'Ministries', icon: Users, roles: ['admin', 'moderator'] },
-  { id: 'events', label: 'Events', icon: Calendar, roles: ['admin', 'moderator'] },
-  { id: 'sermons', label: 'Sermons', icon: BookOpen, roles: ['admin', 'moderator'] },
-  { id: 'services', label: 'Service Times', icon: Clock, roles: ['admin'] },
-  { id: 'church-info', label: 'Church Info', icon: Building, roles: ['admin'] },
-  { id: 'gallery', label: 'Gallery', icon: ImageIcon, roles: ['admin', 'moderator'] },
-  { id: 'giving', label: 'Giving', icon: Heart, roles: ['admin'] },
-  { id: 'users', label: 'Users', icon: UserCog, roles: ['admin'] },
+  { id: "analytics", label: "Analytics", icon: BarChart3, roles: ["admin"] },
+  {
+    id: "ministries",
+    label: "Ministries",
+    icon: Users,
+    roles: ["admin", "moderator"],
+  },
+  {
+    id: "events",
+    label: "Events",
+    icon: Calendar,
+    roles: ["admin", "moderator"],
+  },
+  {
+    id: "sermons",
+    label: "Sermons",
+    icon: BookOpen,
+    roles: ["admin", "moderator"],
+  },
+  { id: "services", label: "Service Times", icon: Clock, roles: ["admin"] },
+  { id: "church-info", label: "Church Info", icon: Building, roles: ["admin"] },
+  {
+    id: "gallery",
+    label: "Gallery",
+    icon: ImageIcon,
+    roles: ["admin", "moderator"],
+  },
+  { id: "giving", label: "Giving", icon: Heart, roles: ["admin"] },
+  { id: "users", label: "Users", icon: UserCog, roles: ["admin"] },
 ];
 
 interface Props {
@@ -36,23 +76,28 @@ export function AdminSidebar({ activeTab, setActiveTab }: Props) {
   const { signOut, role } = useAuth();
   const navigate = useNavigate();
 
-  const filteredMenuItems = menuItems.filter(item =>
-    role && item.roles.includes(role)
+  const filteredMenuItems = menuItems.filter(
+    (item) => role && item.roles.includes(role)
   );
 
   return (
     <Sidebar className="border-r">
       <SidebarContent className="p-4">
-        <div className="mb-6 md:mb-10 md:mt-4">
-          <span className="font-display font-bold text-lg md:text-2xl">I Care Center | Admin Panel</span>
+        <div className="mb-6 md:mt-4 md:mb-10">
+          <span className="font-bold font-display text-lg md:text-2xl">
+            I Care Center | Admin Panel
+          </span>
         </div>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {filteredMenuItems.map((item) => (
                 <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton onClick={() => setActiveTab(item.id)} className={`h-auto py-3 md:py-4 px-4 text-base md:text-xl ${activeTab === item.id ? 'bg-sidebar-accent' : ''}`}>
-                    <item.icon className="h-4 w-4 md:h-7 md:w-7 mr-3 md:mr-4" />
+                  <SidebarMenuButton
+                    className={`h-auto px-4 py-3 text-base md:py-4 md:text-xl ${activeTab === item.id ? "bg-sidebar-accent" : ""}`}
+                    onClick={() => setActiveTab(item.id)}
+                  >
+                    <item.icon className="mr-3 h-4 w-4 md:mr-4 md:h-7 md:w-7" />
                     {item.label}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -60,33 +105,46 @@ export function AdminSidebar({ activeTab, setActiveTab }: Props) {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <div className="mt-auto pt-6 space-y-2">
-          <Button variant="ghost" className="w-full justify-start h-auto py-3 md:py-4 px-4 text-base md:text-xl" onClick={() => navigate('/')}>
-            <Home className="h-4 w-4 md:h-7 md:w-7 mr-3 md:mr-4" /> Back to Site
+        <div className="mt-auto space-y-2 pt-6">
+          <Button
+            className="h-auto w-full justify-start px-4 py-3 text-base md:py-4 md:text-xl"
+            onClick={() => navigate("/")}
+            variant="ghost"
+          >
+            <Home className="mr-3 h-4 w-4 md:mr-4 md:h-7 md:w-7" /> Back to Site
           </Button>
           <Button
+            className={`h-auto w-full justify-start px-4 py-3 text-base md:py-4 md:text-xl ${activeTab === "profile" ? "bg-sidebar-accent" : ""}`}
+            onClick={() => setActiveTab("profile")}
             variant="ghost"
-            className={`w-full justify-start h-auto py-3 md:py-4 px-4 text-base md:text-xl ${activeTab === 'profile' ? 'bg-sidebar-accent' : ''}`}
-            onClick={() => setActiveTab('profile')}
           >
-            <UserCog className="h-4 w-4 md:h-7 md:w-7 mr-3 md:mr-4" /> My Profile
+            <UserCog className="mr-3 h-4 w-4 md:mr-4 md:h-7 md:w-7" /> My
+            Profile
           </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="ghost" className="w-full justify-start text-destructive h-auto py-3 md:py-4 px-4 text-base md:text-xl">
-                <LogOut className="h-4 w-4 md:h-7 md:w-7 mr-3 md:mr-4" /> Sign Out
+              <Button
+                className="h-auto w-full justify-start px-4 py-3 text-base text-destructive md:py-4 md:text-xl"
+                variant="ghost"
+              >
+                <LogOut className="mr-3 h-4 w-4 md:mr-4 md:h-7 md:w-7" /> Sign
+                Out
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure you want to sign out?</AlertDialogTitle>
+                <AlertDialogTitle>
+                  Are you sure you want to sign out?
+                </AlertDialogTitle>
                 <AlertDialogDescription>
                   You will be returned to the login screen.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={signOut}>Sign Out</AlertDialogAction>
+                <AlertDialogAction onClick={signOut}>
+                  Sign Out
+                </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

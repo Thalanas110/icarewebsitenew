@@ -1,12 +1,6 @@
-import { useState } from 'react';
-import { useServiceTimes, useServiceTimeMutations, ServiceTime, ServiceTimeInsert } from '@/hooks/useChurchData';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
+import { GripVertical, Pencil, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,31 +11,67 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  type ServiceTime,
+  type ServiceTimeInsert,
+  useServiceTimeMutations,
+  useServiceTimes,
+} from "@/hooks/useChurchData";
 
 export function AdminServiceTimes() {
   const { data: serviceTimes, isLoading } = useServiceTimes();
-  const { createServiceTime, updateServiceTime, deleteServiceTime, updateSortOrder } = useServiceTimeMutations();
+  const {
+    createServiceTime,
+    updateServiceTime,
+    deleteServiceTime,
+    updateSortOrder,
+  } = useServiceTimeMutations();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<ServiceTime | null>(null);
-  const [form, setForm] = useState({ name: '', time: '', description: '', audience: '' });
+  const [form, setForm] = useState({
+    name: "",
+    time: "",
+    description: "",
+    audience: "",
+  });
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
   const [orderedItems, setOrderedItems] = useState<ServiceTime[]>([]);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const resetForm = () => { setForm({ name: '', time: '', description: '', audience: '' }); setEditing(null); };
+  const resetForm = () => {
+    setForm({ name: "", time: "", description: "", audience: "" });
+    setEditing(null);
+  };
 
   const handleSave = async () => {
-    if (!form.name || !form.time) { toast.error('Name and time are required'); return; }
+    if (!(form.name && form.time)) {
+      toast.error("Name and time are required");
+      return;
+    }
     try {
       if (editing) {
         await updateServiceTime.mutateAsync({ id: editing.id, ...form });
-        toast.success('Service time updated');
+        toast.success("Service time updated");
       } else {
         await createServiceTime.mutateAsync(form as ServiceTimeInsert);
-        toast.success('Service time created');
+        toast.success("Service time created");
       }
-      setOpen(false); resetForm();
-    } catch (e: any) { toast.error(e.message); }
+      setOpen(false);
+      resetForm();
+    } catch (e: any) {
+      toast.error(e.message);
+    }
   };
 
   const handleDeleteClick = (id: string) => {
@@ -52,7 +82,7 @@ export function AdminServiceTimes() {
     if (!deleteId) return;
     try {
       await deleteServiceTime.mutateAsync(deleteId);
-      toast.success('Deleted');
+      toast.success("Deleted");
     } catch (e: any) {
       toast.error(e.message);
     } finally {
@@ -60,30 +90,42 @@ export function AdminServiceTimes() {
     }
   };
 
-  const openEdit = (s: ServiceTime) => { setEditing(s); setForm({ name: s.name, time: s.time, description: s.description || '', audience: s.audience || '' }); setOpen(true); };
+  const openEdit = (s: ServiceTime) => {
+    setEditing(s);
+    setForm({
+      name: s.name,
+      time: s.time,
+      description: s.description || "",
+      audience: s.audience || "",
+    });
+    setOpen(true);
+  };
 
   const handleDragStart = (id: string) => setDraggedItem(id);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    (e.currentTarget as HTMLElement).style.opacity = '0.5';
+    (e.currentTarget as HTMLElement).style.opacity = "0.5";
   };
 
   const handleDragLeave = (e: React.DragEvent) => {
-    (e.currentTarget as HTMLElement).style.opacity = '1';
+    (e.currentTarget as HTMLElement).style.opacity = "1";
   };
 
   const handleDrop = (e: React.DragEvent, targetId: string) => {
     e.preventDefault();
-    (e.currentTarget as HTMLElement).style.opacity = '1';
+    (e.currentTarget as HTMLElement).style.opacity = "1";
 
     if (!draggedItem || draggedItem === targetId || !serviceTimes) return;
 
     const items = [...serviceTimes];
-    const draggedIdx = items.findIndex(s => s.id === draggedItem);
-    const targetIdx = items.findIndex(s => s.id === targetId);
+    const draggedIdx = items.findIndex((s) => s.id === draggedItem);
+    const targetIdx = items.findIndex((s) => s.id === targetId);
 
-    [items[draggedIdx], items[targetIdx]] = [items[targetIdx], items[draggedIdx]];
+    [items[draggedIdx], items[targetIdx]] = [
+      items[targetIdx],
+      items[draggedIdx],
+    ];
     setOrderedItems(items);
     setDraggedItem(null);
 
@@ -92,8 +134,9 @@ export function AdminServiceTimes() {
       id: item.id,
       sort_order: index + 1,
     }));
-    updateSortOrder.mutateAsync(sortUpdates)
-      .then(() => toast.success('Order saved'))
+    updateSortOrder
+      .mutateAsync(sortUpdates)
+      .then(() => toast.success("Order saved"))
       .catch((e) => toast.error(e.message));
   };
 
@@ -101,33 +144,68 @@ export function AdminServiceTimes() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold">Service Times</h2>
-        <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) resetForm(); }}>
-          <DialogTrigger asChild><Button><Plus className="h-4 w-4 mr-2" />Add Service</Button></DialogTrigger>
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="font-semibold text-2xl">Service Times</h2>
+        <Dialog
+          onOpenChange={(o) => {
+            setOpen(o);
+            if (!o) resetForm();
+          }}
+          open={open}
+        >
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Service
+            </Button>
+          </DialogTrigger>
           <DialogContent>
-            <DialogHeader><DialogTitle>{editing ? 'Edit' : 'Add'} Service Time</DialogTitle></DialogHeader>
+            <DialogHeader>
+              <DialogTitle>{editing ? "Edit" : "Add"} Service Time</DialogTitle>
+            </DialogHeader>
             <div className="space-y-4">
-              <Input placeholder="Name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-              <Input placeholder="Time * (e.g. 8:30-10:00 AM)" value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })} />
-              <Input placeholder="Audience (e.g. All Ages)" value={form.audience} onChange={(e) => setForm({ ...form, audience: e.target.value })} />
-              <Textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-              <Button onClick={handleSave} className="w-full">Save</Button>
+              <Input
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="Name *"
+                value={form.name}
+              />
+              <Input
+                onChange={(e) => setForm({ ...form, time: e.target.value })}
+                placeholder="Time * (e.g. 8:30-10:00 AM)"
+                value={form.time}
+              />
+              <Input
+                onChange={(e) => setForm({ ...form, audience: e.target.value })}
+                placeholder="Audience (e.g. All Ages)"
+                value={form.audience}
+              />
+              <Textarea
+                onChange={(e) =>
+                  setForm({ ...form, description: e.target.value })
+                }
+                placeholder="Description"
+                value={form.description}
+              />
+              <Button className="w-full" onClick={handleSave}>
+                Save
+              </Button>
             </div>
           </DialogContent>
         </Dialog>
       </div>
-      {isLoading ? <p>Loading...</p> : (
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
         <div className="grid gap-4">
           {itemsToDisplay?.map((s) => (
             <Card
-              key={s.id}
+              className="cursor-move transition-colors hover:bg-secondary/50"
               draggable
-              onDragStart={() => handleDragStart(s.id)}
-              onDragOver={handleDragOver}
+              key={s.id}
               onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
+              onDragStart={() => handleDragStart(s.id)}
               onDrop={(e) => handleDrop(e, s.id)}
-              className="cursor-move hover:bg-secondary/50 transition-colors"
             >
               <CardHeader className="flex flex-row items-center justify-between py-3">
                 <div className="flex items-center gap-3">
@@ -135,11 +213,23 @@ export function AdminServiceTimes() {
                   <CardTitle className="text-lg">{s.name}</CardTitle>
                 </div>
                 <div className="flex gap-2">
-                  <Button size="icon" variant="ghost" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button>
-                  <Button size="icon" variant="ghost" onClick={() => handleDeleteClick(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                  <Button
+                    onClick={() => openEdit(s)}
+                    size="icon"
+                    variant="ghost"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    onClick={() => handleDeleteClick(s.id)}
+                    size="icon"
+                    variant="ghost"
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
                 </div>
               </CardHeader>
-              <CardContent className="pt-0 text-sm text-muted-foreground">
+              <CardContent className="pt-0 text-muted-foreground text-sm">
                 <p className="font-medium text-primary">{s.time}</p>
                 {s.audience && <p>{s.audience}</p>}
               </CardContent>
@@ -148,17 +238,24 @@ export function AdminServiceTimes() {
         </div>
       )}
 
-      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+      <AlertDialog
+        onOpenChange={(open) => !open && setDeleteId(null)}
+        open={!!deleteId}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the service time.
+              This action cannot be undone. This will permanently delete the
+              service time.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={confirmDelete}
+            >
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

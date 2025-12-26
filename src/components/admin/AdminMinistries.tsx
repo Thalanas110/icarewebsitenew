@@ -1,18 +1,23 @@
-import { useState } from 'react';
-import { useMinistries, useMinistryMutations, Ministry, MinistryInsert } from '@/hooks/useChurchData';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
-import { ImageUpload } from './ImageUpload';
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import {
+  closestCenter,
+  DndContext,
+  type DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { GripVertical, Pencil, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,9 +28,38 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  type Ministry,
+  type MinistryInsert,
+  useMinistries,
+  useMinistryMutations,
+} from "@/hooks/useChurchData";
+import { ImageUpload } from "./ImageUpload";
 
-function SortableMinistryCard({ ministry, onEdit, onDelete }: { ministry: Ministry; onEdit: (m: Ministry) => void; onDelete: (id: string) => void }) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: ministry.id });
+function SortableMinistryCard({
+  ministry,
+  onEdit,
+  onDelete,
+}: {
+  ministry: Ministry;
+  onEdit: (m: Ministry) => void;
+  onDelete: (id: string) => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: ministry.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -33,19 +67,31 @@ function SortableMinistryCard({ ministry, onEdit, onDelete }: { ministry: Minist
   };
 
   return (
-    <div ref={setNodeRef} style={style} className="mb-4">
+    <div className="mb-4" ref={setNodeRef} style={style}>
       <Card className="overflow-hidden">
         {ministry.image_url && (
-          <div className="h-24 w-full relative">
-            <img src={ministry.image_url} alt={ministry.name} className="w-full h-full object-cover" />
-            <div {...attributes} {...listeners} className="absolute top-2 right-2 bg-black/50 p-1 rounded cursor-grab hover:bg-black/70 text-white">
+          <div className="relative h-24 w-full">
+            <img
+              alt={ministry.name}
+              className="h-full w-full object-cover"
+              src={ministry.image_url}
+            />
+            <div
+              {...attributes}
+              {...listeners}
+              className="absolute top-2 right-2 cursor-grab rounded bg-black/50 p-1 text-white hover:bg-black/70"
+            >
               <GripVertical className="h-4 w-4" />
             </div>
           </div>
         )}
         {!ministry.image_url && (
-          <div className="h-8 bg-muted w-full flex justify-end p-2">
-            <div {...attributes} {...listeners} className="cursor-grab hover:bg-muted-foreground/20 p-1 rounded">
+          <div className="flex h-8 w-full justify-end bg-muted p-2">
+            <div
+              {...attributes}
+              {...listeners}
+              className="cursor-grab rounded p-1 hover:bg-muted-foreground/20"
+            >
               <GripVertical className="h-4 w-4 text-muted-foreground" />
             </div>
           </div>
@@ -53,11 +99,23 @@ function SortableMinistryCard({ ministry, onEdit, onDelete }: { ministry: Minist
         <CardHeader className="flex flex-row items-center justify-between py-3">
           <CardTitle className="text-lg">{ministry.name}</CardTitle>
           <div className="flex gap-2">
-            <Button size="icon" variant="ghost" onClick={() => onEdit(ministry)}><Pencil className="h-4 w-4" /></Button>
-            <Button size="icon" variant="ghost" onClick={() => onDelete(ministry.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+            <Button
+              onClick={() => onEdit(ministry)}
+              size="icon"
+              variant="ghost"
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+            <Button
+              onClick={() => onDelete(ministry.id)}
+              size="icon"
+              variant="ghost"
+            >
+              <Trash2 className="h-4 w-4 text-destructive" />
+            </Button>
           </div>
         </CardHeader>
-        <CardContent className="pt-0 text-sm text-muted-foreground">
+        <CardContent className="pt-0 text-muted-foreground text-sm">
           {ministry.leader && <p>Leader: {ministry.leader}</p>}
           {ministry.meeting_time && <p>Meets: {ministry.meeting_time}</p>}
         </CardContent>
@@ -68,16 +126,17 @@ function SortableMinistryCard({ ministry, onEdit, onDelete }: { ministry: Minist
 
 export function AdminMinistries() {
   const { data: ministries, isLoading } = useMinistries();
-  const { createMinistry, updateMinistry, deleteMinistry, updateSortOrder } = useMinistryMutations();
+  const { createMinistry, updateMinistry, deleteMinistry, updateSortOrder } =
+    useMinistryMutations();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Ministry | null>(null);
   const [form, setForm] = useState({
-    name: '',
-    description: '',
-    leader: '',
-    meeting_time: '',
-    image_url: '',
-    category: 'ministry' as 'ministry' | 'outreach'
+    name: "",
+    description: "",
+    leader: "",
+    meeting_time: "",
+    image_url: "",
+    category: "ministry" as "ministry" | "outreach",
   });
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
@@ -87,24 +146,42 @@ export function AdminMinistries() {
   );
 
   const resetForm = () => {
-    setForm({ name: '', description: '', leader: '', meeting_time: '', image_url: '', category: 'ministry' });
+    setForm({
+      name: "",
+      description: "",
+      leader: "",
+      meeting_time: "",
+      image_url: "",
+      category: "ministry",
+    });
     setEditing(null);
   };
 
   const handleSave = async () => {
-    if (!form.name) { toast.error('Name is required'); return; }
+    if (!form.name) {
+      toast.error("Name is required");
+      return;
+    }
     try {
       if (editing) {
         await updateMinistry.mutateAsync({ id: editing.id, ...form });
-        toast.success('Updated successfully');
+        toast.success("Updated successfully");
       } else {
         // Get max sort order for the new item to put it at the end
-        const currentMaxSort = ministries?.length ? Math.max(...ministries.map(m => m.sort_order || 0)) : 0;
-        await createMinistry.mutateAsync({ ...form, sort_order: currentMaxSort + 1 } as MinistryInsert);
-        toast.success('Created successfully');
+        const currentMaxSort = ministries?.length
+          ? Math.max(...ministries.map((m) => m.sort_order || 0))
+          : 0;
+        await createMinistry.mutateAsync({
+          ...form,
+          sort_order: currentMaxSort + 1,
+        } as MinistryInsert);
+        toast.success("Created successfully");
       }
-      setOpen(false); resetForm();
-    } catch (e: unknown) { toast.error(e instanceof Error ? e.message : 'An error occurred'); }
+      setOpen(false);
+      resetForm();
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "An error occurred");
+    }
   };
 
   const handleDeleteClick = (id: string) => {
@@ -115,9 +192,9 @@ export function AdminMinistries() {
     if (!deleteId) return;
     try {
       await deleteMinistry.mutateAsync(deleteId);
-      toast.success('Deleted');
+      toast.success("Deleted");
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : 'An error occurred');
+      toast.error(e instanceof Error ? e.message : "An error occurred");
     } finally {
       setDeleteId(null);
     }
@@ -127,11 +204,11 @@ export function AdminMinistries() {
     setEditing(m);
     setForm({
       name: m.name,
-      description: m.description || '',
-      leader: m.leader || '',
-      meeting_time: m.meeting_time || '',
-      image_url: m.image_url || '',
-      category: m.category || 'ministry'
+      description: m.description || "",
+      leader: m.leader || "",
+      meeting_time: m.meeting_time || "",
+      image_url: m.image_url || "",
+      category: m.category || "ministry",
     });
     setOpen(true);
   };
@@ -154,102 +231,174 @@ export function AdminMinistries() {
     // Let's implement sorting WITHIN categories for now.
 
     // Check if both items are in the same category
-    const activeItem = ministries.find(m => m.id === active.id);
-    const overItem = ministries.find(m => m.id === over.id);
+    const activeItem = ministries.find((m) => m.id === active.id);
+    const overItem = ministries.find((m) => m.id === over.id);
 
     if (activeItem?.category !== overItem?.category) return; // Don't allow cross-category dragging for now
 
-    const categoryItems = ministries.filter(m => m.category === activeItem?.category);
-    const oldCatIndex = categoryItems.findIndex(m => m.id === active.id);
-    const newCatIndex = categoryItems.findIndex(m => m.id === over.id);
+    const categoryItems = ministries.filter(
+      (m) => m.category === activeItem?.category
+    );
+    const oldCatIndex = categoryItems.findIndex((m) => m.id === active.id);
+    const newCatIndex = categoryItems.findIndex((m) => m.id === over.id);
 
     const newCatOrder = arrayMove(categoryItems, oldCatIndex, newCatIndex);
 
     const updates = newCatOrder.map((m, index) => ({
       id: m.id,
-      sort_order: index + 1
+      sort_order: index + 1,
     }));
 
     updateSortOrder.mutate(updates);
   };
 
-  const churchMinistries = ministries?.filter(m => m.category === 'ministry' || !m.category) || [];
-  const outreaches = ministries?.filter(m => m.category === 'outreach') || [];
+  const churchMinistries =
+    ministries?.filter((m) => m.category === "ministry" || !m.category) || [];
+  const outreaches = ministries?.filter((m) => m.category === "outreach") || [];
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold">Ministries & Outreaches</h2>
-        <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) resetForm(); }}>
-          <DialogTrigger asChild><Button><Plus className="h-4 w-4 mr-2" />Add New</Button></DialogTrigger>
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="font-semibold text-2xl">Ministries & Outreaches</h2>
+        <Dialog
+          onOpenChange={(o) => {
+            setOpen(o);
+            if (!o) resetForm();
+          }}
+          open={open}
+        >
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Add New
+            </Button>
+          </DialogTrigger>
           <DialogContent>
-            <DialogHeader><DialogTitle>{editing ? 'Edit' : 'Add'} Entry</DialogTitle></DialogHeader>
+            <DialogHeader>
+              <DialogTitle>{editing ? "Edit" : "Add"} Entry</DialogTitle>
+            </DialogHeader>
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label>Category</Label>
                 <RadioGroup
-                  value={form.category}
-                  onValueChange={(v: 'ministry' | 'outreach') => setForm({ ...form, category: v })}
                   className="flex gap-4"
+                  onValueChange={(v: "ministry" | "outreach") =>
+                    setForm({ ...form, category: v })
+                  }
+                  value={form.category}
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="ministry" id="cat-ministry" />
+                    <RadioGroupItem id="cat-ministry" value="ministry" />
                     <Label htmlFor="cat-ministry">Church Ministry</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="outreach" id="cat-outreach" />
+                    <RadioGroupItem id="cat-outreach" value="outreach" />
                     <Label htmlFor="cat-outreach">Outreach</Label>
                   </div>
                 </RadioGroup>
               </div>
 
-              <Input placeholder="Name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-              <Textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-              <Input placeholder="Leader" value={form.leader} onChange={(e) => setForm({ ...form, leader: e.target.value })} />
-              <Input placeholder="Meeting Time" value={form.meeting_time} onChange={(e) => setForm({ ...form, meeting_time: e.target.value })} />
+              <Input
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="Name *"
+                value={form.name}
+              />
+              <Textarea
+                onChange={(e) =>
+                  setForm({ ...form, description: e.target.value })
+                }
+                placeholder="Description"
+                value={form.description}
+              />
+              <Input
+                onChange={(e) => setForm({ ...form, leader: e.target.value })}
+                placeholder="Leader"
+                value={form.leader}
+              />
+              <Input
+                onChange={(e) =>
+                  setForm({ ...form, meeting_time: e.target.value })
+                }
+                placeholder="Meeting Time"
+                value={form.meeting_time}
+              />
               <div>
                 <Label className="mb-2 block">Image</Label>
                 <ImageUpload
-                  value={form.image_url}
-                  onChange={(url) => setForm({ ...form, image_url: url })}
                   folder="ministries"
+                  onChange={(url) => setForm({ ...form, image_url: url })}
+                  value={form.image_url}
                 />
               </div>
-              <Button onClick={handleSave} className="w-full">Save</Button>
+              <Button className="w-full" onClick={handleSave}>
+                Save
+              </Button>
             </div>
           </DialogContent>
         </Dialog>
       </div>
 
       <DndContext
-        sensors={sensors}
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
+        sensors={sensors}
       >
         <div className="space-y-8">
           <section>
-            <h3 className="text-xl font-medium mb-4 text-primary">Church Ministries</h3>
-            {isLoading ? <p>Loading...</p> : (
-              <SortableContext items={churchMinistries.map(m => m.id)} strategy={verticalListSortingStrategy}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <h3 className="mb-4 font-medium text-primary text-xl">
+              Church Ministries
+            </h3>
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : (
+              <SortableContext
+                items={churchMinistries.map((m) => m.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {churchMinistries.map((m) => (
-                    <SortableMinistryCard key={m.id} ministry={m} onEdit={openEdit} onDelete={handleDeleteClick} />
+                    <SortableMinistryCard
+                      key={m.id}
+                      ministry={m}
+                      onDelete={handleDeleteClick}
+                      onEdit={openEdit}
+                    />
                   ))}
-                  {churchMinistries.length === 0 && <p className="text-muted-foreground col-span-full">No church ministries yet.</p>}
+                  {churchMinistries.length === 0 && (
+                    <p className="col-span-full text-muted-foreground">
+                      No church ministries yet.
+                    </p>
+                  )}
                 </div>
               </SortableContext>
             )}
           </section>
 
           <section>
-            <h3 className="text-xl font-medium mb-4 text-primary">Outreaches</h3>
-            {isLoading ? <p>Loading...</p> : (
-              <SortableContext items={outreaches.map(m => m.id)} strategy={verticalListSortingStrategy}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <h3 className="mb-4 font-medium text-primary text-xl">
+              Outreaches
+            </h3>
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : (
+              <SortableContext
+                items={outreaches.map((m) => m.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {outreaches.map((m) => (
-                    <SortableMinistryCard key={m.id} ministry={m} onEdit={openEdit} onDelete={handleDeleteClick} />
+                    <SortableMinistryCard
+                      key={m.id}
+                      ministry={m}
+                      onDelete={handleDeleteClick}
+                      onEdit={openEdit}
+                    />
                   ))}
-                  {outreaches.length === 0 && <p className="text-muted-foreground col-span-full">No outreaches yet.</p>}
+                  {outreaches.length === 0 && (
+                    <p className="col-span-full text-muted-foreground">
+                      No outreaches yet.
+                    </p>
+                  )}
                 </div>
               </SortableContext>
             )}
@@ -257,17 +406,24 @@ export function AdminMinistries() {
         </div>
       </DndContext>
 
-      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+      <AlertDialog
+        onOpenChange={(open) => !open && setDeleteId(null)}
+        open={!!deleteId}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the ministry/outreach.
+              This action cannot be undone. This will permanently delete the
+              ministry/outreach.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={confirmDelete}
+            >
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

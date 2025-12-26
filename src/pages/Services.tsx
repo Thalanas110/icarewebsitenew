@@ -1,8 +1,8 @@
-import { Layout } from '@/components/layout/Layout';
-import { Card, CardContent } from '@/components/ui/card';
-import { useServiceTimes, useChurchInfo } from '@/hooks/useChurchData';
-import { Clock, Users, MapPin, Car, Accessibility, Baby } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
+import { Accessibility, Baby, Car, Clock, MapPin, Users } from "lucide-react";
+import { Helmet } from "react-helmet-async";
+import { Layout } from "@/components/layout/Layout";
+import { Card, CardContent } from "@/components/ui/card";
+import { useChurchInfo, useServiceTimes } from "@/hooks/useChurchData";
 
 export default function Services() {
   const { data: serviceTimes, isLoading } = useServiceTimes();
@@ -12,45 +12,60 @@ export default function Services() {
     <Layout>
       <Helmet>
         <title>Service Times - I Care Center | The Refuge Church</title>
-        <meta name="description" content="Join us for worship at I Care Center. View our service times, what to expect, and how to find us in Olongapo City." />
+        <meta
+          content="Join us for worship at I Care Center. View our service times, what to expect, and how to find us in Olongapo City."
+          name="description"
+        />
       </Helmet>
       {/* Hero */}
-      <section id="hero" className="hero-gradient py-20">
+      <section className="hero-gradient py-20" id="hero">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
+          <h1 className="mb-4 font-bold font-display text-4xl md:text-5xl">
             <span className="text-gradient">Service</span> Times
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            We offer multiple opportunities throughout the week to worship, learn, and grow together in community.
+          <p className="mx-auto max-w-2xl text-muted-foreground">
+            We offer multiple opportunities throughout the week to worship,
+            learn, and grow together in community.
           </p>
         </div>
       </section>
 
       {/* Service Times */}
-      <section id="service-times" className="section-padding">
+      <section className="section-padding" id="service-times">
         <div className="container mx-auto px-4">
           {isLoading ? (
-            <div className="text-center text-muted-foreground">Loading services...</div>
+            <div className="text-center text-muted-foreground">
+              Loading services...
+            </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
               {serviceTimes?.map((service) => (
-                <Card key={service.id} className="border-none shadow-lg hover:shadow-xl transition-shadow w-full">
-                  <CardContent className="p-5 md:p-8 space-y-4">
+                <Card
+                  className="w-full border-none shadow-lg transition-shadow hover:shadow-xl"
+                  key={service.id}
+                >
+                  <CardContent className="space-y-4 p-5 md:p-8">
                     <div className="flex items-start justify-between">
-                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10">
                         <Clock className="h-6 w-6 text-primary" />
                       </div>
                       {service.audience && (
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground text-right ml-2">
+                        <div className="ml-2 flex items-center gap-1 text-right text-muted-foreground text-sm">
                           <Users className="h-4 w-4 shrink-0" />
                           {service.audience}
                         </div>
                       )}
                     </div>
-                    <h3 className="text-xl md:text-2xl font-display font-bold">{service.name}</h3>
-                    <p className="text-2xl md:text-3xl font-bold text-primary">{service.time}</p>
+                    <h3 className="font-bold font-display text-xl md:text-2xl">
+                      {service.name}
+                    </h3>
+                    <p className="font-bold text-2xl text-primary md:text-3xl">
+                      {service.time}
+                    </p>
                     {service.description && (
-                      <p className="text-muted-foreground">{service.description}</p>
+                      <p className="text-muted-foreground">
+                        {service.description}
+                      </p>
                     )}
                   </CardContent>
                 </Card>
@@ -61,50 +76,55 @@ export default function Services() {
       </section>
 
       {/* What to Expect */}
-      <section id="expect" className="section-padding">
+      <section className="section-padding" id="expect">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-display font-bold text-center mb-8">What to Expect</h2>
+          <div className="mx-auto max-w-3xl">
+            <h2 className="mb-8 text-center font-bold font-display text-3xl">
+              What to Expect
+            </h2>
             <div className="space-y-6">
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground">
                   1
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-1">Warm Welcome</h4>
+                  <h4 className="mb-1 font-semibold">Warm Welcome</h4>
                   <p className="text-muted-foreground">
-                    Our greeters are ready to welcome you and help you find your way around.
+                    Our greeters are ready to welcome you and help you find your
+                    way around.
                   </p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground">
                   2
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-1">Uplifting Worship</h4>
+                  <h4 className="mb-1 font-semibold">Uplifting Worship</h4>
                   <p className="text-muted-foreground">
-                    Experience heartfelt worship with contemporary and traditional music.
+                    Experience heartfelt worship with contemporary and
+                    traditional music.
                   </p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground">
                   3
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-1">Biblical Teaching</h4>
+                  <h4 className="mb-1 font-semibold">Biblical Teaching</h4>
                   <p className="text-muted-foreground">
-                    Relevant messages from Scripture that speak to everyday life.
+                    Relevant messages from Scripture that speak to everyday
+                    life.
                   </p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground">
                   4
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-1">Fellowship Time</h4>
+                  <h4 className="mb-1 font-semibold">Fellowship Time</h4>
                   <p className="text-muted-foreground">
                     Connect with others over refreshments after the service.
                   </p>
@@ -115,63 +135,66 @@ export default function Services() {
         </div>
       </section>
 
-
       {/* Location */}
-      <section id="location" className="section-padding bg-secondary/30">
+      <section className="section-padding bg-secondary/30" id="location">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto space-y-12">
-            <div className="text-center space-y-6">
-              <h2 className="text-3xl font-display font-bold">Visit Us</h2>
+          <div className="mx-auto max-w-4xl space-y-12">
+            <div className="space-y-6 text-center">
+              <h2 className="font-bold font-display text-3xl">Visit Us</h2>
               {churchInfo?.address && (
                 <div className="flex flex-col items-center justify-center gap-2">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                  <div className="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
                     <MapPin className="h-8 w-8 text-primary" />
                   </div>
-                  <span className="text-xl font-medium">
-                    {churchInfo.address}, {churchInfo.city}, {churchInfo.state} {churchInfo.zip}
+                  <span className="font-medium text-xl">
+                    {churchInfo.address}, {churchInfo.city}, {churchInfo.state}{" "}
+                    {churchInfo.zip}
                   </span>
                 </div>
               )}
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card className="border-none shadow-md hover:shadow-lg transition-all text-center group">
-                <CardContent className="p-6 space-y-4">
-                  <div className="w-12 h-12 bg-church-gold/20 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+            <div className="grid gap-6 md:grid-cols-3">
+              <Card className="group border-none text-center shadow-md transition-all hover:shadow-lg">
+                <CardContent className="space-y-4 p-6">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-church-gold/20 transition-transform group-hover:scale-110">
                     <Car className="h-6 w-6 text-church-gold-dark" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg mb-2">Free Parking</h4>
+                    <h4 className="mb-2 font-bold text-lg">Free Parking</h4>
                     <p className="text-muted-foreground text-sm">
-                      Ample parking space available for all our visitors right at the venue.
+                      Ample parking space available for all our visitors right
+                      at the venue.
                     </p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-none shadow-md hover:shadow-lg transition-all text-center group">
-                <CardContent className="p-6 space-y-4">
-                  <div className="w-12 h-12 bg-church-gold/20 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+              <Card className="group border-none text-center shadow-md transition-all hover:shadow-lg">
+                <CardContent className="space-y-4 p-6">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-church-gold/20 transition-transform group-hover:scale-110">
                     <Accessibility className="h-6 w-6 text-church-gold-dark" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg mb-2">Accessibility</h4>
+                    <h4 className="mb-2 font-bold text-lg">Accessibility</h4>
                     <p className="text-muted-foreground text-sm">
-                      Our facilities are fully wheelchair accessible with designated seating.
+                      Our facilities are fully wheelchair accessible with
+                      designated seating.
                     </p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-none shadow-md hover:shadow-lg transition-all text-center group">
-                <CardContent className="p-6 space-y-4">
-                  <div className="w-12 h-12 bg-church-gold/20 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+              <Card className="group border-none text-center shadow-md transition-all hover:shadow-lg">
+                <CardContent className="space-y-4 p-6">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-church-gold/20 transition-transform group-hover:scale-110">
                     <Baby className="h-6 w-6 text-church-gold-dark" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg mb-2">Kids Ministry</h4>
+                    <h4 className="mb-2 font-bold text-lg">Kids Ministry</h4>
                     <p className="text-muted-foreground text-sm">
-                      Safe, fun, and engaging spaces for children of all ages during service.
+                      Safe, fun, and engaging spaces for children of all ages
+                      during service.
                     </p>
                   </div>
                 </CardContent>

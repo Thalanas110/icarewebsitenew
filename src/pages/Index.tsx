@@ -1,10 +1,17 @@
-import { Layout } from '@/components/layout/Layout';
-import { Button } from '@/components/ui/button';
-// import { Card, CardContent } from '@/components/ui/card'; 
-import { useChurchInfo } from '@/hooks/useChurchData';
-import { Link } from 'react-router-dom';
-import { Heart, Users, MapPin, Clock, Building2, Handshake } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
+import {
+  Building2,
+  Clock,
+  Handshake,
+  Heart,
+  MapPin,
+  Users,
+} from "lucide-react";
+import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
+import { Layout } from "@/components/layout/Layout";
+import { Button } from "@/components/ui/button";
+// import { Card, CardContent } from '@/components/ui/card';
+import { useChurchInfo } from "@/hooks/useChurchData";
 
 const Index = () => {
   const { data: churchInfo } = useChurchInfo();
@@ -13,78 +20,121 @@ const Index = () => {
     <Layout>
       <Helmet>
         <title>I Care Center - The Refuge Church | Olongapo City</title>
-        <meta name="description" content="Welcome to I Care Center - The Refuge Church. A place of acceptance, love, and community in Olongapo City. Miracles happen when someone cares." />
-        <meta name="keywords" content="i care center, refuge church, olongapo church, christian church, miracles, pastor" />
-        <link rel="canonical" href="https://icarecenter.netlify.app/" />
+        <meta
+          content="Welcome to I Care Center - The Refuge Church. A place of acceptance, love, and community in Olongapo City. Miracles happen when someone cares."
+          name="description"
+        />
+        <meta
+          content="i care center, refuge church, olongapo church, christian church, miracles, pastor"
+          name="keywords"
+        />
+        <link href="https://icarecenter.netlify.app/" rel="canonical" />
       </Helmet>
       {/* Hero Section */}
-      <section id="hero" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-church-navy via-church-navy/95 to-church-gold/20">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1920')] bg-cover bg-center opacity-40" />
+      <section
+        className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-church-navy via-church-navy/95 to-church-gold/20"
+        id="hero"
+      >
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1920')] bg-center bg-cover opacity-40" />
         <div className="absolute inset-0 bg-black/40" />
-        <div className="relative z-10 container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-6 animate-fade-in">
-            Welcome to<br />
-            <span className="text-church-gold">I Care Center - the Refuge Church</span>
+        <div className="container relative z-10 mx-auto px-4 text-center">
+          <h1 className="mb-6 animate-fade-in font-bold font-display text-5xl text-white md:text-7xl">
+            Welcome to
+            <br />
+            <span className="text-church-gold">
+              I Care Center - the Refuge Church
+            </span>
           </h1>
-          <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto">
+          <p className="mx-auto mb-8 max-w-2xl text-white/80 text-xl md:text-2xl">
             Miracles happen when someone cares
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-church-orange hover:bg-church-orange/90 text-church-navy font-semibold">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
+            <Button
+              asChild
+              className="bg-church-orange font-semibold text-church-navy hover:bg-church-orange/90"
+              size="lg"
+            >
               <Link to="/services">Join Us This Sunday</Link>
             </Button>
-            <Button asChild size="lg" className="bg-church-teal hover:bg-church-teal/90 text-white font-semibold">
-              <a href="https://www.facebook.com/icarefellowship" target="_blank" rel="noopener noreferrer">Join Online</a>
+            <Button
+              asChild
+              className="bg-church-teal font-semibold text-white hover:bg-church-teal/90"
+              size="lg"
+            >
+              <a
+                href="https://www.facebook.com/icarefellowship"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Join Online
+              </a>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white text-black hover:bg-white/10 hover:text-white">
+            <Button
+              asChild
+              className="border-white text-black hover:bg-white/10 hover:text-white"
+              size="lg"
+              variant="outline"
+            >
               <Link to="/about">Learn More</Link>
             </Button>
           </div>
         </div>
       </section>
 
-
-
       {/* About Section */}
-      <section id="about" className="py-20 bg-church-cream">
+      <section className="bg-church-cream py-20" id="about">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
-              <h2 className="text-4xl font-display font-bold text-foreground mb-6">About Our Church</h2>
-              <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                I Care Center welcomes all individuals seeking God’s love, and keep our doors open to every soul seeking to welcome Jesus into their hearts. We invite you to open your heart and allow His grace to penetrate into your soul.
-                Our church stands as a beacon of hope in Olongapo City. We are a place of acceptance, peace and joy to all who are moved to join us. Our church family is richly diverse, with people of different ages and backgrounds coming together to worship and serve together. Get in touch to find out more or join us for a service.
+              <h2 className="mb-6 font-bold font-display text-4xl text-foreground">
+                About Our Church
+              </h2>
+              <p className="mb-6 text-lg text-muted-foreground leading-relaxed">
+                I Care Center welcomes all individuals seeking God’s love, and
+                keep our doors open to every soul seeking to welcome Jesus into
+                their hearts. We invite you to open your heart and allow His
+                grace to penetrate into your soul. Our church stands as a beacon
+                of hope in Olongapo City. We are a place of acceptance, peace
+                and joy to all who are moved to join us. Our church family is
+                richly diverse, with people of different ages and backgrounds
+                coming together to worship and serve together. Get in touch to
+                find out more or join us for a service.
               </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
                 <div className="text-center">
-                  <Heart className="w-8 h-8 text-church-gold mx-auto mb-2" />
-                  <p className="text-sm font-medium">Connect to Christ</p>
+                  <Heart className="mx-auto mb-2 h-8 w-8 text-church-gold" />
+                  <p className="font-medium text-sm">Connect to Christ</p>
                 </div>
                 <div className="text-center">
-                  <Users className="w-8 h-8 text-church-gold mx-auto mb-2" />
-                  <p className="text-sm font-medium">Affiliate to Cell</p>
+                  <Users className="mx-auto mb-2 h-8 w-8 text-church-gold" />
+                  <p className="font-medium text-sm">Affiliate to Cell</p>
                 </div>
                 <div className="text-center">
-                  <Building2 className="w-8 h-8 text-church-gold mx-auto mb-2" />
-                  <p className="text-sm font-medium">Raise to Church</p>
+                  <Building2 className="mx-auto mb-2 h-8 w-8 text-church-gold" />
+                  <p className="font-medium text-sm">Raise to Church</p>
                 </div>
                 <div className="text-center">
-                  <Handshake className="w-8 h-8 text-church-gold mx-auto mb-2" />
-                  <p className="text-sm font-medium">Engage to Community</p>
+                  <Handshake className="mx-auto mb-2 h-8 w-8 text-church-gold" />
+                  <p className="font-medium text-sm">Engage to Community</p>
                 </div>
               </div>
-              <Button asChild className="bg-church-navy hover:bg-church-navy/90">
+              <Button
+                asChild
+                className="bg-church-navy hover:bg-church-navy/90"
+              >
                 <Link to="/about">Learn More About Us</Link>
               </Button>
             </div>
             <div className="relative">
               <img
-                src="/during worship 2.jpeg"
                 alt="Church community"
                 className="rounded-lg shadow-2xl"
+                src="/during worship 2.jpeg"
               />
-              <div className="absolute -bottom-6 -left-6 bg-church-gold text-church-navy p-6 rounded-lg shadow-xl">
-                <p className="text-3xl font-bold">{churchInfo?.pastor_name || 'Pastor'}</p>
+              <div className="absolute -bottom-6 -left-6 rounded-lg bg-church-gold p-6 text-church-navy shadow-xl">
+                <p className="font-bold text-3xl">
+                  {churchInfo?.pastor_name || "Pastor"}
+                </p>
                 <p className="text-sm">Senior Pastor</p>
               </div>
             </div>
@@ -93,37 +143,46 @@ const Index = () => {
       </section>
 
       {/* Location Section */}
-      <section id="location" className="py-20 bg-church-cream text-black">
+      <section className="bg-church-cream py-20 text-black" id="location">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
-              <h2 className="text-4xl font-display font-bold mb-6">Visit Us</h2>
+              <h2 className="mb-6 font-bold font-display text-4xl">Visit Us</h2>
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
-                  <MapPin className="w-6 h-6 text-church-gold flex-shrink-0 mt-1" />
+                  <MapPin className="mt-1 h-6 w-6 flex-shrink-0 text-church-gold" />
                   <div>
                     <p className="font-semibold">Address</p>
                     <p className="text-black/70">
-                      {churchInfo?.address || '123 Faith Street'}<br />
-                      {churchInfo?.city || 'City'}, {churchInfo?.state || 'State'} {churchInfo?.zip || '12345'}
+                      {churchInfo?.address || "123 Faith Street"}
+                      <br />
+                      {churchInfo?.city || "City"},{" "}
+                      {churchInfo?.state || "State"}{" "}
+                      {churchInfo?.zip || "12345"}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <Clock className="w-6 h-6 text-church-gold flex-shrink-0 mt-1" />
+                  <Clock className="mt-1 h-6 w-6 flex-shrink-0 text-church-gold" />
                   <div>
                     <p className="font-semibold">Office Hours</p>
-                    <p className="text-black/70">{churchInfo?.office_hours || 'Mon-Fri: 9AM - 5PM'}</p>
+                    <p className="text-black/70">
+                      {churchInfo?.office_hours || "Mon-Fri: 9AM - 5PM"}
+                    </p>
                   </div>
                 </div>
               </div>
-              <Button asChild className="mt-8 bg-church-gold hover:bg-church-gold/90 text-church-navy">
+              <Button
+                asChild
+                className="mt-8 bg-church-gold text-church-navy hover:bg-church-gold/90"
+              >
                 <Link to="/contact">Contact Us</Link>
               </Button>
             </div>
-            <div className="bg-church-navy rounded-lg p-8 text-center">
-              <p className="text-2xl font-display italic text-church-gold mb-4">
-                "Come to me, all you who are weary and burdened, and I will give you rest."
+            <div className="rounded-lg bg-church-navy p-8 text-center">
+              <p className="mb-4 font-display text-2xl text-church-gold italic">
+                "Come to me, all you who are weary and burdened, and I will give
+                you rest."
               </p>
               <p className="text-white">— Matthew 11:28</p>
             </div>

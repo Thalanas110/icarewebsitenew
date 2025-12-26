@@ -1,9 +1,15 @@
-import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
-import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
-import { Database } from '@/integrations/supabase/types';
+import type { Session, User } from "@supabase/supabase-js";
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
-type AppRole = Database['public']['Enums']['app_role'];
+type AppRole = Database["public"]["Enums"]["app_role"];
 
 interface AuthContextType {
   user: User | null;
@@ -28,23 +34,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
 
-        if (session?.user) {
-          // Fetch role immediately on auth change
-          setLoading(true);
-          fetchUserRole(session.user.id);
-        } else {
-          setRole(null);
-          setIsAdmin(false);
-          setIsModerator(false);
-          setLoading(false);
-        }
+      if (session?.user) {
+        // Fetch role immediately on auth change
+        setLoading(true);
+        fetchUserRole(session.user.id);
+      } else {
+        setRole(null);
+        setIsAdmin(false);
+        setIsModerator(false);
+        setLoading(false);
       }
-    );
+    });
 
     // Initial session check
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -63,20 +69,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchUserRole = async (userId: string) => {
     try {
       const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userId)
         .maybeSingle();
 
       if (error) {
-        console.error('Error fetching role:', error);
+        console.error("Error fetching role:", error);
         setRole(null);
         setIsAdmin(false);
         setIsModerator(false);
       } else if (data) {
         setRole(data.role);
-        setIsAdmin(data.role === 'admin');
-        setIsModerator(data.role === 'moderator');
+        setIsAdmin(data.role === "admin");
+        setIsModerator(data.role === "moderator");
       } else {
         // No role found
         setRole(null);
@@ -84,14 +90,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsModerator(false);
       }
     } catch (err) {
-      console.error('Unexpected error fetching role:', err);
+      console.error("Unexpected error fetching role:", err);
     } finally {
       setLoading(false);
     }
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     return { error };
   };
 
@@ -100,7 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: redirectUrl }
+      options: { emailRedirectTo: redirectUrl },
     });
     return { error };
   };
@@ -115,7 +124,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, isAdmin, isModerator, role, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        session,
+        isAdmin,
+        isModerator,
+        role,
+        loading,
+        signIn,
+        signUp,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -124,7 +145,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

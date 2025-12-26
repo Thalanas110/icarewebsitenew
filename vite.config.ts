@@ -1,6 +1,6 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -12,16 +12,19 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "react-helmet-async": path.resolve(__dirname, "node_modules/react-helmet-async/lib/index.esm.js"),
+      "react-helmet-async": path.resolve(
+        __dirname,
+        "node_modules/react-helmet-async/lib/index.esm.js"
+      ),
     },
   },
   ssr: {
-    noExternal: ['react-helmet-async'],
+    noExternal: ["react-helmet-async"],
   },
   css: {
-    transformer: 'postcss',
+    transformer: "postcss",
   },
   build: {
-    cssMinify: 'esbuild',
+    cssMinify: "esbuild",
   },
 }));
