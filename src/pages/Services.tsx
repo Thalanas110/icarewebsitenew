@@ -1,8 +1,60 @@
-import { Accessibility, Baby, Clock, MapPin, Users } from "lucide-react";
+import {
+  Accessibility,
+  Baby,
+  Book,
+  Clock,
+  Coffee,
+  HandHeart,
+  MapPin,
+  Music,
+  Users,
+} from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { useChurchInfo, useServiceTimes } from "@/hooks/useChurchData";
+
+const expectItems = [
+  {
+    number: 1,
+    title: "Warm Welcome",
+    description:
+      "Our greeters are ready to welcome you and help you find your way around.",
+    icon: HandHeart,
+    gradient: "from-rose-500 to-pink-500",
+    bgGlow: "bg-rose-500/10",
+    iconColor: "#f43f5e",
+  },
+  {
+    number: 2,
+    title: "Uplifting Worship",
+    description:
+      "Experience heartfelt worship with contemporary and traditional music.",
+    icon: Music,
+    gradient: "from-violet-500 to-purple-500",
+    bgGlow: "bg-violet-500/10",
+    iconColor: "#8b5cf6",
+  },
+  {
+    number: 3,
+    title: "Biblical Teaching",
+    description:
+      "Relevant messages from Scripture that speak to everyday life.",
+    icon: Book,
+    gradient: "from-church-gold to-amber-500",
+    bgGlow: "bg-church-gold/10",
+    iconColor: "#d4a24c",
+  },
+  {
+    number: 4,
+    title: "Fellowship Time",
+    description: "Connect with others over refreshments after the service.",
+    icon: Coffee,
+    gradient: "from-teal-500 to-emerald-500",
+    bgGlow: "bg-teal-500/10",
+    iconColor: "#14b8a6",
+  },
+];
 
 export default function Services() {
   const { data: serviceTimes, isLoading } = useServiceTimes();
@@ -76,60 +128,69 @@ export default function Services() {
       </section>
 
       {/* What to Expect */}
-      <section className="section-padding" id="expect">
+      <section
+        className="section-padding bg-gradient-to-b from-white to-secondary/20"
+        id="expect"
+      >
         <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl">
-            <h2 className="mb-8 text-center font-bold font-display text-3xl">
-              What to Expect
-            </h2>
-            <div className="space-y-6">
-              <div className="flex gap-4">
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground">
-                  1
-                </div>
-                <div>
-                  <h4 className="mb-1 font-semibold">Warm Welcome</h4>
-                  <p className="text-muted-foreground">
-                    Our greeters are ready to welcome you and help you find your
-                    way around.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground">
-                  2
-                </div>
-                <div>
-                  <h4 className="mb-1 font-semibold">Uplifting Worship</h4>
-                  <p className="text-muted-foreground">
-                    Experience heartfelt worship with contemporary and
-                    traditional music.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground">
-                  3
-                </div>
-                <div>
-                  <h4 className="mb-1 font-semibold">Biblical Teaching</h4>
-                  <p className="text-muted-foreground">
-                    Relevant messages from Scripture that speak to everyday
-                    life.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground">
-                  4
-                </div>
-                <div>
-                  <h4 className="mb-1 font-semibold">Fellowship Time</h4>
-                  <p className="text-muted-foreground">
-                    Connect with others over refreshments after the service.
-                  </p>
-                </div>
-              </div>
+          <div className="mx-auto max-w-4xl">
+            <div className="mb-12 text-center">
+              <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-2 font-semibold text-primary text-sm">
+                First Time?
+              </span>
+              <h2 className="mb-4 font-bold font-display text-3xl md:text-4xl">
+                What to Expect
+              </h2>
+              <p className="mx-auto max-w-2xl text-muted-foreground">
+                We want your first visit to feel comfortable and welcoming.
+                Here's what you can look forward to.
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {expectItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Card
+                    className="group relative overflow-hidden border-none bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                    key={item.number}
+                  >
+                    {/* Gradient accent bar */}
+                    <div
+                      className={`absolute top-0 left-0 h-1 w-full bg-gradient-to-r ${item.gradient}`}
+                    />
+
+                    <CardContent className="p-6 md:p-8">
+                      <div className="flex items-start gap-4">
+                        {/* Icon container */}
+                        <div
+                          className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${item.bgGlow} transition-transform duration-300 group-hover:scale-110`}
+                        >
+                          <Icon
+                            className="h-7 w-7"
+                            style={{ color: item.iconColor }}
+                          />
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1">
+                          <div className="mb-2 flex items-center gap-2">
+                            <span
+                              className={`flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r ${item.gradient} font-bold text-white text-xs`}
+                            >
+                              {item.number}
+                            </span>
+                            <h4 className="font-bold text-lg">{item.title}</h4>
+                          </div>
+                          <p className="text-muted-foreground leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </div>
