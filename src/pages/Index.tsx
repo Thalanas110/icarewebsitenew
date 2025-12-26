@@ -122,7 +122,7 @@ const Index = () => {
       {/* C.A.R.E. Pathway Section */}
       <section
         className="bg-gradient-to-b from-church-cream to-white py-24"
-        id="location"
+        id="care"
       >
         <div className="container mx-auto px-4">
           {/* Section Header */}
