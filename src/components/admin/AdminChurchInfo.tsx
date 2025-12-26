@@ -22,6 +22,7 @@ import {
   usePastorMutations,
   usePastors,
 } from "@/hooks/useChurchData";
+import { ImageUpload } from "./ImageUpload";
 
 export function AdminChurchInfo() {
   const { data: churchInfo, isLoading } = useChurchInfo();
@@ -223,15 +224,12 @@ export function AdminChurchInfo() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="font-medium text-sm">Image URL</label>
-                  <Input
-                    onChange={(e) =>
-                      setPastorForm({
-                        ...pastorForm,
-                        image_url: e.target.value,
-                      })
+                  <label className="font-medium text-sm">Profile Image</label>
+                  <ImageUpload
+                    folder="pastors"
+                    onChange={(url) =>
+                      setPastorForm({ ...pastorForm, image_url: url })
                     }
-                    placeholder="https://..."
                     value={pastorForm.image_url || ""}
                   />
                 </div>
