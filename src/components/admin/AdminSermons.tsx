@@ -164,7 +164,7 @@ export function AdminSermons() {
               Add Sermon
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+          <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>
                 {editingSermon ? "Edit Sermon" : "Add New Sermon"}
