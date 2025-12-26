@@ -32,6 +32,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -75,10 +76,16 @@ interface Props {
 export function AdminSidebar({ activeTab, setActiveTab }: Props) {
   const { signOut, role } = useAuth();
   const navigate = useNavigate();
+  const { setOpenMobile } = useSidebar();
 
   const filteredMenuItems = menuItems.filter(
     (item) => role && item.roles.includes(role)
   );
+
+  const handleMenuItemClick = (tabId: string) => {
+    setActiveTab(tabId);
+    setOpenMobile(false);
+  };
 
   return (
     <Sidebar className="border-r">
@@ -95,7 +102,7 @@ export function AdminSidebar({ activeTab, setActiveTab }: Props) {
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton
                     className={`h-auto px-4 py-3 text-base md:py-4 md:text-xl ${activeTab === item.id ? "bg-sidebar-accent" : ""}`}
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => handleMenuItemClick(item.id)}
                   >
                     <item.icon className="mr-3 h-4 w-4 md:mr-4 md:h-7 md:w-7" />
                     {item.label}
@@ -115,7 +122,7 @@ export function AdminSidebar({ activeTab, setActiveTab }: Props) {
           </Button>
           <Button
             className={`h-auto w-full justify-start px-4 py-3 text-base md:py-4 md:text-xl ${activeTab === "profile" ? "bg-sidebar-accent" : ""}`}
-            onClick={() => setActiveTab("profile")}
+            onClick={() => handleMenuItemClick("profile")}
             variant="ghost"
           >
             <UserCog className="mr-3 h-4 w-4 md:mr-4 md:h-7 md:w-7" /> My
