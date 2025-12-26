@@ -117,27 +117,42 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Location Section */}
-      <section className="bg-church-cream py-20 text-black" id="location">
+      {/* C.A.R.E. Pathway Section */}
+      <section className="bg-gradient-to-b from-church-cream to-white py-24" id="location">
         <div className="container mx-auto px-4">
-          <div className="grid items-center gap-12 md:grid-cols-2">
-            <div>
-              <h2 className="mb-6 font-bold font-display text-4xl">Our C.A.R.E. Pathway</h2>
-              <CareGrid />
-              <Button
-                asChild
-                className="mt-8 bg-church-gold text-church-navy hover:bg-church-gold/90"
-              >
-                <Link to="/contact">Contact Us</Link>
-              </Button>
-            </div>
-            <div className="rounded-lg p-8 text-center">
-              <p className="mb-4 font-display text-2xl text-church-gold italic">
-                "Come to me, all you who are weary and burdened, and I will give
-                you rest."
-              </p>
-              <p className="text-church-navy">— Matthew 11:28</p>
-            </div>
+          {/* Section Header */}
+          <div className="mx-auto mb-16 max-w-3xl text-center">
+            <span className="mb-4 inline-block rounded-full bg-church-gold/10 px-4 py-2 text-sm font-semibold text-church-gold">
+              Your Journey With Us
+            </span>
+            <h2 className="mb-4 font-bold font-display text-4xl text-church-navy md:text-5xl">
+              Our C.A.R.E. Pathway
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              A simple path to help you grow spiritually and find your place in our church family.
+            </p>
+          </div>
+          
+          {/* C.A.R.E. Grid */}
+          <CareGrid />
+          
+          {/* Bible Verse Card */}
+          <div className="mx-auto mt-16 max-w-2xl rounded-2xl bg-white p-8 text-center shadow-2xl md:p-12">
+            <p className="mb-4 font-display text-xl text-church-navy italic md:text-2xl">
+              "Come to me, all you who are weary and burdened, and I will give you rest."
+            </p>
+            <p className="text-church-gold font-semibold">— Matthew 11:28</p>
+          </div>
+          
+          {/* CTA Button */}
+          <div className="mt-12 text-center">
+            <Button
+              asChild
+              size="lg"
+              className="bg-church-gold text-church-navy font-semibold hover:bg-church-gold/90 shadow-lg"
+            >
+              <Link to="/contact">Start Your Journey Today</Link>
+            </Button>
           </div>
         </div>
       </section>
