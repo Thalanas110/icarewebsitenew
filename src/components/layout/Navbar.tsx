@@ -109,6 +109,34 @@ export function Navbar({ isVisible = true }: NavbarProps) {
     window.scrollTo(0, 0);
   };
 
+  const handleSubLinkClick = (href: string) => {
+    setIsOpen(false);
+    const [path, hash] = href.split("#");
+    if (hash) {
+      // If we're already on the same page, just scroll to the element
+      if (
+        location.pathname === path ||
+        (path === "" && location.pathname === "/")
+      ) {
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 100);
+      } else {
+        // If navigating to a different page, navigate first then scroll after page loads
+        navigate(href);
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 300);
+      }
+    }
+  };
+
   return (
     <nav
       className={`fixed top-0 right-0 left-0 z-50 border-b bg-background/95 backdrop-blur transition-all duration-300 supports-[backdrop-filter]:bg-background/60 ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}
@@ -241,7 +269,14 @@ export function Navbar({ isVisible = true }: NavbarProps) {
                             <li key={subLink.href}>
                               <Link
                                 className="block py-2 text-muted-foreground text-sm hover:text-foreground"
-                                onClick={() => setIsOpen(false)}
+                                onClick={(e) => {
+                                  if (subLink.href.includes("#")) {
+                                    e.preventDefault();
+                                    handleSubLinkClick(subLink.href);
+                                  } else {
+                                    setIsOpen(false);
+                                  }
+                                }}
                                 to={subLink.href}
                               >
                                 {subLink.label}

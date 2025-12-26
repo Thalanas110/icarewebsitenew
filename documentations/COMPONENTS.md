@@ -51,9 +51,12 @@ Page components are located in `src/pages/` and correspond to routes in the appl
 
 **Features**:
 - Church mission and vision
-- Leadership information
+- Multiple pastors display with cards (auto-centered)
 - Church history
 - Core beliefs and values
+
+**Dependencies**:
+- `usePastors()` - Fetch pastor profiles
 
 ---
 
@@ -64,11 +67,12 @@ Page components are located in `src/pages/` and correspond to routes in the appl
 **Features**:
 - Service times listing
 - Service descriptions
-- Weekly schedule
-- Special service information
+- "What to Expect" cards section
+- "Planning to Visit" section with contact button
 
 **Dependencies**:
 - `useServiceTimes()` - Fetch service schedule
+- `expectItems` from `src/constant/expect-items.ts`
 
 ---
 
@@ -187,10 +191,12 @@ Page components are located in `src/pages/` and correspond to routes in the appl
 **Purpose**: Admin dashboard
 
 **Features**:
-- Protected route (requires authentication)
+- Protected route (requires admin role)
 - Tabbed interface for different admin sections
 - Analytics overview
 - Content management sections
+- User management
+- Real-time data synchronization
 
 **Components Used**:
 - `AdminSidebar`
@@ -202,9 +208,29 @@ Page components are located in `src/pages/` and correspond to routes in the appl
 - `AdminMinistries`
 - `AdminSermons`
 - `AdminServiceTimes`
+- `AdminUsers`
+- `AdminProfile`
 
 **Dependencies**:
 - `useAuth()` - Check authentication status
+- `useRealtimeSubscription()` - Real-time data sync
+
+---
+
+### Moderator.tsx
+**Route**: `/moderator` (Protected)  
+**Purpose**: Moderator dashboard with limited permissions
+
+**Features**:
+- Protected route (requires moderator role)
+- Content management (events, ministries, sermons, service times)
+- Gallery management
+- Pastor management
+- No access to user management or analytics
+
+**Dependencies**:
+- `useAuth()` - Check authentication status
+- `useRealtimeSubscription()` - Real-time data sync
 
 ---
 
@@ -228,12 +254,19 @@ Located in `src/components/layout/`
 
 **Features**:
 - Responsive navigation menu
-- Mobile hamburger menu
+- Mobile hamburger menu with accordion
 - Active link highlighting
-- Smooth scrolling
+- Smooth scrolling to page sections
 - Logo and branding
+- Visibility toggle for hero section
+- Dropdown menus with sub-links
 
-**Props**: None
+**Props**:
+```typescript
+interface NavbarProps {
+  isVisible?: boolean; // Controls navbar visibility (default: true)
+}
+```
 
 **State**:
 - `mobileMenuOpen` - Controls mobile menu visibility
@@ -491,6 +524,54 @@ Located in `src/components/` (root level)
 **State**:
 - `currentVerse` - Currently displayed Bible verse
 - `progress` - Loading progress percentage
+
+**Dependencies**:
+- `bibleVerses` from `src/constant/bible-verses.ts`
+
+---
+
+### CareGrid.tsx
+**Purpose**: Display C.A.R.E. values in a grid layout
+
+**Features**:
+- Animated cards for each C.A.R.E. value
+- Icons and descriptions
+- Hover effects
+- Gradient styling
+
+**Dependencies**:
+- `careItems` from `src/constant/care.ts`
+
+---
+
+### FacebookLiveEmbed.tsx
+**Purpose**: Embed Facebook Live streams
+
+**Features**:
+- Facebook SDK integration
+- Responsive video player
+- Client-side only rendering (SSR safe)
+- Lazy loading
+
+**Props**:
+```typescript
+interface FacebookLiveEmbedProps {
+  videoUrl: string;  // Facebook video URL
+  width?: number;    // Player width
+  height?: number;   // Player height
+}
+```
+
+---
+
+### ScrollToTop.tsx
+**Purpose**: Scroll to top on route change
+
+**Features**:
+- Automatic scroll to top on navigation
+- Wrapped in BrowserRouter
+
+**Props**: None
 
 ---
 

@@ -59,6 +59,7 @@ The database consists of the following tables:
 6. **gallery_images** - Photo gallery (max 15 images)
 7. **website_analytics** - Page view tracking
 8. **church_info** - Church contact information
+9. **pastors** - Pastor profiles with contact info and bios
 
 ### Ministries Table
 
@@ -249,6 +250,31 @@ The database consists of the following tables:
 **RLS Policies**:
 - Public read access
 - Authenticated write access
+
+---
+
+### Pastors Table
+
+**Table**: `public.pastors`
+
+| Column | Type | Nullable | Default | Description |
+|--------|------|----------|---------|-------------|
+| id | uuid | No | gen_random_uuid() | Primary key |
+| name | text | No | - | Pastor name |
+| email | text | Yes | null | Pastor email |
+| phone | text | Yes | null | Pastor phone |
+| title | text | Yes | 'Pastor' | Pastor title (e.g., Senior Pastor) |
+| bio | text | Yes | null | Pastor biography |
+| image_url | text | Yes | null | Pastor profile image URL |
+| sort_order | integer | Yes | 0 | Display order |
+| created_at | timestamptz | No | now() | Creation timestamp |
+| updated_at | timestamptz | No | now() | Last update timestamp |
+
+**Indexes**: Primary key on `id`
+
+**RLS Policies**:
+- Public read access (anon and authenticated)
+- Admin and Moderator write access (via `has_role` function)
 
 ---
 
@@ -490,6 +516,54 @@ mutation.mutate({
 
 ---
 
+### Pastors Hooks
+
+#### usePastors()
+
+Fetch all pastors ordered by sort_order.
+
+```typescript
+const { data, isLoading, error } = usePastors();
+```
+
+**Returns**: `Pastor[]`
+
+#### usePastorMutations()
+
+CRUD operations for pastors.
+
+```typescript
+const { createPastor, updatePastor, deletePastor, updateSortOrder } = usePastorMutations();
+
+// Create
+createPastor.mutate({
+  name: "Pastor John Doe",
+  email: "pastor@church.com",
+  phone: "+1234567890",
+  title: "Senior Pastor",
+  bio: "Pastor John has been serving...",
+  image_url: "https://...",
+  sort_order: 1
+});
+
+// Update
+updatePastor.mutate({
+  id: "uuid",
+  title: "Lead Pastor"
+});
+
+// Delete
+deletePastor.mutate("uuid");
+
+// Update sort order (bulk)
+updateSortOrder.mutate([
+  { id: "uuid1", sort_order: 1 },
+  { id: "uuid2", sort_order: 2 }
+]);
+```
+
+---
+
 ### Analytics Hooks
 
 Located in `src/hooks/useAnalytics.ts`.
@@ -539,6 +613,33 @@ if (user) {
   // User is logged in
 }
 ```
+
+---
+
+### Real-time Subscription Hook
+
+Located in `src/hooks/useRealtimeSubscription.ts`.
+
+#### useRealtimeSubscription()
+
+Subscribe to real-time database changes for admin/moderator tables.
+
+```typescript
+import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
+
+// In Admin or Moderator page component
+useRealtimeSubscription();
+```
+
+**Subscribed Tables**:
+- events
+- ministries
+- sermons
+- gallery_images
+- service_times
+- church_info
+
+**Behavior**: When changes occur on any subscribed table, the hook dispatches window events (`invalidate-{queryKey}`) that trigger automatic query refetches, keeping all connected admin panels in sync.
 
 ---
 

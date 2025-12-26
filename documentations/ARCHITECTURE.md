@@ -87,27 +87,40 @@ icarewebsitenew/
 │   │   │   ├── AdminGallery.tsx
 │   │   │   ├── AdminGiving.tsx
 │   │   │   ├── AdminMinistries.tsx
+│   │   │   ├── AdminProfile.tsx
 │   │   │   ├── AdminSermons.tsx
 │   │   │   ├── AdminServiceTimes.tsx
 │   │   │   ├── AdminSidebar.tsx
+│   │   │   ├── AdminUsers.tsx
 │   │   │   └── ImageUpload.tsx
+│   │   ├── moderator/          # Moderator-specific components
+│   │   │   └── [moderator components]
 │   │   ├── layout/             # Layout components
-│   │   │   ├── Header.tsx
 │   │   │   ├── Footer.tsx
-│   │   │   └── Navigation.tsx
+│   │   │   └── Navbar.tsx
 │   │   ├── ui/                 # shadcn/ui components
 │   │   │   └── [50+ UI components]
 │   │   ├── AppLoadingScreen.tsx
+│   │   ├── CareGrid.tsx        # C.A.R.E. values display
+│   │   ├── FacebookLiveEmbed.tsx # Facebook Live integration
 │   │   ├── Map.tsx
 │   │   ├── NavLink.tsx
 │   │   ├── PageTracker.tsx
+│   │   ├── ScrollToTop.tsx
 │   │   └── SectionNav.tsx
+│   ├── constant/               # Static data and constants
+│   │   ├── bible-verses.ts     # Bible verses for loading screen
+│   │   ├── care.ts             # C.A.R.E. values data
+│   │   ├── core-values.ts      # Church core values
+│   │   └── expect-items.ts     # What to expect items
 │   ├── hooks/                  # Custom React hooks
+│   │   ├── simple-query-hooks.ts
 │   │   ├── use-mobile.tsx
 │   │   ├── use-toast.ts
 │   │   ├── useAnalytics.ts
 │   │   ├── useAuth.tsx
-│   │   └── useChurchData.tsx
+│   │   ├── useChurchData.tsx
+│   │   └── useRealtimeSubscription.ts # Real-time data sync
 │   ├── integrations/           # Third-party integrations
 │   │   └── supabase/
 │   │       ├── client.ts       # Supabase client configuration
@@ -126,6 +139,7 @@ icarewebsitenew/
 │   │   ├── Gallery.tsx
 │   │   ├── Auth.tsx            # Login page
 │   │   ├── Admin.tsx           # Admin dashboard
+│   │   ├── Moderator.tsx       # Moderator dashboard
 │   │   └── NotFound.tsx        # 404 page
 │   ├── App.tsx                 # Main app component
 │   ├── main.tsx                # Entry point
@@ -149,11 +163,12 @@ icarewebsitenew/
 
 ### Directory Organization Principles
 
-1. **Components by Type**: Components are organized by their purpose (admin, layout, ui)
+1. **Components by Type**: Components are organized by their purpose (admin, moderator, layout, ui)
 2. **Pages as Routes**: Each page component corresponds to a route
 3. **Hooks for Logic**: Business logic extracted into custom hooks
-4. **Integrations Isolated**: Third-party services in separate directory
-5. **Type Safety**: TypeScript types generated from Supabase schema
+4. **Constants for Data**: Static data stored in constant directory
+5. **Integrations Isolated**: Third-party services in separate directory
+6. **Type Safety**: TypeScript types generated from Supabase schema
 
 ## Application Flow
 
@@ -389,6 +404,19 @@ erDiagram
         text referrer
         text user_agent
         timestamp visited_at
+    }
+    
+    PASTORS {
+        uuid id PK
+        text name
+        text email
+        text phone
+        text title
+        text bio
+        text image_url
+        int sort_order
+        timestamp created_at
+        timestamp updated_at
     }
 ```
 

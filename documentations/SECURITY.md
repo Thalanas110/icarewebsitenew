@@ -112,6 +112,7 @@ USING (true);
 - gallery_images
 - church_info
 - giving_settings
+- pastors
 
 ### Admin Write Policies
 
@@ -156,6 +157,30 @@ ON public.website_analytics
 FOR SELECT
 TO authenticated
 USING (true);
+```
+
+### Pastors Table Policies
+
+The `pastors` table allows both admins and moderators to manage pastor records:
+
+```sql
+-- Public read access
+CREATE POLICY "Anyone can view pastors"
+ON public.pastors FOR SELECT
+TO anon, authenticated
+USING (true);
+
+-- Admin can manage
+CREATE POLICY "Admins can manage pastors"
+ON public.pastors FOR ALL
+TO authenticated
+USING (public.has_role(auth.uid(), 'admin'));
+
+-- Moderators can manage
+CREATE POLICY "Moderators can manage pastors"
+ON public.pastors FOR ALL
+TO authenticated
+USING (public.has_role(auth.uid(), 'moderator'));
 ```
 
 ### Storage Security

@@ -5,35 +5,44 @@ A modern, full-featured church website built with React, TypeScript, and Supabas
 ## 🌟 Features
 
 ### Public Features
-- **Home Page**: Welcome section with church information and mission
-- **About**: Church history, beliefs, and leadership information
-- **Services**: Service times and schedule
+- **Home Page**: Welcome section with church information, C.A.R.E. values, and hero with dynamic navbar
+- **About**: Church history, beliefs, and multiple pastor profiles
+- **Services**: Service times, "What to Expect" cards, and visit planning
 - **Ministries**: Overview of church ministries and programs
 - **Events**: Upcoming church events with status tracking (upcoming/ongoing/completed)
-- **Sermons**: Browse and watch sermon recordings with search and filtering
+- **Sermons**: Browse and watch sermon recordings with search, filtering, and Facebook Live integration
 - **Gallery**: Photo gallery showcasing church life and events (max 15 images)
 - **Giving**: Online giving options and donation information
-- **Contact**: Contact form and church location with interactive map
+- **Contact**: Contact form, church location with interactive map, and separate contact info card
 
 ### Admin Features
 - **Dashboard**: Analytics and website statistics
 - **Content Management**: 
-  - Manage church information
+  - Manage church information and pastors
   - Create and edit events
   - Upload and manage sermons
   - Configure service times
   - Manage ministries
   - Upload gallery images (max 15)
   - Configure giving settings
+- **User Management**: Manage admin and moderator accounts
 - **Analytics**: Track page views and user engagement
+- **Real-time Updates**: Changes sync across all admin panels
+
+### Moderator Features
+- Content management (events, ministries, sermons, service times)
+- Gallery management
+- Pastor management
+- Limited access (no analytics or user management)
 
 ### Technical Features
 - **Responsive Design**: Mobile-first design that works on all devices
-- **Authentication**: Secure admin authentication via Supabase Auth
+- **Authentication**: Secure admin/moderator authentication via Supabase Auth
 - **Real-time Data**: Live updates using Supabase real-time subscriptions
 - **Optimized Loading**: Progressive loading with Bible verses during initial load
-- **SEO Friendly**: Proper meta tags and semantic HTML
+- **SEO Friendly**: Proper meta tags and semantic HTML with proper favicon
 - **Analytics Tracking**: Built-in page view tracking
+- **Password Visibility Toggle**: Show/hide password feature on login forms
 
 ## 🚀 Quick Start
 
@@ -120,19 +129,21 @@ icarewebsitenew/
 ├── src/
 │   ├── components/          # React components
 │   │   ├── admin/          # Admin panel components
-│   │   ├── layout/         # Layout components (Header, Footer)
+│   │   ├── moderator/      # Moderator panel components
+│   │   ├── layout/         # Layout components (Navbar, Footer)
 │   │   └── ui/             # shadcn/ui components
-│   ├── hooks/              # Custom React hooks
-│   ├── integrations/       # Third-party integrations
+│   ├── constant/            # Static data (bible verses, care values, etc.)
+│   ├── hooks/               # Custom React hooks
+│   ├── integrations/        # Third-party integrations
 │   │   └── supabase/       # Supabase client and types
-│   ├── lib/                # Utility functions
-│   ├── pages/              # Page components
-│   ├── App.tsx             # Main app component
-│   └── main.tsx            # Entry point
+│   ├── lib/                 # Utility functions
+│   ├── pages/               # Page components
+│   ├── App.tsx              # Main app component
+│   └── main.tsx             # Entry point
 ├── supabase/
-│   └── migrations/         # Database migrations
-├── public/                 # Static assets
-└── docs/                   # Documentation (see below)
+│   └── migrations/          # Database migrations
+├── public/                  # Static assets
+└── documentations/          # Documentation
 ```
 
 ## 📚 Documentation
@@ -141,6 +152,7 @@ icarewebsitenew/
 - **[DIAGRAMS.md](./documentations/DIAGRAMS.md)** - Visual system diagrams (UCD, DFD, Flowchart)
 - **[COMPONENTS.md](./documentations/COMPONENTS.md)** - Component documentation and usage
 - **[API.md](./documentations/API.md)** - API and data layer documentation
+- **[MIGRATIONS.md](./documentations/MIGRATIONS.md)** - Database migrations guide
 - **[DEVELOPMENT.md](./documentations/DEVELOPMENT.md)** - Development guide and workflows
 - **[SECURITY.md](./documentations/SECURITY.md)** - Security considerations and best practices
 - **[DEPLOYMENT.md](./documentations/DEPLOYMENT.md)** - Deployment guide for Netlify

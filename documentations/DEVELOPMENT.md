@@ -231,10 +231,19 @@ npm run lint -- --fix
 ```
 src/
 ├── components/
-│   ├── MyComponent.tsx        # Component
-│   └── MyComponent.test.tsx   # Tests (if any)
+│   ├── admin/                 # Admin panel components
+│   ├── moderator/             # Moderator panel components
+│   ├── layout/                # Navbar, Footer
+│   └── MyComponent.tsx        # Utility components
+├── constant/                  # Static data
+│   ├── bible-verses.ts        # Loading screen verses
+│   ├── care.ts                # C.A.R.E. values
+│   ├── core-values.ts         # Church values
+│   └── expect-items.ts        # Service expectations
 ├── hooks/
-│   └── useMyHook.ts           # Custom hook
+│   ├── useChurchData.tsx      # Data hooks
+│   ├── useAuth.tsx            # Auth hook
+│   └── useRealtimeSubscription.ts # Real-time sync
 ├── lib/
 │   └── utils.ts               # Utilities
 └── pages/
