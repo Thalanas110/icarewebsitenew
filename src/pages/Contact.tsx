@@ -1,4 +1,4 @@
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { Car, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Layout } from "@/components/layout/Layout";
@@ -54,79 +54,103 @@ export default function Contact() {
           <div className="grid gap-12 lg:grid-cols-2">
             {/* Contact Info */}
             <div className="space-y-8">
-              <h2 className="font-bold font-display text-2xl">
-                Contact Information
-              </h2>
+              {/* Contact Info Card */}
+              <Card className="border-none shadow-lg">
+                <CardContent className="p-6">
+                  <h2 className="mb-6 font-bold font-display text-2xl">
+                    Contact Information
+                  </h2>
 
-              <div className="space-y-6">
-                {churchInfo?.phone && (
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <Phone className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">Phone</h4>
-                      <p className="text-muted-foreground">
-                        {churchInfo.phone}
-                      </p>
-                      <p className="text-muted-foreground text-sm">
-                        Call us anytime
-                      </p>
-                    </div>
+                  <div className="space-y-6">
+                    {churchInfo?.phone && (
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+                          <Phone className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">Phone</h4>
+                          <p className="text-muted-foreground">
+                            {churchInfo.phone}
+                          </p>
+                          <p className="text-muted-foreground text-sm">
+                            Call us anytime
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {churchInfo?.email && (
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+                          <Mail className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">Email</h4>
+                          <p className="text-muted-foreground">
+                            {churchInfo.email}
+                          </p>
+                          <p className="text-muted-foreground text-sm">
+                            We'd love to hear from you
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {churchInfo?.office_hours && (
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+                          <Clock className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">Office Hours</h4>
+                          <p className="whitespace-pre-line text-muted-foreground">
+                            {churchInfo.office_hours}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
+                </CardContent>
+              </Card>
 
-                {churchInfo?.email && (
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <Mail className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">Email</h4>
-                      <p className="text-muted-foreground">
-                        {churchInfo.email}
-                      </p>
-                      <p className="text-muted-foreground text-sm">
-                        We'd love to hear from you
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {churchInfo?.address && (
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <MapPin className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">Address</h4>
-                      <p className="text-muted-foreground">
-                        {churchInfo.address}
-                      </p>
-                      <p className="text-muted-foreground">
-                        {churchInfo.city}, {churchInfo.state} {churchInfo.zip}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {churchInfo?.office_hours && (
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <Clock className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">Office Hours</h4>
-                      <p className="whitespace-pre-line text-muted-foreground">
-                        {churchInfo.office_hours}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Interactive Map */}
+              {/* Visit Us Card */}
               <Card className="overflow-hidden border-none shadow-lg">
+                <CardContent className="p-6 pb-2">
+                  <h2 className="mb-4 font-bold font-display text-2xl">
+                    Visit Us
+                  </h2>
+                  {churchInfo?.address && (
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+                        <MapPin className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold">Address</h4>
+                        <p className="text-muted-foreground">
+                          {churchInfo.address}
+                        </p>
+                        <p className="text-muted-foreground">
+                          {churchInfo.city}, {churchInfo.state} {churchInfo.zip}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Free Parking Badge */}
+                  <div className="mt-4 flex items-center gap-3 rounded-lg bg-church-gold/10 p-3">
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-church-gold/20">
+                      <Car className="h-5 w-5 text-church-gold-dark" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">
+                        Free Parking Available
+                      </p>
+                      <p className="text-muted-foreground text-xs">
+                        Ample parking space for all visitors
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
                 <Map
                   address="2057 Jose Abad Santos Avenue, Brgy. Old Cabalan, Olongapo City, Zambales 2200"
                   className="rounded-lg"

@@ -1,4 +1,4 @@
-import { Accessibility, Baby, Car, Clock, MapPin, Users } from "lucide-react";
+import { Accessibility, Baby, Clock, MapPin, Users } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -140,7 +140,9 @@ export default function Services() {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl space-y-12">
             <div className="space-y-6 text-center">
-              <h2 className="font-bold font-display text-3xl">Visit Us</h2>
+              <h2 className="font-bold font-display text-3xl">
+                Planning to visit?
+              </h2>
               {churchInfo?.address && (
                 <div className="flex flex-col items-center justify-center gap-2">
                   <div className="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
@@ -154,22 +156,7 @@ export default function Services() {
               )}
             </div>
 
-            <div className="grid gap-6 md:grid-cols-3">
-              <Card className="group border-none text-center shadow-md transition-all hover:shadow-lg">
-                <CardContent className="space-y-4 p-6">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-church-gold/20 transition-transform group-hover:scale-110">
-                    <Car className="h-6 w-6 text-church-gold-dark" />
-                  </div>
-                  <div>
-                    <h4 className="mb-2 font-bold text-lg">Free Parking</h4>
-                    <p className="text-muted-foreground text-sm">
-                      Ample parking space available for all our visitors right
-                      at the venue.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
+            <div className="grid gap-6 md:grid-cols-2">
               <Card className="group border-none text-center shadow-md transition-all hover:shadow-lg">
                 <CardContent className="space-y-4 p-6">
                   <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-church-gold/20 transition-transform group-hover:scale-110">

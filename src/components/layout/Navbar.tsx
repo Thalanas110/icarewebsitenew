@@ -26,7 +26,7 @@ const navLinks = [
     subLinks: [
       { href: "/", label: "Welcome" },
       { href: "/#about", label: "About Us" },
-      { href: "/#location", label: "Visit Us" },
+      { href: "/#care", label: "C.A.R.E." },
     ],
   },
   {
@@ -110,8 +110,8 @@ export function Navbar({ isVisible = true }: NavbarProps) {
   };
 
   return (
-    <nav 
-      className={`fixed top-0 left-0 right-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
+    <nav
+      className={`fixed top-0 right-0 left-0 z-50 border-b bg-background/95 backdrop-blur transition-all duration-300 supports-[backdrop-filter]:bg-background/60 ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}
     >
       <div className="container mx-auto px-4">
         <div className="relative flex h-16 items-center justify-between">
