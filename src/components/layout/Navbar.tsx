@@ -93,7 +93,11 @@ const navLinks = [
   },
 ];
 
-export function Navbar() {
+interface NavbarProps {
+  isVisible?: boolean;
+}
+
+export function Navbar({ isVisible = true }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -106,7 +110,9 @@ export function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav 
+      className={`fixed top-0 left-0 right-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
+    >
       <div className="container mx-auto px-4">
         <div className="relative flex h-16 items-center justify-between">
           {/* Logo */}

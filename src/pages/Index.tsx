@@ -1,23 +1,16 @@
-import {
-  Building2,
-  Clock,
-  Handshake,
-  Heart,
-  MapPin,
-  Users,
-} from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 // import { Card, CardContent } from '@/components/ui/card';
 import { useChurchInfo } from "@/hooks/useChurchData";
+import { CareGrid } from "@/components/CareGrid";
 
 const Index = () => {
   const { data: churchInfo } = useChurchInfo();
 
   return (
-    <Layout>
+    <Layout hideNavbarUntilSection="about">
       <Helmet>
         <title>I Care Center - The Refuge Church | Olongapo City</title>
         <meta
@@ -100,24 +93,6 @@ const Index = () => {
                 coming together to worship and serve together. Get in touch to
                 find out more or join us for a service.
               </p>
-              <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-                <div className="text-center">
-                  <Heart className="mx-auto mb-2 h-8 w-8 text-church-gold" />
-                  <p className="font-medium text-sm">Connect to Christ</p>
-                </div>
-                <div className="text-center">
-                  <Users className="mx-auto mb-2 h-8 w-8 text-church-gold" />
-                  <p className="font-medium text-sm">Affiliate to Cell</p>
-                </div>
-                <div className="text-center">
-                  <Building2 className="mx-auto mb-2 h-8 w-8 text-church-gold" />
-                  <p className="font-medium text-sm">Raise to Church</p>
-                </div>
-                <div className="text-center">
-                  <Handshake className="mx-auto mb-2 h-8 w-8 text-church-gold" />
-                  <p className="font-medium text-sm">Engage to Community</p>
-                </div>
-              </div>
               <Button
                 asChild
                 className="bg-church-navy hover:bg-church-navy/90"
@@ -147,31 +122,8 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
-              <h2 className="mb-6 font-bold font-display text-4xl">Visit Us</h2>
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <MapPin className="mt-1 h-6 w-6 flex-shrink-0 text-church-gold" />
-                  <div>
-                    <p className="font-semibold">Address</p>
-                    <p className="text-black/70">
-                      {churchInfo?.address || "123 Faith Street"}
-                      <br />
-                      {churchInfo?.city || "City"},{" "}
-                      {churchInfo?.state || "State"}{" "}
-                      {churchInfo?.zip || "12345"}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <Clock className="mt-1 h-6 w-6 flex-shrink-0 text-church-gold" />
-                  <div>
-                    <p className="font-semibold">Office Hours</p>
-                    <p className="text-black/70">
-                      {churchInfo?.office_hours || "Mon-Fri: 9AM - 5PM"}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <h2 className="mb-6 font-bold font-display text-4xl">Our C.A.R.E. Pathway</h2>
+              <CareGrid />
               <Button
                 asChild
                 className="mt-8 bg-church-gold text-church-navy hover:bg-church-gold/90"
@@ -179,12 +131,12 @@ const Index = () => {
                 <Link to="/contact">Contact Us</Link>
               </Button>
             </div>
-            <div className="rounded-lg bg-church-navy p-8 text-center">
+            <div className="rounded-lg p-8 text-center">
               <p className="mb-4 font-display text-2xl text-church-gold italic">
                 "Come to me, all you who are weary and burdened, and I will give
                 you rest."
               </p>
-              <p className="text-white">— Matthew 11:28</p>
+              <p className="text-church-navy">— Matthew 11:28</p>
             </div>
           </div>
         </div>
