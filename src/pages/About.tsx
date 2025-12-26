@@ -134,16 +134,15 @@ export default function About() {
               </p>
             </div>
             <div
-              className={`mx-auto grid max-w-5xl gap-8 ${
-                pastors.length === 1
-                  ? "max-w-md"
-                  : pastors.length === 2
-                    ? "md:grid-cols-2"
-                    : "md:grid-cols-2 lg:grid-cols-3"
+              className={`mx-auto flex max-w-5xl flex-wrap justify-center gap-8 ${
+                pastors.length === 1 ? "max-w-md" : ""
               }`}
             >
               {pastors.map((pastor) => (
-                <Card className="border-none shadow-lg" key={pastor.id}>
+                <Card
+                  className="w-full max-w-sm border-none shadow-lg md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)]"
+                  key={pastor.id}
+                >
                   <CardContent className="space-y-4 p-8 text-center">
                     <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-primary/10">
                       {pastor.image_url ? (
