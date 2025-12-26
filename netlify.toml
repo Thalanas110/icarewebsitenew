@@ -7,12 +7,6 @@
   node_bundler = "esbuild"
   external_node_modules = ["lightningcss"]
 
-[[redirects]]
-  from = "/sitemap.xml"
-  to = "/.netlify/functions/ssr"
-  status = 200
-  force = true
-
 # Prioritize static assets (images, css, js)
 [[redirects]]
   from = "/assets/*"
