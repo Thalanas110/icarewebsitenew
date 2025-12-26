@@ -1,4 +1,4 @@
-import { Loader2, Lock, User } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,8 @@ export function AdminProfile() {
   // Password state
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -162,23 +164,51 @@ export function AdminProfile() {
             <form className="space-y-4" onSubmit={handleUpdatePassword}>
               <div className="space-y-2">
                 <Label htmlFor="newPassword">New Password</Label>
-                <Input
-                  id="newPassword"
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="••••••••"
-                  type="password"
-                  value={newPassword}
-                />
+                <div className="relative">
+                  <Input
+                    className="pr-10"
+                    id="newPassword"
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="••••••••"
+                    type={showNewPassword ? "text" : "password"}
+                    value={newPassword}
+                  />
+                  <button
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    type="button"
+                  >
+                    {showNewPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                <Input
-                  id="confirmPassword"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••"
-                  type="password"
-                  value={confirmPassword}
-                />
+                <div className="relative">
+                  <Input
+                    className="pr-10"
+                    id="confirmPassword"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPassword}
+                  />
+                  <button
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    type="button"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
               </div>
               <Button disabled={loading} type="submit">
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

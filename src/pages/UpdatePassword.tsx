@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -19,6 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 export default function UpdatePassword() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -74,15 +75,29 @@ export default function UpdatePassword() {
                 <form className="space-y-4" onSubmit={handleUpdatePassword}>
                   <div className="space-y-2">
                     <Label htmlFor="password">New Password</Label>
-                    <Input
-                      id="password"
-                      minLength={6}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      required
-                      type="password"
-                      value={password}
-                    />
+                    <div className="relative">
+                      <Input
+                        className="pr-10"
+                        id="password"
+                        minLength={6}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        required
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                      />
+                      <button
+                        className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                        onClick={() => setShowPassword(!showPassword)}
+                        type="button"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </div>
                   <Button className="w-full" disabled={loading} type="submit">
                     {loading && (

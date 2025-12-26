@@ -1,4 +1,4 @@
-import { Loader2, Lock, LogOut, User } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, LogOut, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -29,6 +29,8 @@ export default function Profile() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [updatingPassword, setUpdatingPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -203,27 +205,57 @@ export default function Profile() {
                 <form className="space-y-4" onSubmit={handleUpdatePassword}>
                   <div className="space-y-2">
                     <Label htmlFor="newPassword">New Password</Label>
-                    <Input
-                      id="newPassword"
-                      minLength={6}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      placeholder="••••••••"
-                      type="password"
-                      value={newPassword}
-                    />
+                    <div className="relative">
+                      <Input
+                        className="pr-10"
+                        id="newPassword"
+                        minLength={6}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        placeholder="••••••••"
+                        type={showNewPassword ? "text" : "password"}
+                        value={newPassword}
+                      />
+                      <button
+                        className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                        onClick={() => setShowNewPassword(!showNewPassword)}
+                        type="button"
+                      >
+                        {showNewPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="confirmPassword">
                       Confirm New Password
                     </Label>
-                    <Input
-                      id="confirmPassword"
-                      minLength={6}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="••••••••"
-                      type="password"
-                      value={confirmPassword}
-                    />
+                    <div className="relative">
+                      <Input
+                        className="pr-10"
+                        id="confirmPassword"
+                        minLength={6}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="••••••••"
+                        type={showConfirmPassword ? "text" : "password"}
+                        value={confirmPassword}
+                      />
+                      <button
+                        className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        type="button"
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </div>
                   <Button
                     disabled={updatingPassword}

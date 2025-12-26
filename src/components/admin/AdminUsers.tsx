@@ -1,5 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import {
+  Eye,
+  EyeOff,
   Loader2,
   Pencil,
   Shield,
@@ -82,6 +84,7 @@ export function AdminUsers() {
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showNewUserPassword, setShowNewUserPassword] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -337,14 +340,28 @@ export function AdminUsers() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  minLength={6}
-                  onChange={(e) => setNewUserPassword(e.target.value)}
-                  required
-                  type="password"
-                  value={newUserPassword}
-                />
+                <div className="relative">
+                  <Input
+                    className="pr-10"
+                    id="password"
+                    minLength={6}
+                    onChange={(e) => setNewUserPassword(e.target.value)}
+                    required
+                    type={showNewUserPassword ? "text" : "password"}
+                    value={newUserPassword}
+                  />
+                  <button
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                    onClick={() => setShowNewUserPassword(!showNewUserPassword)}
+                    type="button"
+                  >
+                    {showNewUserPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="role">Role</Label>
