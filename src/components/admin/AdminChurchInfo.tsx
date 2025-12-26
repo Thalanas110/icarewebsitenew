@@ -1,5 +1,5 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -55,7 +55,7 @@ export function AdminChurchInfo() {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   // Sync form with church info when loaded
-  useState(() => {
+  useEffect(() => {
     if (churchInfo) {
       setForm({
         church_name: churchInfo.church_name || "",
@@ -68,7 +68,7 @@ export function AdminChurchInfo() {
         office_hours: churchInfo.office_hours || "",
       });
     }
-  });
+  }, [churchInfo]);
 
   const handleSaveChurchInfo = async () => {
     if (!churchInfo?.id) return;

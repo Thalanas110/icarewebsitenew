@@ -50,19 +50,13 @@ const Index = () => {
             >
               <Link to="/services">Join Us This Sunday</Link>
             </Button>
-            {/* Ghost → Solid on hover - Teal variant */}
+            {/* Ghost → Solid on hover - White variant */}
             <Button
               asChild
-              className="border-0 bg-transparent font-semibold text-church-teal transition-all duration-300 hover:bg-church-teal hover:text-white"
+              className="border-0 bg-transparent font-semibold text-white transition-all duration-300 hover:bg-white hover:text-church-navy"
               size="lg"
             >
-              <a
-                href="https://www.facebook.com/icarefellowship"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Join Online
-              </a>
+              <Link to="/sermons">Join Online</Link>
             </Button>
             {/* Ghost → Solid on hover - White variant */}
             <Button
