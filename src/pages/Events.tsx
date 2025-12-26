@@ -51,7 +51,7 @@ export default function Events() {
 
                       {/* Event Details */}
                       <div className="flex-1 space-y-3">
-                        <h3 className="font-bold font-display text-xl">
+                        <h3 className="font-bold font-sans text-xl">
                           {event.title}
                         </h3>
 

@@ -133,7 +133,7 @@ const Sermons = () => {
                         )}
                       </div>
 
-                      <h2 className="mb-3 font-bold font-display text-foreground text-xl md:text-2xl">
+                      <h2 className="mb-3 font-bold font-sans text-foreground text-xl md:text-2xl">
                         {sermon.title}
                       </h2>
 

@@ -56,7 +56,7 @@ export default function Services() {
                         </div>
                       )}
                     </div>
-                    <h3 className="font-bold font-display text-xl md:text-2xl">
+                    <h3 className="font-bold font-sans text-xl md:text-2xl">
                       {service.name}
                     </h3>
                     <p className="font-bold text-2xl text-primary md:text-3xl">

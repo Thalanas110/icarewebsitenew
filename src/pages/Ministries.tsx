@@ -60,7 +60,7 @@ export default function Ministries() {
                         </div>
                       )}
                       <CardContent className="flex-1 space-y-4 p-6">
-                        <h3 className="font-bold font-display text-xl">
+                        <h3 className="font-bold font-sans text-xl">
                           {ministry.name}
                         </h3>
                         {ministry.description && (
@@ -113,7 +113,7 @@ export default function Ministries() {
                         </div>
                       )}
                       <CardContent className="flex-1 space-y-4 p-6">
-                        <h3 className="font-bold font-display text-xl">
+                        <h3 className="font-bold font-sans text-xl">
                           {ministry.name}
                         </h3>
                         {ministry.description && (
