@@ -155,7 +155,7 @@ export function AdminChurchInfo() {
 
       {/* Pastors Management */}
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
           <CardTitle>Pastors</CardTitle>
           <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
             <DialogTrigger asChild>
@@ -257,11 +257,11 @@ export function AdminChurchInfo() {
             <div className="space-y-3">
               {pastors.map((pastor) => (
                 <div
-                  className="flex items-center justify-between rounded-lg border p-4"
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-4"
                   key={pastor.id}
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                  <div className="flex min-w-0 flex-1 items-center gap-3">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10">
                       {pastor.image_url ? (
                         <img
                           alt={pastor.name}
@@ -274,21 +274,21 @@ export function AdminChurchInfo() {
                         </span>
                       )}
                     </div>
-                    <div>
-                      <h4 className="font-medium">{pastor.name}</h4>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="truncate font-medium">{pastor.name}</h4>
                       {pastor.title && (
-                        <p className="text-muted-foreground text-sm">
+                        <p className="truncate text-muted-foreground text-sm">
                           {pastor.title}
                         </p>
                       )}
                       {pastor.email && (
-                        <p className="text-muted-foreground text-xs">
+                        <p className="truncate text-muted-foreground text-xs">
                           {pastor.email}
                         </p>
                       )}
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex shrink-0 gap-2">
                     <Button
                       onClick={() => handleOpenDialog(pastor)}
                       size="icon"
