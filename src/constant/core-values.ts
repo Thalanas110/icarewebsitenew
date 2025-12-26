@@ -1,3 +1,5 @@
+import { Heart, Megaphone, Music, Users } from "lucide-react";
+
 export const CORE_VALUES = [
   {
     icon: Megaphone,
