@@ -10,9 +10,11 @@ import {
   Users,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useChurchInfo, useServiceTimes } from "@/hooks/useChurchData";
+import { useServiceTimes } from "@/hooks/useChurchData";
 
 const expectItems = [
   {
@@ -58,7 +60,6 @@ const expectItems = [
 
 export default function Services() {
   const { data: serviceTimes, isLoading } = useServiceTimes();
-  const { data: churchInfo } = useChurchInfo();
 
   return (
     <Layout>
@@ -204,17 +205,20 @@ export default function Services() {
               <h2 className="font-bold font-display text-3xl">
                 Planning to visit?
               </h2>
-              {churchInfo?.address && (
-                <div className="flex flex-col items-center justify-center gap-2">
-                  <div className="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                    <MapPin className="h-8 w-8 text-primary" />
-                  </div>
-                  <span className="font-medium text-xl">
-                    {churchInfo.address}, {churchInfo.city}, {churchInfo.state}{" "}
-                    {churchInfo.zip}
-                  </span>
+              <div className="flex flex-col items-center justify-center gap-2">
+                <div className="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                  <MapPin className="h-8 w-8 text-primary" />
                 </div>
-              )}
+                <Link to="/contact#visit-us">
+                  <Button
+                    className="font-semibold text-lg"
+                    size="lg"
+                    variant="default"
+                  >
+                    View Our Location
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
