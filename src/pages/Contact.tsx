@@ -38,7 +38,7 @@ export default function Contact() {
       {/* Hero */}
       <section className="hero-gradient py-20" id="hero">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="mb-4 font-bold font-display text-4xl md:text-5xl">
+          <h1 className="mb-4 font-bold font-display text-4xl md:text-[3.15rem]">
             Get In <span className="text-gradient">Touch</span>
           </h1>
           <p className="mx-auto max-w-2xl text-muted-foreground">

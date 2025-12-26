@@ -15,7 +15,7 @@ const Gallery = () => {
     <Layout>
       <section className="bg-white py-20 text-foreground" id="hero">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="mb-6 animate-fade-in font-bold font-display text-4xl md:text-6xl">
+          <h1 className="mb-6 animate-fade-in font-bold font-display text-4xl md:text-[3.75rem]">
             <span className="text-black">Photo</span>{" "}
             <span className="text-church-orange">Gallery</span>
           </h1>

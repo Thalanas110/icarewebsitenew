@@ -31,7 +31,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1920')] bg-center bg-cover opacity-40" />
         <div className="absolute inset-0 bg-black/40" />
         <div className="container relative z-10 mx-auto px-4 text-center">
-          <h1 className="mb-6 animate-fade-in font-bold font-display text-5xl text-white md:text-7xl">
+          <h1 className="mb-6 animate-fade-in font-bold font-display text-5xl text-white md:text-8xl">
             Welcome to
             <br />
             <span className="text-church-orange">
@@ -81,7 +81,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
-              <h2 className="mb-6 font-bold font-display text-4xl text-foreground">
+              <h2 className="mb-6 font-bold font-display text-4xl text-foreground md:text-[2.4rem]">
                 About Our Church
               </h2>
               <p className="mb-6 text-lg text-muted-foreground leading-relaxed">

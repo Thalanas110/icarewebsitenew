@@ -25,7 +25,7 @@ const Sermons = () => {
       {/* Hero Section */}
       <section className="bg-background py-20" id="hero">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="mb-4 font-bold font-display text-4xl md:text-6xl">
+          <h1 className="mb-4 font-bold font-display text-4xl md:text-[3.75rem]">
             <span className="text-foreground">Sermons & </span>
             <span className="text-church-orange">Messages</span>
           </h1>
