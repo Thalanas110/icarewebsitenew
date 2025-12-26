@@ -117,7 +117,20 @@ function SortableMinistryCard({
         </CardHeader>
         <CardContent className="pt-0 text-muted-foreground text-sm">
           {ministry.leader && <p>Leader: {ministry.leader}</p>}
-          {ministry.meeting_time && <p>Meets: {ministry.meeting_time}</p>}
+          {ministry.meeting_time && (
+            <div>
+              <span className="font-medium">Schedule:</span>
+              <div className="mt-1 space-y-0.5">
+                {ministry.meeting_time
+                  .split(/[\n,;]+/)
+                  .map((line) => line.trim())
+                  .filter((line) => line.length > 0)
+                  .map((line, index) => (
+                    <p key={index}>{line}</p>
+                  ))}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

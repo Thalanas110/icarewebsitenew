@@ -74,9 +74,18 @@ export default function Ministries() {
                           </p>
                         )}
                         {ministry.meeting_time && (
-                          <p className="text-sm">
-                            <strong>Meets:</strong> {ministry.meeting_time}
-                          </p>
+                          <div className="text-sm">
+                            <strong>Schedule:</strong>
+                            <div className="mt-1 space-y-0.5">
+                              {ministry.meeting_time
+                                .split(/[\n,;]+/)
+                                .map((line) => line.trim())
+                                .filter((line) => line.length > 0)
+                                .map((line, index) => (
+                                  <p key={index}>{line}</p>
+                                ))}
+                            </div>
+                          </div>
                         )}
                       </CardContent>
                     </Card>
@@ -127,9 +136,18 @@ export default function Ministries() {
                           </p>
                         )}
                         {ministry.meeting_time && (
-                          <p className="text-sm">
-                            <strong>Meets:</strong> {ministry.meeting_time}
-                          </p>
+                          <div className="text-sm">
+                            <strong>Schedule:</strong>
+                            <div className="mt-1 space-y-0.5">
+                              {ministry.meeting_time
+                                .split(/[\n,;]+/)
+                                .map((line) => line.trim())
+                                .filter((line) => line.length > 0)
+                                .map((line, index) => (
+                                  <p key={index}>{line}</p>
+                                ))}
+                            </div>
+                          </div>
                         )}
                       </CardContent>
                     </Card>
