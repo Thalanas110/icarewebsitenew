@@ -1,6 +1,16 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -53,6 +63,7 @@ export function AdminChurchInfo() {
 
   const [editingPastor, setEditingPastor] = useState<Pastor | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [pastorToDelete, setPastorToDelete] = useState<Pastor | null>(null);
 
   // Sync form with church info when loaded
   useEffect(() => {
@@ -297,7 +308,7 @@ export function AdminChurchInfo() {
                       <Pencil className="h-4 w-4" />
                     </Button>
                     <Button
-                      onClick={() => handleDeletePastor(pastor.id)}
+                      onClick={() => setPastorToDelete(pastor)}
                       size="icon"
                       variant="ghost"
                     >
@@ -310,6 +321,36 @@ export function AdminChurchInfo() {
           )}
         </CardContent>
       </Card>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog
+        onOpenChange={(open) => !open && setPastorToDelete(null)}
+        open={!!pastorToDelete}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Pastor</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete {pastorToDelete?.name}? This
+              action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                if (pastorToDelete) {
+                  handleDeletePastor(pastorToDelete.id);
+                  setPastorToDelete(null);
+                }
+              }}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Church Details */}
       <Card>
