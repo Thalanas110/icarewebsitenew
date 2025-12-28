@@ -141,7 +141,11 @@ export const FacebookLiveEmbed = ({
   }
 
   return (
-    <div className={className} ref={containerRef} style={{ width: "100%" }}>
+    <div
+      className={`${className} flex w-full items-center justify-center`}
+      ref={containerRef}
+      style={{ minHeight: "400px", backgroundColor: "#000" }}
+    >
       <div
         className="fb-video"
         data-allowfullscreen="true"
@@ -149,7 +153,7 @@ export const FacebookLiveEmbed = ({
         data-href={videoUrl}
         data-lazy="true"
         data-show-text={showText.toString()}
-        data-width="auto"
+        data-width="800"
       />
     </div>
   );

@@ -52,16 +52,13 @@ const Sermons = () => {
             </div>
 
             <Card className="overflow-hidden">
-              <CardContent className="p-0">
-                <div className="flex aspect-video w-full items-center justify-center bg-black">
-                  <FacebookLiveEmbed
-                    className="h-full w-full"
-                    fallbackVideoUrl={
-                      churchInfo?.fallback_stream_url || undefined
-                    }
-                    showText={false}
-                  />
-                </div>
+              <CardContent className="bg-black p-0">
+                <FacebookLiveEmbed
+                  fallbackVideoUrl={
+                    churchInfo?.fallback_stream_url || undefined
+                  }
+                  showText={false}
+                />
               </CardContent>
             </Card>
 
