@@ -5,10 +5,11 @@ import { Layout } from "@/components/layout/Layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useSermons } from "@/hooks/useChurchData";
+import { useChurchInfo, useSermons } from "@/hooks/useChurchData";
 
 const Sermons = () => {
   const { data: sermons, isLoading } = useSermons();
+  const { data: churchInfo } = useChurchInfo();
 
   if (isLoading) {
     return (
@@ -55,6 +56,9 @@ const Sermons = () => {
                 <div className="flex aspect-video w-full items-center justify-center bg-black">
                   <FacebookLiveEmbed
                     className="h-full w-full"
+                    fallbackVideoUrl={
+                      churchInfo?.fallback_stream_url || undefined
+                    }
                     showText={false}
                   />
                 </div>

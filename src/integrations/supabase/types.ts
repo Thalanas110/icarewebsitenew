@@ -21,6 +21,7 @@ export type Database = {
           city: string | null;
           created_at: string;
           email: string | null;
+          fallback_stream_url: string | null;
           id: string;
           office_hours: string | null;
           pastor_email: string | null;
@@ -37,6 +38,7 @@ export type Database = {
           city?: string | null;
           created_at?: string;
           email?: string | null;
+          fallback_stream_url?: string | null;
           id?: string;
           office_hours?: string | null;
           pastor_email?: string | null;
@@ -53,6 +55,7 @@ export type Database = {
           city?: string | null;
           created_at?: string;
           email?: string | null;
+          fallback_stream_url?: string | null;
           id?: string;
           office_hours?: string | null;
           pastor_email?: string | null;

@@ -49,6 +49,7 @@ export function AdminChurchInfo() {
     phone: "",
     email: "",
     office_hours: "",
+    fallback_stream_url: "",
   });
 
   const [pastorForm, setPastorForm] = useState<PastorInsert>({
@@ -65,7 +66,6 @@ export function AdminChurchInfo() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [pastorToDelete, setPastorToDelete] = useState<Pastor | null>(null);
 
-  // Sync form with church info when loaded
   useEffect(() => {
     if (churchInfo) {
       setForm({
@@ -77,6 +77,7 @@ export function AdminChurchInfo() {
         phone: churchInfo.phone || "",
         email: churchInfo.email || "",
         office_hours: churchInfo.office_hours || "",
+        fallback_stream_url: churchInfo.fallback_stream_url || "",
       });
     }
   }, [churchInfo]);
@@ -382,6 +383,29 @@ export function AdminChurchInfo() {
             placeholder="Office Hours"
             value={form.office_hours}
           />
+        </CardContent>
+      </Card>
+
+      {/* Livestream Settings */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Livestream Settings</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <h5>Fallback Stream URL</h5>
+            <Input
+              onChange={(e) =>
+                setForm({ ...form, fallback_stream_url: e.target.value })
+              }
+              placeholder="https://www.facebook.com/your-page/videos/..."
+              value={form.fallback_stream_url}
+            />
+            <p className="text-muted-foreground text-sm">
+              This URL will be used as a backup when the automatic stream
+              detection fails.
+            </p>
+          </div>
         </CardContent>
       </Card>
 

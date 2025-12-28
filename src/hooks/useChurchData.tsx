@@ -85,7 +85,10 @@ export interface ChurchInfo {
   city: string | null;
   state: string | null;
   zip: string | null;
+  phone: string | null;
+  email: string | null;
   office_hours: string | null;
+  fallback_stream_url: string | null;
   created_at: string;
   updated_at: string;
 }
