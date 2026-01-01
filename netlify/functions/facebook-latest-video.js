@@ -1,7 +1,7 @@
 // Netlify Function: Fetch latest video from Facebook Page
 // Endpoint: /.netlify/functions/facebook-latest-video
 
-export async function handler(event, context) {
+export async function handler(event, _context) {
   const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type",

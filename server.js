@@ -5,11 +5,12 @@ import express from "express";
 
 // const __dirname = path.dirname(fileURLToPath(import.meta.url)); // Removing this to avoid CJS warning
 
-export async function createServer(
+export async function createServer({
   root = process.cwd(),
   isProd = true, // Force prod for verification
-  hmrPort
-) {
+  hmrPort,
+} = {}) {
+  const isTest = process.env.NODE_ENV === "test";
   const resolve = (p) => path.resolve(root, p);
 
   const indexProd = isProd
@@ -19,7 +20,7 @@ export async function createServer(
   const app = express();
 
   // Sitemap route - must be before any other middleware to ensure it's handled first
-  app.get("/sitemap.xml", (req, res) => {
+  app.get("/sitemap.xml", (_req, res) => {
     const baseUrl = "https://icarecenter.netlify.app";
     const urls = ["/", "/about", "/services", "/contact", "/sermons"];
 
@@ -75,7 +76,7 @@ export async function createServer(
     app.use(vite.middlewares);
   }
 
-  app.use(async (req, res, next) => {
+  app.use(async (req, res, _next) => {
     try {
       const url = req.originalUrl;
 
@@ -120,7 +121,9 @@ export async function createServer(
 
       res.status(200).set({ "Content-Type": "text/html" }).end(finalHtml);
     } catch (e) {
-      !isProd && vite.ssrFixStacktrace(e);
+      if (!isProd) {
+        vite.ssrFixStacktrace(e);
+      }
       console.error("SSR Error:", e.stack);
       fs.writeFileSync("server_error.log", e.stack);
       res.status(500).end(e.stack);
@@ -134,7 +137,7 @@ const isMainModule = import.meta.url === pathToFileURL(process.argv[1]).href;
 
 if (isMainModule) {
   const port = process.env.PORT || 1010;
-  createServer()
+  createServer({})
     .then(({ app }) =>
       app.listen(port, () => {
         console.log(`✈️✈️✈️ http://localhost:${port}`);
@@ -146,9 +149,11 @@ if (isMainModule) {
     });
 }
 
-process.on("unhandledRejection", (reason, p) => {
+process.on("unhandledRejection", (reason, _promise) => {
   console.error("Unhandled Rejection:", reason);
 });
 
 // Keep alive
-setInterval(() => {}, 10_000);
+setInterval(() => {
+  // Keep the process alive
+}, 10_000);
