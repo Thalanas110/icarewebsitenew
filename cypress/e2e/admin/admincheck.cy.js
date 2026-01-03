@@ -23,7 +23,7 @@ describe("authenticated access check moderator", () => {
 
     // Login with credentials
     cy.get('input[type="email"]').type("marianne434343@gmail.com");
-    cy.get('input[type="password"]').type("Dimate101%!");
+    cy.get('input[type="password"]').type("password lolU");
 
     // Click the Sign In button
     cy.contains("Sign In").click();
