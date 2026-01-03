@@ -132,11 +132,18 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
   }, []);
 
   const showLoading = !((isOnline && hasInitialData) || hasLoadedOnce);
-  const loadingText = isOnline
-    ? anyQueryLoading
-      ? "Loading church data..."
-      : "Loading."
-    : "Connecting...";
+
+  const getLoadingText = () => {
+    if (!isOnline) {
+      return "Connecting...";
+    }
+    if (anyQueryLoading) {
+      return "Loading church data...";
+    }
+    return "Loading.";
+  };
+
+  const loadingText = getLoadingText();
 
   return (
     <>
@@ -146,12 +153,15 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
           <div className="mb-8">
             <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-church-orange">
               <svg
+                aria-labelledby="cross-icon-title"
                 className="text-white"
                 fill="none"
                 height="32"
+                role="img"
                 viewBox="0 0 24 24"
                 width="32"
               >
+                <title id="cross-icon-title">Cross icon</title>
                 <path
                   d="M12 2L12 22M2 12L22 12"
                   stroke="currentColor"
