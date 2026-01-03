@@ -42,7 +42,6 @@ const Giving = () => {
       if (error) throw error;
       setGivingSettings(data as any);
     } catch (error: any) {
-      console.error("Error fetching giving settings:", error);
       toast({
         title: "Error",
         description: "Failed to load giving options",

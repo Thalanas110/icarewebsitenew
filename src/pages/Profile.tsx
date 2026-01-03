@@ -57,7 +57,6 @@ export default function Profile() {
         setFullName(data.full_name || "");
       }
     } catch (error: any) {
-      console.error("Error loading profile:", error);
       toast.error("Error loading user profile");
     } finally {
       setLoadingProfile(false);
@@ -78,7 +77,6 @@ export default function Profile() {
       if (error) throw error;
       toast.success("Profile updated successfully!");
     } catch (error: any) {
-      console.error("Error updating profile:", error);
       toast.error("Error updating profile");
     } finally {
       setUpdatingProfile(false);
@@ -109,8 +107,7 @@ export default function Profile() {
       setNewPassword("");
       setConfirmPassword("");
     } catch (error: any) {
-      console.error("Error updating password:", error);
-      toast.error(error.message || "Failed to update password");
+      toast.error("Failed to update password. Please try again.");
     } finally {
       setUpdatingPassword(false);
     }
@@ -121,8 +118,7 @@ export default function Profile() {
       await signOut();
       navigate("/");
       toast.success("Signed out successfully");
-    } catch (error) {
-      console.error("Error signing out:", error);
+    } catch (_error) {
       toast.error("Error signing out");
     }
   };

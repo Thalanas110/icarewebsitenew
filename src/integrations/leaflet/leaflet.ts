@@ -1,2 +1,2 @@
-console.log("Leaflet integration module loaded.");
+// Leaflet integration module
 // don't add anything onto this please.

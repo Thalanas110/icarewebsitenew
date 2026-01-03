@@ -32,7 +32,7 @@ export function useRealtimeSubscription() {
             table,
           },
           (payload) => {
-            console.log(`[Realtime] ${table} changed:`, payload.eventType);
+            // Dispatch event to invalidate the query
             // Dispatch event to invalidate the query
             window.dispatchEvent(new Event(`invalidate-${queryKey}`));
 
@@ -42,10 +42,8 @@ export function useRealtimeSubscription() {
             }
           }
         )
-        .subscribe((status) => {
-          if (status === "SUBSCRIBED") {
-            console.log(`[Realtime] Subscribed to ${table}`);
-          }
+        .subscribe((_status) => {
+          // Subscription status handled silently
         });
 
       return channel;

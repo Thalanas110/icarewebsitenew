@@ -123,8 +123,7 @@ export function AdminUsers() {
       );
 
       setUsers(mergedUsers);
-    } catch (error) {
-      console.error("Error fetching users:", error);
+    } catch (_error) {
       toast.error("Failed to load users");
     } finally {
       setLoading(false);
@@ -178,8 +177,7 @@ export function AdminUsers() {
       resetForm();
       fetchUsers(); // Refresh list
     } catch (error: any) {
-      console.error("Error creating user:", error);
-      toast.error(error.message || "Failed to create user");
+      toast.error("Failed to create user. Please try again.");
     } finally {
       setIsCreating(false);
     }
@@ -235,8 +233,7 @@ export function AdminUsers() {
       setEditingUser(null);
       fetchUsers();
     } catch (error: any) {
-      console.error("Error updating user:", error);
-      toast.error(error.message || "Failed to update user");
+      toast.error("Failed to update user. Please try again.");
     } finally {
       setIsUpdating(false);
     }
@@ -261,8 +258,7 @@ export function AdminUsers() {
       setDeleteUser(null);
       fetchUsers();
     } catch (error: any) {
-      console.error("Error deleting user:", error);
-      toast.error(error.message || "Failed to delete user");
+      toast.error("Failed to delete user. Please try again.");
     } finally {
       setIsDeleting(false);
     }

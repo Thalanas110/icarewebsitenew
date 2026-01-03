@@ -43,8 +43,8 @@ export function AdminProfile() {
       if (data) {
         setFullName(data.full_name || "");
       }
-    } catch (error) {
-      console.error("Error fetching profile:", error);
+    } catch (_error) {
+      // Profile fetch failed silently
     }
   };
 
@@ -61,8 +61,7 @@ export function AdminProfile() {
       if (error) throw error;
       toast.success("Profile updated successfully");
     } catch (error: any) {
-      console.error("Error updating profile:", error);
-      toast.error(error.message || "Failed to update profile");
+      toast.error("Failed to update profile. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -94,8 +93,7 @@ export function AdminProfile() {
       setNewPassword("");
       setConfirmPassword("");
     } catch (error: any) {
-      console.error("Error updating password:", error);
-      toast.error(error.message || "Failed to update password");
+      toast.error("Failed to update password. Please try again.");
     } finally {
       setLoading(false);
     }

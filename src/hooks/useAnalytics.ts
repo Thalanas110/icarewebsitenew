@@ -44,25 +44,15 @@ export const trackPageVisit = async (pagePath: string) => {
       referrer: document.referrer || null,
     };
 
-    console.log("Attempting to track page visit with payload:", payload);
-
     const { data, error } = await supabase
       .from("analytics_visits")
       .insert(payload);
 
     if (error) {
-      console.error("Supabase error tracking page visit:", error);
-      console.error("Error details:", {
-        message: error.message,
-        details: error.details,
-        hint: error.hint,
-        code: error.code,
-      });
-    } else {
-      console.log("Page visit tracked successfully:", data);
+      // Analytics tracking failed silently
     }
-  } catch (error) {
-    console.error("Error tracking page visit:", error);
+  } catch (_error) {
+    // Analytics tracking failed silently
   }
 };
 
@@ -84,7 +74,6 @@ export const useAnalyticsSummary = (daysBack = 30) => {
         });
 
         if (error) {
-          console.error("Analytics summary error:", error);
           throw error;
         }
 
@@ -97,8 +86,7 @@ export const useAnalyticsSummary = (daysBack = 30) => {
             top_pages: [],
           }
         );
-      } catch (error) {
-        console.error("Failed to fetch analytics summary:", error);
+      } catch (_error) {
         // Return default values on error
         return {
           total_visits: 0,
@@ -256,8 +244,7 @@ export const useContentAnalytics = () => {
           postponed_events: postponedEvents.length,
           done_events: doneEvents.length,
         };
-      } catch (error) {
-        console.error("Error fetching content analytics:", error);
+      } catch (_error) {
         return {
           total_ministries: 0,
           total_events: 0,

@@ -50,8 +50,7 @@ export default function UpdatePassword() {
       toast.success("Password updated successfully!");
       navigate("/auth");
     } catch (error: any) {
-      console.error("Error updating password:", error);
-      toast.error(error.message || "Failed to update password");
+      toast.error("Failed to update password. Please try again.");
     } finally {
       setLoading(false);
     }

@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .maybeSingle();
 
       if (error) {
-        console.error("Error fetching role:", error);
+        // Error handled silently in production
         setRole(null);
         setIsAdmin(false);
         setIsModerator(false);
@@ -89,8 +89,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsAdmin(false);
         setIsModerator(false);
       }
-    } catch (err) {
-      console.error("Unexpected error fetching role:", err);
+    } catch (_err) {
+      // Error handled silently in production
     } finally {
       setLoading(false);
     }

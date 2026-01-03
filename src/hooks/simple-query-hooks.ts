@@ -71,9 +71,6 @@ export function useQuery<T>({
     if (typeof primaryKey !== "string") return;
 
     const handleInvalidate = () => {
-      console.log(
-        `[Query] Invalidation received for ${primaryKey}, refetching...`
-      );
       fetchData();
     };
 
@@ -125,7 +122,7 @@ export function useMutation<TVariables, TData>({
 export function useQueryClient() {
   return {
     invalidateQueries: ({ queryKey }: { queryKey: any[] }) => {
-      console.log("Mock invalidateQueries", queryKey);
+      // Dispatch event to trigger refetch
       // In a real simplified implementation, we might use a global event bus or context to trigger refetches.
       // For now, we accept that data might be stale until page reload or manual refetch.
       // A simple hack is dispatching a window event.

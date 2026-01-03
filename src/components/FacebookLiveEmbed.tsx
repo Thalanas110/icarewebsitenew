@@ -54,15 +54,9 @@ export const FacebookLiveEmbed = ({
           setError(null);
         } else {
           // Use fallback if API fails or returns no video
-          console.warn(
-            "Facebook API returned no video, using fallback:",
-            data.error
-          );
           setVideoUrl(fallbackVideoUrl);
-          setError(data.error || "No video found");
         }
-      } catch (err) {
-        console.error("Failed to fetch latest video:", err);
+      } catch (_err) {
         setVideoUrl(fallbackVideoUrl);
         setError("Failed to fetch latest video");
       } finally {

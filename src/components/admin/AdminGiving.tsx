@@ -47,8 +47,7 @@ export default function AdminGiving() {
         donation_platform_name: (data as any).donation_platform_name || "",
         donation_platform_url: (data as any).donation_platform_url || "",
       });
-    } catch (error) {
-      console.error("Error fetching giving settings:", error);
+    } catch (_error) {
       toast({
         title: "Error",
         description: "Failed to load giving settings",
@@ -86,11 +85,10 @@ export default function AdminGiving() {
       });
 
       fetchSettings();
-    } catch (error) {
-      console.error("Error updating giving settings:", error);
+    } catch (_error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to update giving settings",
+        description: "Failed to update giving settings. Please try again.",
         variant: "destructive",
       });
     } finally {

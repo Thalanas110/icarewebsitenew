@@ -89,8 +89,7 @@ export function AdminGallery() {
 
       setIsDialogOpen(false);
       resetForm();
-    } catch (error) {
-      console.error("Error uploading image:", error);
+    } catch (_error) {
       toast({
         title: "Error",
         description: "Failed to upload image. Please try again.",
