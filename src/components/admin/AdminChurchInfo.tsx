@@ -59,6 +59,7 @@ export function AdminChurchInfo() {
     title: "Pastor",
     bio: "",
     image_url: "",
+    facebook_url: "",
     sort_order: 0,
   });
 
@@ -101,6 +102,7 @@ export function AdminChurchInfo() {
       title: "Pastor",
       bio: "",
       image_url: "",
+      facebook_url: "",
       sort_order: pastors?.length || 0,
     });
     setEditingPastor(null);
@@ -116,6 +118,7 @@ export function AdminChurchInfo() {
         title: pastor.title || "Pastor",
         bio: pastor.bio || "",
         image_url: pastor.image_url || "",
+        facebook_url: pastor.facebook_url || "",
         sort_order: pastor.sort_order || 0,
       });
     } else {
@@ -243,6 +246,16 @@ export function AdminChurchInfo() {
                       setPastorForm({ ...pastorForm, image_url: url })
                     }
                     value={pastorForm.image_url || ""}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="font-medium text-sm">Facebook URL</label>
+                  <Input
+                    onChange={(e) =>
+                      setPastorForm({ ...pastorForm, facebook_url: e.target.value })
+                    }
+                    placeholder="https://facebook.com/pastor.profile"
+                    value={pastorForm.facebook_url || ""}
                   />
                 </div>
               </div>

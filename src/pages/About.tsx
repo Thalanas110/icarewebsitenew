@@ -1,12 +1,21 @@
-import { BookOpen, Target } from "lucide-react";
+import { BookOpen, Facebook, Mail, Phone, Target } from "lucide-react";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { CORE_VALUES } from "@/constant/core-values";
-import { usePastors } from "@/hooks/useChurchData";
+import { type Pastor, usePastors } from "@/hooks/useChurchData";
 
 export default function About() {
   const { data: pastors } = usePastors();
+  const [selectedPastor, setSelectedPastor] = useState<Pastor | null>(null);
 
   return (
     <Layout>
@@ -163,16 +172,12 @@ export default function About() {
                         <p className="text-primary text-sm">{pastor.title}</p>
                       )}
                     </div>
-                    {pastor.bio && (
-                      <p className="text-muted-foreground text-sm">
-                        {pastor.bio}
-                      </p>
-                    )}
-                    {pastor.email && (
-                      <p className="text-muted-foreground text-xs">
-                        Contact: {pastor.email}
-                      </p>
-                    )}
+                    <Button
+                      onClick={() => setSelectedPastor(pastor)}
+                      variant="outline"
+                    >
+                      Learn More
+                    </Button>
                   </CardContent>
                 </Card>
               ))}
@@ -180,6 +185,88 @@ export default function About() {
           </div>
         </section>
       )}
+
+      {/* Pastor Details Modal */}
+      <Dialog
+        onOpenChange={(open) => !open && setSelectedPastor(null)}
+        open={!!selectedPastor}
+      >
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center">
+              {selectedPastor?.name}
+            </DialogTitle>
+          </DialogHeader>
+          {selectedPastor && (
+            <div className="space-y-6">
+              {/* Pastor Image */}
+              <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-primary/10">
+                {selectedPastor.image_url ? (
+                  <img
+                    alt={selectedPastor.name}
+                    className="h-32 w-32 rounded-full object-cover"
+                    src={selectedPastor.image_url}
+                  />
+                ) : (
+                  <span className="font-bold font-display text-5xl text-primary">
+                    {selectedPastor.name.charAt(0)}
+                  </span>
+                )}
+              </div>
+
+              {/* Title */}
+              {selectedPastor.title && (
+                <p className="text-center text-primary">
+                  {selectedPastor.title}
+                </p>
+              )}
+
+              {/* Bio */}
+              {selectedPastor.bio && (
+                <div className="space-y-2">
+                  <h4 className="font-semibold">About</h4>
+                  <p className="text-muted-foreground text-sm">
+                    {selectedPastor.bio}
+                  </p>
+                </div>
+              )}
+
+              {/* Contact Details */}
+              <div className="space-y-3">
+                {selectedPastor.phone && (
+                  <a
+                    className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-primary"
+                    href={`tel:${selectedPastor.phone}`}
+                  >
+                    <Phone className="h-5 w-5" />
+                    <span>{selectedPastor.phone}</span>
+                  </a>
+                )}
+                {selectedPastor.email && (
+                  <a
+                    className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-primary"
+                    href={`mailto:${selectedPastor.email}`}
+                  >
+                    <Mail className="h-5 w-5" />
+                    <span>{selectedPastor.email}</span>
+                  </a>
+                )}
+                {selectedPastor.facebook_url && (
+                  <a
+                    className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-primary"
+                    href={selectedPastor.facebook_url}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <Facebook className="h-5 w-5" />
+                    <span>Facebook Profile</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 }

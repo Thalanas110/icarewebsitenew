@@ -113,6 +113,7 @@ export interface Pastor {
   title: string | null;
   bio: string | null;
   image_url: string | null;
+  facebook_url: string | null;
   sort_order: number | null;
   created_at: string;
   updated_at: string;
