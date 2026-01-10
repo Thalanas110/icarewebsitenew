@@ -4,6 +4,7 @@ import {
   Building,
   Calendar,
   Clock,
+  FileText,
   Heart,
   Home,
   Image as ImageIcon,
@@ -66,6 +67,7 @@ const menuItems = [
   },
   { id: "giving", label: "Giving", icon: Heart, roles: ["admin"] },
   { id: "users", label: "Users", icon: UserCog, roles: ["admin"] },
+  { id: "logs", label: "Logs", icon: FileText, roles: ["admin"] },
 ];
 
 interface Props {

@@ -5,6 +5,7 @@ import { AdminChurchInfo } from "@/components/admin/AdminChurchInfo";
 import { AdminEvents } from "@/components/admin/AdminEvents";
 import { AdminGallery } from "@/components/admin/AdminGallery";
 import AdminGiving from "@/components/admin/AdminGiving";
+import { AdminLogs } from "@/components/admin/AdminLogs";
 import { AdminMinistries } from "@/components/admin/AdminMinistries";
 import { AdminProfile } from "@/components/admin/AdminProfile";
 import { AdminSermons } from "@/components/admin/AdminSermons";
@@ -97,6 +98,7 @@ export default function Admin() {
               <AdminGiving />
             )}
             {activeTab === "users" && isTabAllowed("users") && <AdminUsers />}
+            {activeTab === "logs" && isTabAllowed("logs") && <AdminLogs />}
             {activeTab === "profile" && <AdminProfile />}
 
             {!isTabAllowed(activeTab) && (

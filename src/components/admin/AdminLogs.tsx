@@ -1,0 +1,560 @@
+import { format, startOfMonth, endOfMonth, subMonths } from "date-fns";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import {
+  Calendar,
+  CalendarDays,
+  Download,
+  FileText,
+  Filter,
+  RefreshCw,
+  Trash2,
+  X,
+} from "lucide-react";
+import { useState, useCallback } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useToast } from "@/hooks/use-toast";
+import {
+  useLogs,
+  useClearLogs,
+  useLogActionTypes,
+  useLogSummary,
+  logActivity,
+  type LogFilters,
+} from "@/hooks/useLogs";
+import { LOG_ACTION_TYPES } from "@/integrations/supabase/loggingTypes";
+
+const ITEMS_PER_PAGE = 20;
+
+// Preset date ranges
+const DATE_PRESETS = [
+  { label: "Today", getValue: () => ({ start: new Date(), end: new Date() }) },
+  {
+    label: "Last 7 days",
+    getValue: () => {
+      const end = new Date();
+      const start = new Date();
+      start.setDate(start.getDate() - 7);
+      return { start, end };
+    },
+  },
+  {
+    label: "Last 30 days",
+    getValue: () => {
+      const end = new Date();
+      const start = new Date();
+      start.setDate(start.getDate() - 30);
+      return { start, end };
+    },
+  },
+  {
+    label: "This month",
+    getValue: () => ({
+      start: startOfMonth(new Date()),
+      end: endOfMonth(new Date()),
+    }),
+  },
+  {
+    label: "Last month",
+    getValue: () => ({
+      start: startOfMonth(subMonths(new Date(), 1)),
+      end: endOfMonth(subMonths(new Date(), 1)),
+    }),
+  },
+  {
+    label: "Last 3 months",
+    getValue: () => ({
+      start: startOfMonth(subMonths(new Date(), 2)),
+      end: new Date(),
+    }),
+  },
+];
+
+// Format action type for display
+const formatActionType = (actionType: string): string => {
+  return actionType
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
+export function AdminLogs() {
+  const { toast } = useToast();
+  const [filters, setFilters] = useState<LogFilters>({
+    limit: ITEMS_PER_PAGE,
+    offset: 0,
+  });
+  const [dateRange, setDateRange] = useState<{
+    from: Date | undefined;
+    to: Date | undefined;
+  }>({ from: undefined, to: undefined });
+
+  const { data: logsData, isLoading, refetch } = useLogs(filters);
+  const { data: actionTypes } = useLogActionTypes();
+  const { data: summary } = useLogSummary();
+  const { clearLogs, isClearing } = useClearLogs();
+
+  const logs = logsData?.logs || [];
+  const totalCount = logsData?.totalCount || 0;
+  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+  const currentPage = Math.floor((filters.offset || 0) / ITEMS_PER_PAGE) + 1;
+
+  // Apply date filter
+  const handleDateRangeChange = useCallback(
+    (from: Date | undefined, to: Date | undefined) => {
+      setDateRange({ from, to });
+      setFilters((prev) => ({
+        ...prev,
+        startDate: from,
+        endDate: to,
+        offset: 0,
+      }));
+    },
+    []
+  );
+
+  // Apply preset date range
+  const applyDatePreset = useCallback(
+    (preset: (typeof DATE_PRESETS)[number]) => {
+      const { start, end } = preset.getValue();
+      handleDateRangeChange(start, end);
+    },
+    [handleDateRangeChange]
+  );
+
+  // Clear date filter
+  const clearDateFilter = useCallback(() => {
+    setDateRange({ from: undefined, to: undefined });
+    setFilters((prev) => ({
+      ...prev,
+      startDate: undefined,
+      endDate: undefined,
+      offset: 0,
+    }));
+  }, []);
+
+  // Apply action type filter
+  const handleActionTypeChange = useCallback((value: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      actionType: value === "all" ? undefined : value,
+      offset: 0,
+    }));
+  }, []);
+
+  // Pagination
+  const goToPage = useCallback((page: number) => {
+    setFilters((prev) => ({
+      ...prev,
+      offset: (page - 1) * ITEMS_PER_PAGE,
+    }));
+  }, []);
+
+  // Export to PDF
+  const exportToPDF = useCallback(async () => {
+    try {
+      const doc = new jsPDF();
+
+      // Title
+      doc.setFontSize(20);
+      doc.text("Activity Logs Report", 14, 22);
+
+      // Date range info
+      doc.setFontSize(10);
+      const dateInfo = dateRange.from
+        ? `Date Range: ${format(dateRange.from, "MMM dd, yyyy")} - ${dateRange.to ? format(dateRange.to, "MMM dd, yyyy") : "Present"}`
+        : "All Dates";
+      doc.text(dateInfo, 14, 32);
+      doc.text(`Generated: ${format(new Date(), "MMM dd, yyyy HH:mm")}`, 14, 38);
+      doc.text(`Total Records: ${totalCount}`, 14, 44);
+
+      // Table
+      autoTable(doc, {
+        startY: 50,
+        head: [["Date/Time", "Action", "Description", "User", "Entity"]],
+        body: logs.map((log) => [
+          format(new Date(log.created_at), "MMM dd, yyyy HH:mm"),
+          formatActionType(log.action_type),
+          log.action_description || "-",
+          log.user_email || "System",
+          log.entity_type ? `${log.entity_type}` : "-",
+        ]),
+        styles: { fontSize: 8 },
+        headStyles: { fillColor: [41, 128, 185] },
+      });
+
+      // Save
+      doc.save(`activity-logs-${format(new Date(), "yyyy-MM-dd")}.pdf`);
+
+      // Log the export action
+      await logActivity(LOG_ACTION_TYPES.EXPORT_LOGS, {
+        description: `Exported ${totalCount} logs to PDF`,
+        metadata: { totalCount, filters },
+      });
+
+      toast({
+        title: "Export Successful",
+        description: "Logs have been exported to PDF.",
+      });
+    } catch (error) {
+      toast({
+        title: "Export Failed",
+        description: "Failed to export logs to PDF.",
+        variant: "destructive",
+      });
+    }
+  }, [logs, dateRange, totalCount, filters, toast]);
+
+  // Clear all logs
+  const handleClearLogs = useCallback(async () => {
+    const success = await clearLogs();
+    if (success) {
+      // Log the clear action before clearing (this log will also be deleted)
+      await logActivity(LOG_ACTION_TYPES.CLEAR_LOGS, {
+        description: `Cleared ${totalCount} logs`,
+        metadata: { totalCount },
+      });
+
+      toast({
+        title: "Logs Cleared",
+        description: "All activity logs have been deleted.",
+      });
+      refetch();
+    } else {
+      toast({
+        title: "Clear Failed",
+        description: "Failed to clear logs. Please try again.",
+        variant: "destructive",
+      });
+    }
+  }, [clearLogs, totalCount, toast, refetch]);
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 className="font-bold text-2xl">Activity Logs</h2>
+          <p className="text-muted-foreground">
+            View and manage all application activity
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button onClick={() => refetch()} size="sm" variant="outline">
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Refresh
+          </Button>
+          <Button
+            disabled={logs.length === 0}
+            onClick={exportToPDF}
+            size="sm"
+            variant="outline"
+          >
+            <Download className="mr-2 h-4 w-4" />
+            Export PDF
+          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                disabled={totalCount === 0 || isClearing}
+                size="sm"
+                variant="destructive"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Clear All
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Clear All Logs?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete all{" "}
+                  <strong>{totalCount}</strong> activity logs from the database.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  onClick={handleClearLogs}
+                >
+                  Yes, Clear All Logs
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </div>
+
+      {/* Summary Cards */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="font-medium text-sm">Total Logs</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="font-bold text-2xl">{summary?.total || 0}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="font-medium text-sm">Action Types</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="font-bold text-2xl">
+              {Object.keys(summary?.byActionType || {}).length}
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="font-medium text-sm">
+              Showing Records
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="font-bold text-2xl">
+              {logs.length} of {totalCount}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Filter className="h-5 w-5" />
+            Filters
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-4">
+            {/* Date Range Picker */}
+            <div className="flex flex-col gap-2">
+              <label className="font-medium text-sm">Date Range</label>
+              <div className="flex items-center gap-2">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      className="w-[240px] justify-start text-left font-normal"
+                      variant="outline"
+                    >
+                      <CalendarDays className="mr-2 h-4 w-4" />
+                      {dateRange.from ? (
+                        dateRange.to ? (
+                          <>
+                            {format(dateRange.from, "MMM dd, yyyy")} -{" "}
+                            {format(dateRange.to, "MMM dd, yyyy")}
+                          </>
+                        ) : (
+                          format(dateRange.from, "MMM dd, yyyy")
+                        )
+                      ) : (
+                        "Select date range"
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent align="start" className="w-auto p-0">
+                    <div className="flex">
+                      <div className="border-r p-2">
+                        <div className="space-y-1">
+                          {DATE_PRESETS.map((preset) => (
+                            <Button
+                              className="w-full justify-start"
+                              key={preset.label}
+                              onClick={() => applyDatePreset(preset)}
+                              size="sm"
+                              variant="ghost"
+                            >
+                              {preset.label}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                      <CalendarComponent
+                        defaultMonth={dateRange.from}
+                        mode="range"
+                        numberOfMonths={2}
+                        onSelect={(range) =>
+                          handleDateRangeChange(range?.from, range?.to)
+                        }
+                        selected={{ from: dateRange.from, to: dateRange.to }}
+                      />
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                {(dateRange.from || dateRange.to) && (
+                  <Button onClick={clearDateFilter} size="icon" variant="ghost">
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            {/* Action Type Filter */}
+            <div className="flex flex-col gap-2">
+              <label className="font-medium text-sm">Action Type</label>
+              <Select
+                onValueChange={handleActionTypeChange}
+                value={filters.actionType || "all"}
+              >
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="All Actions" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Actions</SelectItem>
+                  {actionTypes?.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {formatActionType(type)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Logs Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <FileText className="h-5 w-5" />
+            Activity Log
+          </CardTitle>
+          <CardDescription>
+            Showing {logs.length} of {totalCount} records
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
+            </div>
+          ) : logs.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <FileText className="mb-2 h-12 w-12 text-muted-foreground" />
+              <p className="text-muted-foreground">No logs found</p>
+              <p className="text-muted-foreground text-sm">
+                Activity will appear here as users interact with the
+                application
+              </p>
+            </div>
+          ) : (
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Date/Time</TableHead>
+                    <TableHead>Action</TableHead>
+                    <TableHead>Description</TableHead>
+                    <TableHead>User</TableHead>
+                    <TableHead>Entity</TableHead>
+                    <TableHead>Page</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {logs.map((log) => (
+                    <TableRow key={log.id}>
+                      <TableCell className="whitespace-nowrap">
+                        {format(new Date(log.created_at), "MMM dd, yyyy HH:mm")}
+                      </TableCell>
+                      <TableCell>
+                        <span className="rounded bg-primary/10 px-2 py-1 font-medium text-primary text-xs">
+                          {formatActionType(log.action_type)}
+                        </span>
+                      </TableCell>
+                      <TableCell className="max-w-[200px] truncate">
+                        {log.action_description || "-"}
+                      </TableCell>
+                      <TableCell>{log.user_email || "System"}</TableCell>
+                      <TableCell>
+                        {log.entity_type ? (
+                          <span className="text-muted-foreground text-sm">
+                            {log.entity_type}
+                          </span>
+                        ) : (
+                          "-"
+                        )}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-sm">
+                        {log.page_path || "-"}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-4 flex items-center justify-between">
+                  <p className="text-muted-foreground text-sm">
+                    Page {currentPage} of {totalPages}
+                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      disabled={currentPage === 1}
+                      onClick={() => goToPage(currentPage - 1)}
+                      size="sm"
+                      variant="outline"
+                    >
+                      Previous
+                    </Button>
+                    <Button
+                      disabled={currentPage === totalPages}
+                      onClick={() => goToPage(currentPage + 1)}
+                      size="sm"
+                      variant="outline"
+                    >
+                      Next
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
