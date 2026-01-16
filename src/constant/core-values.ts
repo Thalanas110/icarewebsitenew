@@ -13,7 +13,7 @@ export const CORE_VALUES = [
   },
   {
     icon: Music,
-    title: "Spiirit filled Worship",
+    title: "Spirit-filled Worship",
     desc: "",
   },
   {
