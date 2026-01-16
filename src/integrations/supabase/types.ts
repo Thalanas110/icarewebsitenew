@@ -438,6 +438,51 @@ export type Database = {
         };
         Relationships: [];
       };
+      activity_logs: {
+        Row: {
+          id: string;
+          action_type: string;
+          action_description: string | null;
+          entity_type: string | null;
+          entity_id: string | null;
+          user_id: string | null;
+          user_email: string | null;
+          metadata: Record<string, unknown>;
+          ip_address: string | null;
+          user_agent: string | null;
+          page_path: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          action_type: string;
+          action_description?: string | null;
+          entity_type?: string | null;
+          entity_id?: string | null;
+          user_id?: string | null;
+          user_email?: string | null;
+          metadata?: Record<string, unknown>;
+          ip_address?: string | null;
+          user_agent?: string | null;
+          page_path?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          action_type?: string;
+          action_description?: string | null;
+          entity_type?: string | null;
+          entity_id?: string | null;
+          user_id?: string | null;
+          user_email?: string | null;
+          metadata?: Record<string, unknown>;
+          ip_address?: string | null;
+          user_agent?: string | null;
+          page_path?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;

@@ -1,11 +1,12 @@
 import { useState, useCallback } from "react";
-import { loggingSupabase } from "@/integrations/supabase/loggingClient";
+import { supabase } from "@/integrations/supabase/client";
 import {
   type ActivityLog,
   type ActivityLogInsert,
   type LogActionType,
 } from "@/integrations/supabase/loggingTypes";
 import { useQuery } from "./simple-query-hooks";
+
 
 export interface LogFilters {
   startDate?: Date;
@@ -29,7 +30,7 @@ export const useLogs = (filters: LogFilters = {}) => {
   return useQuery({
     queryKey: ["activity-logs", startDate?.toISOString(), endDate?.toISOString(), actionType, entityType, userId, limit, offset],
     queryFn: async (): Promise<LogsResult> => {
-      let query = loggingSupabase
+      let query = supabase
         .from("activity_logs")
         .select("*", { count: "exact" })
         .order("created_at", { ascending: false })
@@ -76,7 +77,7 @@ export const useLogSummary = () => {
   return useQuery({
     queryKey: ["log-summary"],
     queryFn: async () => {
-      const { data, error } = await loggingSupabase
+      const { data, error } = await supabase
         .from("activity_logs")
         .select("action_type");
 
@@ -108,7 +109,7 @@ export const useClearLogs = () => {
 
     try {
       // Delete all logs - we need a condition, so we delete where id is not null
-      const { error: deleteError } = await loggingSupabase
+      const { error: deleteError } = await supabase
         .from("activity_logs")
         .delete()
         .neq("id", "00000000-0000-0000-0000-000000000000");
@@ -153,7 +154,7 @@ export const logActivity = async (
       page_path: options.pagePath || (typeof window !== "undefined" ? window.location.pathname : null),
     };
 
-    const { error } = await loggingSupabase
+    const { error } = await supabase
       .from("activity_logs")
       .insert(payload);
 
@@ -171,7 +172,7 @@ export const useLogActionTypes = () => {
   return useQuery({
     queryKey: ["log-action-types"],
     queryFn: async () => {
-      const { data, error } = await loggingSupabase
+      const { data, error } = await supabase
         .from("activity_logs")
         .select("action_type");
 
@@ -190,7 +191,7 @@ export const useLogEntityTypes = () => {
   return useQuery({
     queryKey: ["log-entity-types"],
     queryFn: async () => {
-      const { data, error } = await loggingSupabase
+      const { data, error } = await supabase
         .from("activity_logs")
         .select("entity_type");
 
