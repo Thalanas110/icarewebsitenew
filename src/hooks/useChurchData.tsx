@@ -1,4 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
+import { logActivity } from "@/hooks/useLogs";
+import { LOG_ACTION_TYPES } from "@/integrations/supabase/loggingTypes";
 import { useMutation, useQuery, useQueryClient } from "./simple-query-hooks";
 
 // Types
@@ -151,8 +153,14 @@ export function useMinistryMutations() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["ministries"] }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["ministries"] });
+      logActivity(LOG_ACTION_TYPES.CREATE_MINISTRY, {
+        description: `Created ministry: ${data.name}`,
+        entityType: "ministry",
+        entityId: data.id,
+      });
+    },
   });
 
   const updateMinistry = useMutation({
@@ -169,17 +177,30 @@ export function useMinistryMutations() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["ministries"] }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["ministries"] });
+      logActivity(LOG_ACTION_TYPES.UPDATE_MINISTRY, {
+        description: `Updated ministry: ${data.name}`,
+        entityType: "ministry",
+        entityId: data.id,
+      });
+    },
   });
 
   const deleteMinistry = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("ministries").delete().eq("id", id);
       if (error) throw error;
+      return id;
     },
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["ministries"] }),
+    onSuccess: (id) => {
+      queryClient.invalidateQueries({ queryKey: ["ministries"] });
+      logActivity(LOG_ACTION_TYPES.DELETE_MINISTRY, {
+        description: "Deleted a ministry",
+        entityType: "ministry",
+        entityId: id,
+      });
+    },
   });
 
   const updateSortOrder = useMutation({
@@ -230,7 +251,14 @@ export function useEventMutations() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["events"] }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      logActivity(LOG_ACTION_TYPES.CREATE_EVENT, {
+        description: `Created event: ${data.title}`,
+        entityType: "event",
+        entityId: data.id,
+      });
+    },
   });
 
   const updateEvent = useMutation({
@@ -244,15 +272,30 @@ export function useEventMutations() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["events"] }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      logActivity(LOG_ACTION_TYPES.UPDATE_EVENT, {
+        description: `Updated event: ${data.title}`,
+        entityType: "event",
+        entityId: data.id,
+      });
+    },
   });
 
   const deleteEvent = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("events").delete().eq("id", id);
       if (error) throw error;
+      return id;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["events"] }),
+    onSuccess: (id) => {
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      logActivity(LOG_ACTION_TYPES.DELETE_EVENT, {
+        description: "Deleted an event",
+        entityType: "event",
+        entityId: id,
+      });
+    },
   });
 
   return { createEvent, updateEvent, deleteEvent };
@@ -286,8 +329,14 @@ export function useServiceTimeMutations() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["service_times"] }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["service_times"] });
+      logActivity(LOG_ACTION_TYPES.CREATE_SERVICE_TIME, {
+        description: `Created service time: ${data.name}`,
+        entityType: "service_time",
+        entityId: data.id,
+      });
+    },
   });
 
   const updateServiceTime = useMutation({
@@ -304,8 +353,14 @@ export function useServiceTimeMutations() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["service_times"] }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["service_times"] });
+      logActivity(LOG_ACTION_TYPES.UPDATE_SERVICE_TIME, {
+        description: `Updated service time: ${data.name}`,
+        entityType: "service_time",
+        entityId: data.id,
+      });
+    },
   });
 
   const deleteServiceTime = useMutation({
@@ -315,9 +370,16 @@ export function useServiceTimeMutations() {
         .delete()
         .eq("id", id);
       if (error) throw error;
+      return id;
     },
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["service_times"] }),
+    onSuccess: (id) => {
+      queryClient.invalidateQueries({ queryKey: ["service_times"] });
+      logActivity(LOG_ACTION_TYPES.DELETE_SERVICE_TIME, {
+        description: "Deleted a service time",
+        entityType: "service_time",
+        entityId: id,
+      });
+    },
   });
 
   const updateSortOrder = useMutation({
@@ -378,8 +440,13 @@ export function useChurchInfoMutation() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["church_info"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["church_info"] });
+      logActivity(LOG_ACTION_TYPES.UPDATE_CHURCH_INFO, {
+        description: "Updated church information",
+        entityType: "church_info",
+      });
+    },
   });
 }
 
@@ -427,9 +494,14 @@ export function useSermonMutations() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["sermons"] });
       queryClient.invalidateQueries({ queryKey: ["latest_sermon"] });
+      logActivity(LOG_ACTION_TYPES.CREATE_SERMON, {
+        description: `Created sermon: ${data.title}`,
+        entityType: "sermon",
+        entityId: data.id,
+      });
     },
   });
 
@@ -447,9 +519,14 @@ export function useSermonMutations() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["sermons"] });
       queryClient.invalidateQueries({ queryKey: ["latest_sermon"] });
+      logActivity(LOG_ACTION_TYPES.UPDATE_SERMON, {
+        description: `Updated sermon: ${data.title}`,
+        entityType: "sermon",
+        entityId: data.id,
+      });
     },
   });
 
@@ -457,10 +534,16 @@ export function useSermonMutations() {
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("sermons").delete().eq("id", id);
       if (error) throw error;
+      return id;
     },
-    onSuccess: () => {
+    onSuccess: (id) => {
       queryClient.invalidateQueries({ queryKey: ["sermons"] });
       queryClient.invalidateQueries({ queryKey: ["latest_sermon"] });
+      logActivity(LOG_ACTION_TYPES.DELETE_SERMON, {
+        description: "Deleted a sermon",
+        entityType: "sermon",
+        entityId: id,
+      });
     },
   });
 
@@ -495,7 +578,14 @@ export function useGalleryMutations() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["gallery"] }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["gallery"] });
+      logActivity(LOG_ACTION_TYPES.UPLOAD_IMAGE, {
+        description: `Uploaded image: ${data.title}`,
+        entityType: "gallery_image",
+        entityId: data.id,
+      });
+    },
   });
 
   const deleteImage = useMutation({
@@ -505,8 +595,16 @@ export function useGalleryMutations() {
         .delete()
         .eq("id", id);
       if (error) throw error;
+      return id;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["gallery"] }),
+    onSuccess: (id) => {
+      queryClient.invalidateQueries({ queryKey: ["gallery"] });
+      logActivity(LOG_ACTION_TYPES.DELETE_IMAGE, {
+        description: "Deleted a gallery image",
+        entityType: "gallery_image",
+        entityId: id,
+      });
+    },
   });
 
   return { uploadImage, deleteImage };
@@ -540,7 +638,14 @@ export function usePastorMutations() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pastors"] }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["pastors"] });
+      logActivity(LOG_ACTION_TYPES.CREATE_PASTOR, {
+        description: `Created pastor: ${data.name}`,
+        entityType: "pastor",
+        entityId: data.id,
+      });
+    },
   });
 
   const updatePastor = useMutation({
@@ -557,15 +662,30 @@ export function usePastorMutations() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pastors"] }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["pastors"] });
+      logActivity(LOG_ACTION_TYPES.UPDATE_PASTOR, {
+        description: `Updated pastor: ${data.name}`,
+        entityType: "pastor",
+        entityId: data.id,
+      });
+    },
   });
 
   const deletePastor = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("pastors").delete().eq("id", id);
       if (error) throw error;
+      return id;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pastors"] }),
+    onSuccess: (id) => {
+      queryClient.invalidateQueries({ queryKey: ["pastors"] });
+      logActivity(LOG_ACTION_TYPES.DELETE_PASTOR, {
+        description: "Deleted a pastor",
+        entityType: "pastor",
+        entityId: id,
+      });
+    },
   });
 
   const updateSortOrder = useMutation({

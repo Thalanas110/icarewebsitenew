@@ -96,7 +96,7 @@ export function useMutation<TVariables, TData>({
   onSuccess,
 }: {
   mutationFn: (variables: TVariables) => Promise<TData>;
-  onSuccess?: () => void;
+  onSuccess?: (data: TData) => void;
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<any>(null);
@@ -106,7 +106,7 @@ export function useMutation<TVariables, TData>({
     setError(null);
     try {
       const result = await mutationFn(variables);
-      if (onSuccess) onSuccess();
+      if (onSuccess) onSuccess(result);
       return result;
     } catch (err) {
       setError(err);
